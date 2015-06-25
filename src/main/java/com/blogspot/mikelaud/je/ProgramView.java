@@ -10,17 +10,18 @@ import javafx.stage.Stage;
 public class ProgramView {
 
 	private final String TITLE;
-	private final String ICON_FILENAME;
+	private final String PROGRAM_ICON_FILENAME;
 	private final double SCALE_WIDTH;
 	private final double SCALE_HEIGHT;
 	//
 	private BorderPane mPane;
 	private Scene mScene;
 	private Stage mWindow;
+	//
+	private OpenTypeView mTypesView;
 
 	private Image createIcon() {
-		final String iconUrl = "/" + ICON_FILENAME;
-		return new Image(iconUrl);
+		return new Image(PROGRAM_ICON_FILENAME);
 	}
 	
 	private Rectangle2D createVisualBounds() {
@@ -60,14 +61,17 @@ public class ProgramView {
 	}
 	
 	public ProgramView(Stage aWindow) {
-		TITLE = "JVM Explorer";
-		ICON_FILENAME = "Program.png";
+		TITLE = "JVM Explorer: Open Type";
+		PROGRAM_ICON_FILENAME = "Program.png";
 		SCALE_WIDTH = 3;
 		SCALE_HEIGHT = 2;
 		//
 		mPane = new BorderPane();
 		mScene = new Scene(mPane);
 		mWindow = aWindow;
+		//
+		mTypesView = new OpenTypeView();
+		mPane.setCenter(mTypesView.getPane());
 	}
 	
 }
