@@ -22,6 +22,7 @@ public class OpenTypeView {
 	private final String PACKAGE_ICON_FILENAME;
 	private final String DEFAULT_PACKAGE;
 	
+	private final OpenType MODEL; 
 	private Pane mPane;
 	
 	private Node createTop() {
@@ -38,11 +39,13 @@ public class OpenTypeView {
 	private Node createCenter() {
 		TextArea matchingArea = new TextArea();
 		matchingArea.setEditable(false);
+		matchingArea.setText(MODEL.get());
 		return matchingArea;
 	}
 
 	private Node createBottom() {
 		Label locationLabel = new Label(DEFAULT_PACKAGE, new ImageView(new Image(PACKAGE_ICON_FILENAME)));
+		locationLabel.setBorder(new TextField().getBorder());
 		//
 		VBox bottom = new VBox(locationLabel);
 		bottom.setSpacing(SPACING);
@@ -74,6 +77,7 @@ public class OpenTypeView {
 		PACKAGE_ICON_FILENAME = "TypePackage.gif";
 		DEFAULT_PACKAGE = "com.blogspot.mikelaud";
 		//
+		MODEL = new OpenType();
 		mPane = createPane();
 	}
 	
