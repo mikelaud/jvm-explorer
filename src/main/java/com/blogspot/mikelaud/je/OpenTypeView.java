@@ -1,9 +1,12 @@
 package com.blogspot.mikelaud.je;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,10 +40,15 @@ public class OpenTypeView {
 	}
 	
 	private Node createCenter() {
-		TextArea matchingArea = new TextArea();
-		matchingArea.setEditable(false);
-		matchingArea.setText(MODEL.get());
-		return matchingArea;
+		TableView<String> table = new TableView<>();
+		table.setEditable(false);
+		table.setItems(FXCollections.observableArrayList(MODEL.get()));
+		//
+		TableColumn<String,String> typeColumn = new TableColumn<>("Type");
+		typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+		table.getColumns().add(typeColumn);
+		//
+		return table;
 	}
 
 	private Node createBottom() {

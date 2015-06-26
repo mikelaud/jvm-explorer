@@ -6,7 +6,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -46,8 +45,8 @@ public class OpenType {
 		return classNames;
 	}
 	
-	public String get() {
-		return getJarFiles().stream().collect(Collectors.joining("\n"));
+	public List<String> get() {
+		return getJarFiles();
 	}
 	
 	public OpenType() {
