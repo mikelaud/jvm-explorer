@@ -51,7 +51,7 @@ public class OpenTypeView {
 		//
 		TableColumn<String,String> imageColumn = new TableColumn<>();
 		imageColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
-		imageColumn.setCellFactory((tableColumn) -> new IconCell(tableColumn));
+		imageColumn.setCellFactory((tableColumn) -> new IconCell());
 		table.getColumns().add(imageColumn);
 		//
 		TableColumn<String,String> typeColumn = new TableColumn<>(COLUMN_NAME);

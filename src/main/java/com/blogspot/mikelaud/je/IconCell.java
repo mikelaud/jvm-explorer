@@ -2,7 +2,6 @@ package com.blogspot.mikelaud.je;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
@@ -19,14 +18,12 @@ public class IconCell extends TableCell<String, String> {
 			setText(null);
 			setGraphic(null);
 		}
-		else { // Program.png
-			Image image = new Image("TypeClass.gif");
-			IMAGE_VIEW.setImage(image);
+		else {
 			setGraphic(BOX);
 		}
 	}
 	
-	public IconCell(TableColumn<String, String> aParam) {
+	public IconCell() {
 		BOX = new VBox();
 		BOX.setAlignment(Pos.CENTER);
 		//
@@ -35,6 +32,7 @@ public class IconCell extends TableCell<String, String> {
 		//IMAGE_VIEW.setFitWidth(16);
 		IMAGE_VIEW.setVisible(true);
 		IMAGE_VIEW.setCache(true);
+		IMAGE_VIEW.setImage(new Image("TypeClass.gif"));
 		BOX.getChildren().addAll(IMAGE_VIEW);
 		//
 		setGraphic(BOX);
