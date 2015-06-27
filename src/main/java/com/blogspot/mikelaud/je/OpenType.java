@@ -11,9 +11,13 @@ import java.util.zip.ZipInputStream;
 
 public class OpenType {
 
+	private final String JAVA_HOME_PROPERTY;
+	private final String JAR_NAME;
+	private final String JAR_DIR;
+	private final String CLASS_EXT;
+	
 	private Path getJavaHome() {
-		final String javaHomeProperty = "java.home";
-		String javaHome = System.getProperty(javaHomeProperty);
+		String javaHome = System.getProperty(JAVA_HOME_PROPERTY);
 		if (null == javaHome) { 
 			javaHome = "";
 		}
@@ -21,7 +25,7 @@ public class OpenType {
 	}
 	
 	private Path getJavaJar() {
-		final Path javaJar = Paths.get("lib", "rt.jar");
+		final Path javaJar = Paths.get(JAR_DIR, JAR_NAME);
 		Path javaHome = getJavaHome();
 		return javaHome.resolve(javaJar);
 	}
@@ -31,7 +35,7 @@ public class OpenType {
 		try {
 			try (ZipInputStream zip = new ZipInputStream(new FileInputStream(getJavaJar().toFile()))) {
 				for (ZipEntry entry = zip.getNextEntry(); entry != null; entry = zip.getNextEntry()) {
-				    if (!entry.isDirectory() && entry.getName().endsWith(".class")) {
+				    if (!entry.isDirectory() && entry.getName().endsWith(CLASS_EXT)) {
 				        String className = entry.getName().replace('/', '.');
 				        classNames.add(className);
 				    }
@@ -45,12 +49,19 @@ public class OpenType {
 		return classNames;
 	}
 	
+	public String getJarName() {
+		return JAR_NAME;
+	}
+	
 	public List<String> get() {
 		return getJarFiles();
 	}
 	
 	public OpenType() {
-		//
+		JAVA_HOME_PROPERTY = "java.home";
+		JAR_NAME = "rt.jar";
+		JAR_DIR = "lib";
+		CLASS_EXT = ".class"; 
 	}
 	
 }

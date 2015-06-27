@@ -3,6 +3,7 @@ package com.blogspot.mikelaud.je;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -19,19 +20,23 @@ public class OpenTypeView {
 	private final int SPACING;
 	private final int PADDING;
 	//
+	private final OpenType MODEL; 
+	private final String COLUMN_NAME;
+	//
 	private final String SEARCH_LABEL_STRING;
 	private final String MATCHING_LABEL_STRING;
 	//
 	private final String PACKAGE_ICON_FILENAME;
 	private final String DEFAULT_PACKAGE;
-	
-	private final OpenType MODEL; 
+	//
 	private Pane mPane;
 	
 	private Node createTop() {
 		Label searchLabel = new Label(SEARCH_LABEL_STRING);
 		TextField searchText = new TextField();
 		searchText.setEditable(true);
+		searchText.setAlignment(Pos.CENTER);
+		//
 		Label matchingLabel = new Label(MATCHING_LABEL_STRING);
 		//
 		VBox top = new VBox(searchLabel, searchText, matchingLabel);
@@ -44,7 +49,12 @@ public class OpenTypeView {
 		table.setEditable(false);
 		table.setItems(FXCollections.observableArrayList(MODEL.get()));
 		//
-		TableColumn<String,String> typeColumn = new TableColumn<>("Type");
+		TableColumn<String,String> imageColumn = new TableColumn<>();
+		imageColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+		imageColumn.setCellFactory((tableColumn) -> new IconCell(tableColumn));
+		table.getColumns().add(imageColumn);
+		//
+		TableColumn<String,String> typeColumn = new TableColumn<>(COLUMN_NAME);
 		typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
 		table.getColumns().add(typeColumn);
 		//
@@ -79,13 +89,15 @@ public class OpenTypeView {
 		SPACING = 5;
 		PADDING = 10;
 		//
+		MODEL = new OpenType();
+		COLUMN_NAME = "Type";
+		//
 		SEARCH_LABEL_STRING = "Enter type name prefix or pattern (*, ?, or camel case):";
 		MATCHING_LABEL_STRING = "Matching items:";
 		//
-		PACKAGE_ICON_FILENAME = "TypePackage.gif";
-		DEFAULT_PACKAGE = "com.blogspot.mikelaud";
+		PACKAGE_ICON_FILENAME = "TypeLibrary.gif";
+		DEFAULT_PACKAGE = MODEL.getJarName();
 		//
-		MODEL = new OpenType();
 		mPane = createPane();
 	}
 	
