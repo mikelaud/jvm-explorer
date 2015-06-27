@@ -9,7 +9,6 @@ import javafx.scene.layout.VBox;
 public class IconCell extends TableCell<String, String> {
 
 	private final VBox BOX;
-	private final ImageView IMAGE_VIEW;
 
 	@Override
 	protected void updateItem(String aItem, boolean aEmpty) {
@@ -27,14 +26,12 @@ public class IconCell extends TableCell<String, String> {
 		BOX = new VBox();
 		BOX.setAlignment(Pos.CENTER);
 		//
-		IMAGE_VIEW = new ImageView();
-		//IMAGE_VIEW.setFitHeight(16);
-		//IMAGE_VIEW.setFitWidth(16);
-		IMAGE_VIEW.setVisible(true);
-		IMAGE_VIEW.setCache(true);
-		IMAGE_VIEW.setImage(new Image("TypeClass.gif"));
-		BOX.getChildren().addAll(IMAGE_VIEW);
+		ImageView imageView = new ImageView();
+		imageView.setVisible(true);
+		imageView.setCache(true);
+		imageView.setImage(new Image("TypeClass.gif"));
 		//
+		BOX.getChildren().addAll(imageView);
 		setGraphic(BOX);
 	}
 	
