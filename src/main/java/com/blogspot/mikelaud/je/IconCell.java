@@ -22,7 +22,6 @@ public class IconCell extends TableCell<String, String> {
 		else { // Program.png
 			Image image = new Image("TypeClass.gif");
 			IMAGE_VIEW.setImage(image);
-			IMAGE_VIEW.fitHeightProperty().bind(BOX.heightProperty());
 			setGraphic(BOX);
 		}
 	}
