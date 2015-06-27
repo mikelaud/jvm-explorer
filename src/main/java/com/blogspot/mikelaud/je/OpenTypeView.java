@@ -1,5 +1,9 @@
 package com.blogspot.mikelaud.je;
 
+import com.blogspot.mikelaud.je.common.Type;
+import com.blogspot.mikelaud.je.common.TypeType;
+
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
@@ -45,17 +49,17 @@ public class OpenTypeView {
 	}
 	
 	private Node createCenter() {
-		TableView<String> table = new TableView<>();
+		TableView<Type> table = new TableView<>();
 		table.setEditable(false);
 		table.setItems(FXCollections.observableArrayList(MODEL.get()));
 		//
-		TableColumn<String,String> imageColumn = new TableColumn<>();
-		imageColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+		TableColumn<Type,TypeType> imageColumn = new TableColumn<>();
+		imageColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<TypeType>(cellData.getValue().getTypeType()));
 		imageColumn.setCellFactory((tableColumn) -> new IconCell());
 		table.getColumns().add(imageColumn);
 		//
-		TableColumn<String,String> typeColumn = new TableColumn<>(COLUMN_NAME);
-		typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue()));
+		TableColumn<Type,String> typeColumn = new TableColumn<>(COLUMN_NAME);
+		typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
 		table.getColumns().add(typeColumn);
 		//
 		return table;

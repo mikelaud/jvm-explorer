@@ -4,6 +4,61 @@
 	<groupId>com.blogspot.mikelaud.je</groupId>
 	<artifactId>jvm-explorer</artifactId>
 	<version>1.0.0</version>
-	<name>jvm-explorer</name>
-	<description>jvm-explorer</description>
+	<name>${project.artifactId}</name>
+	<description>${project.name} project</description>
+
+	<properties>
+		<je.java.version>1.8</je.java.version>
+		<je.asm.version>5.0.4</je.asm.version>
+		<je.junit.version>4.12</je.junit.version>
+		<je.jsr305.version>3.0.0</je.jsr305.version>
+		<je.guice.version>4.0</je.guice.version>
+		<je.guice-assistedinject.version>${je.guice.version}</je.guice-assistedinject.version>
+		<!---->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>${je.java.version}</source>
+						<target>${je.java.version}</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm</artifactId>
+			<version>${je.asm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${je.junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>${je.jsr305.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>${je.guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-assistedinject</artifactId>
+			<version>${je.guice-assistedinject.version}</version>
+		</dependency>
+	</dependencies>
+
 </project>

@@ -1,23 +1,30 @@
 package com.blogspot.mikelaud.je;
 
+import com.blogspot.mikelaud.je.common.Type;
+import com.blogspot.mikelaud.je.common.TypeImage;
+import com.blogspot.mikelaud.je.common.TypeType;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.TableCell;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
-public class IconCell extends TableCell<String, String> {
+public class IconCell extends TableCell<Type, TypeType> {
 
+	private static final TypeImage TYPE_IMAGE = new TypeImage();
+	//
 	private final VBox BOX;
+	private final ImageView VIEW;
 
 	@Override
-	protected void updateItem(String aItem, boolean aEmpty) {
-		super.updateItem(aItem, aEmpty);
+	protected void updateItem(TypeType aTypeType, boolean aEmpty) {
+		super.updateItem(aTypeType, aEmpty);
 		if (aEmpty) {
 			setText(null);
 			setGraphic(null);
 		}
 		else {
+			VIEW.setImage(TYPE_IMAGE.get(aTypeType));
 			setGraphic(BOX);
 		}
 	}
@@ -26,12 +33,12 @@ public class IconCell extends TableCell<String, String> {
 		BOX = new VBox();
 		BOX.setAlignment(Pos.CENTER);
 		//
-		ImageView imageView = new ImageView();
-		imageView.setVisible(true);
-		imageView.setCache(true);
-		imageView.setImage(new Image("TypeClass.gif"));
+		VIEW = new ImageView();
+		VIEW.setVisible(true);
+		VIEW.setCache(true);
+		VIEW.setImage(TYPE_IMAGE.get(TypeType.Class));
 		//
-		BOX.getChildren().addAll(imageView);
+		BOX.getChildren().addAll(VIEW);
 		setGraphic(BOX);
 	}
 	
