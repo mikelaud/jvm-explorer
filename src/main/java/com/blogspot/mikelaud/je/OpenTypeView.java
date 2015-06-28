@@ -1,7 +1,7 @@
 package com.blogspot.mikelaud.je;
 
 import com.blogspot.mikelaud.je.common.Type;
-import com.blogspot.mikelaud.je.common.TypeType;
+import com.blogspot.mikelaud.je.common.TypeTableCell;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -53,13 +53,13 @@ public class OpenTypeView {
 		table.setEditable(false);
 		table.setItems(FXCollections.observableArrayList(MODEL.get()));
 		//
-		TableColumn<Type,TypeType> imageColumn = new TableColumn<>();
-		imageColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<TypeType>(cellData.getValue().getTypeType()));
-		imageColumn.setCellFactory((tableColumn) -> new IconCell());
+		TableColumn<Type,Type> imageColumn = new TableColumn<>();
+		imageColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<Type>(cellData.getValue()));
+		imageColumn.setCellFactory((tableColumn) -> new TypeTableCell());
 		table.getColumns().add(imageColumn);
 		//
 		TableColumn<Type,String> typeColumn = new TableColumn<>(COLUMN_NAME);
-		typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+		typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFullName()));
 		table.getColumns().add(typeColumn);
 		//
 		return table;

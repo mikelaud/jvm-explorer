@@ -49,7 +49,7 @@ public class OpenType {
 		catch (Throwable t) {
 			t.printStackTrace();
 		}
-		Collections.sort(types, (a, b) -> a.getName().compareTo(b.getName()));
+		Collections.sort(types, (a, b) -> a.getFullName().compareTo(b.getFullName()));
 		return types;
 	}
 	

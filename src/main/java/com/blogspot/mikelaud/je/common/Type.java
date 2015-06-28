@@ -2,21 +2,34 @@ package com.blogspot.mikelaud.je.common;
 
 public class Type {
 	
-	private String mName;
-	private TypeType mTypeType;
+	private String mFullName;
+	private TypeType mType;
+	private TypeAccess mAccess;
+	private boolean mInner;
+	private boolean mDeprecated;
 	
 	private String nvl(String aString) { return (null == aString ? "" : aString); }
 	private TypeType nvl(TypeType aTypeType) { return (null == aTypeType ? TypeType.Class : aTypeType); }
+	private TypeAccess nvl(TypeAccess aTypeAccess) { return (null == aTypeAccess ? TypeAccess.Default : aTypeAccess); }
 	
-	public String getName() { return mName; }
-	public TypeType getTypeType() { return mTypeType; }
+	public String getFullName() { return mFullName; }
+	public TypeType getType() { return mType; }
+	public TypeAccess getAccess() { return mAccess; }
+	public boolean isInner() { return mInner; }
+	public boolean isDeprecates() { return mDeprecated; }
 	
-	public void setName(String aName) { mName = nvl(aName); }
-	public void setTypeType(TypeType aTypeType) { mTypeType = nvl(aTypeType); }
+	public void setFullName(String aFullName) { mFullName = nvl(aFullName); }
+	public void setType(TypeType aTypeType) { mType = nvl(aTypeType); }
+	public void setAccess(TypeAccess aTypeAccess) { mAccess = nvl(aTypeAccess); }
+	public void setInner(boolean aInner) { mInner = aInner; }
+	public void setDeprecated(boolean aDeprecated) { mDeprecated = aDeprecated; }
 	
 	public Type() {
-		mName = "";
-		mTypeType = TypeType.Class;
+		mFullName = "";
+		mType = TypeType.Class;
+		mAccess = TypeAccess.Default;
+		mInner = false;
+		mDeprecated = false;
 	}
 	
 }

@@ -4,24 +4,27 @@ import javafx.scene.image.Image;
 
 public enum TypeType {
 
-	Unknown("TypeUnknown.png"),
-	Error("TypeError.png"),
-	//
-	Annotation("TypeAnnotation.gif"),
-	Class("TypeClass.gif"),
-	Enum("TypeEnum.gif"),
-	Interface("TypeInterface.gif");
+	Annotation,
+	Class,
+	Enum,
+	Interface;
 
 	private final String IMAGE_FILENAME;
+	private final String IMAGE_PATH;
 	private final Image IMAGE;
 	
-	private TypeType(String aImageFilename) {
-		IMAGE_FILENAME = aImageFilename;
-		IMAGE = new Image(IMAGE_FILENAME);
+	private TypeType() {
+		IMAGE_FILENAME = name().toLowerCase() + ".png";
+		IMAGE_PATH = "type/public/" + IMAGE_FILENAME;
+		IMAGE = new Image(IMAGE_PATH);
 	}
 	
 	public String getImageFilename() {
 		return IMAGE_FILENAME;
+	}
+	
+	public String getImagePath() {
+		return IMAGE_PATH;
 	}
 	
 	public Image getImage() {
