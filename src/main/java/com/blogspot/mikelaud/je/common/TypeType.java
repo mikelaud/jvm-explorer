@@ -1,5 +1,8 @@
 package com.blogspot.mikelaud.je.common;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import javafx.scene.image.Image;
 
 public enum TypeType {
@@ -9,21 +12,20 @@ public enum TypeType {
 	Enum,
 	Interface;
 
-	private final String IMAGE_FILENAME;
-	private final String IMAGE_PATH;
+	private final Path IMAGE_PATH;
 	private final Image IMAGE;
 	
 	private TypeType() {
-		IMAGE_FILENAME = name().toLowerCase() + ".png";
-		IMAGE_PATH = "type/public/" + IMAGE_FILENAME;
-		IMAGE = new Image(IMAGE_PATH);
+		String imageFilename = name().toLowerCase() + ".png";
+		IMAGE_PATH = Paths.get("type", "public",  imageFilename);
+		IMAGE = new Image(IMAGE_PATH.toString());
 	}
 	
 	public String getImageFilename() {
-		return IMAGE_FILENAME;
+		return IMAGE_PATH.getFileName().toString();
 	}
 	
-	public String getImagePath() {
+	public Path getImagePath() {
 		return IMAGE_PATH;
 	}
 	

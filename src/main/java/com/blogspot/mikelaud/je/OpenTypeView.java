@@ -99,7 +99,7 @@ public class OpenTypeView {
 		SEARCH_LABEL_STRING = "Enter type name prefix or pattern (*, ?, or camel case):";
 		MATCHING_LABEL_STRING = "Matching items:";
 		//
-		PACKAGE_ICON_FILENAME = "TypeLibrary.gif";
+		PACKAGE_ICON_FILENAME = "library.png";
 		DEFAULT_PACKAGE = MODEL.getJarName();
 		//
 		mPane = createPane();

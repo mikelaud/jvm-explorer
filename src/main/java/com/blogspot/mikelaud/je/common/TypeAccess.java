@@ -1,5 +1,7 @@
 package com.blogspot.mikelaud.je.common;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -15,8 +17,8 @@ public enum TypeAccess {
 	private final Image[] IMAGES;
 	
 	private void createImage(TypeType aTypeType) {
-		String imagePath = "type/" + name().toLowerCase() + "/" + aTypeType.getImageFilename();
-		IMAGES[aTypeType.ordinal()] = new Image(imagePath);		
+		Path imagePath = Paths.get("type", name().toLowerCase(), aTypeType.getImageFilename());
+		IMAGES[aTypeType.ordinal()] = new Image(imagePath.toString());
 	}
 	
 	private TypeAccess() {

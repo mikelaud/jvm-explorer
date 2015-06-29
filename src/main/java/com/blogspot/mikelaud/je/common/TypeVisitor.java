@@ -6,6 +6,7 @@ import org.objectweb.asm.Opcodes;
 public class TypeVisitor extends ClassVisitor {
 
 	private Type mType;
+	private String mTypeInternalName;
 	
 	private boolean isAnnotation(int aAccess) { return 0 != (aAccess & Opcodes.ACC_ANNOTATION); }
 	private boolean isEnum(int aAccess) { return 0 != (aAccess & Opcodes.ACC_ENUM); }
@@ -15,12 +16,12 @@ public class TypeVisitor extends ClassVisitor {
 	private boolean isProtected(int aAccess) { return 0 != (aAccess & Opcodes.ACC_PROTECTED); }
 	private boolean isPrivate(int aAccess) { return 0 != (aAccess & Opcodes.ACC_PRIVATE); }
 	
-	private void setFullName(String aName) {
+	private void setTypeFullName(String aName) {
 		String fullname = aName.replace('/', '.');
 		mType.setFullName(fullname);
 	}
 	
-	private void setType(int aAccess) {
+	private void setTypeType(int aAccess) {
 		mType.setType(TypeType.Class);
 		for (;;) {
 			if (isInterface(aAccess)) {
@@ -39,7 +40,16 @@ public class TypeVisitor extends ClassVisitor {
 		}
 	}
 	
-	private void setAccess(int aAccess) {
+	private void setTypeAccess(int aAccess) {
+		if (isPublic(aAccess)) {
+			mType.setAccess(TypeAccess.Public);
+		}
+		else {
+			mType.setAccess(TypeAccess.Default);
+		}
+	}
+	
+	private void setTypeAccessInner(int aAccess) {
 		mType.setAccess(TypeAccess.Default);
 		for (;;) {
 			if (isPublic(aAccess)) {
@@ -53,25 +63,32 @@ public class TypeVisitor extends ClassVisitor {
 			if (isPrivate(aAccess)) {
 				mType.setAccess(TypeAccess.Private);
 				break;
-			}
+			}			
 			break;
 		}
 	}
 	
-	public void reset() { mType = new Type(); }
+	public void reset() {
+		mType = new Type();
+		mTypeInternalName = "";
+	}
 	
 	public Type getType() { return mType; }
 	
 	@Override
 	public void visit(int aVersion, int aAccess, String aName, String aSignature, String aSuperName, String[] aInterfaces) {
-		setFullName(aName);
-		setType(aAccess);
-		setAccess(aAccess);
+		mTypeInternalName = aName;
+		setTypeFullName(aName);
+		setTypeType(aAccess);
+		setTypeAccess(aAccess);
 	}
 
 	@Override
-	public void visitOuterClass(String aOwner, String aName, String aDesc) {
-		mType.setInner(true);
+	public void visitInnerClass(String aName, String aOuterName, String aInnerName, int aAccess) {
+		if (mTypeInternalName.equals(aName)) {
+			mType.setInner(true);
+			setTypeAccessInner(aAccess);
+		}
 	}
 	
 	public TypeVisitor() {
