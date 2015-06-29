@@ -68,7 +68,7 @@ public class TypeVisitor extends ClassVisitor {
 		}
 	}
 	
-	private void setTypeInner(boolean aInner) {
+	private void setTypeInner() {
 		mType.setInner(true);
 	}
 	
@@ -92,7 +92,7 @@ public class TypeVisitor extends ClassVisitor {
 	@Override
 	public void visitInnerClass(String aName, String aOuterName, String aInnerName, int aAccess) {
 		if (mTypeInternalName.equals(aName)) {
-			setTypeInner(true);
+			setTypeInner();
 			setTypeAccessInner(aAccess);
 		}
 	}
