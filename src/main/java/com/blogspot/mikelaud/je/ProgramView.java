@@ -62,7 +62,7 @@ public class ProgramView {
 	
 	public ProgramView(Stage aWindow) {
 		TITLE = "JVM Explorer: Open Type";
-		PROGRAM_ICON_FILENAME = "program2.png";
+		PROGRAM_ICON_FILENAME = "program.png";
 		SCALE_WIDTH = 3;
 		SCALE_HEIGHT = 2;
 		//

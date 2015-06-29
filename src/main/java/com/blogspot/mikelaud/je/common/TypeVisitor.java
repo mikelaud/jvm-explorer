@@ -68,12 +68,18 @@ public class TypeVisitor extends ClassVisitor {
 		}
 	}
 	
+	private void setTypeInner(boolean aInner) {
+		mType.setInner(true);
+	}
+	
 	public void reset() {
 		mType = new Type();
 		mTypeInternalName = "";
 	}
 	
-	public Type getType() { return mType; }
+	public Type getType() {
+		return mType;
+	}
 	
 	@Override
 	public void visit(int aVersion, int aAccess, String aName, String aSignature, String aSuperName, String[] aInterfaces) {
@@ -86,7 +92,7 @@ public class TypeVisitor extends ClassVisitor {
 	@Override
 	public void visitInnerClass(String aName, String aOuterName, String aInnerName, int aAccess) {
 		if (mTypeInternalName.equals(aName)) {
-			mType.setInner(true);
+			setTypeInner(true);
 			setTypeAccessInner(aAccess);
 		}
 	}
