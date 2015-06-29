@@ -22,21 +22,17 @@ public class TypeVisitor extends ClassVisitor {
 	}
 	
 	private void setTypeType(int aAccess) {
-		mType.setType(TypeType.Class);
-		for (;;) {
-			if (isInterface(aAccess)) {
-				mType.setType(TypeType.Interface);
-				break;
-			}
-			if (isEnum(aAccess)) {
-				mType.setType(TypeType.Enum);
-				break;
-			}
-			if (isAnnotation(aAccess)) {
-				mType.setType(TypeType.Annotation);
-				break;
-			}
-			break;
+		if (isInterface(aAccess)) {
+			mType.setType(TypeType.Interface);
+		}
+		else if (isEnum(aAccess)) {
+			mType.setType(TypeType.Enum);
+		}
+		else if (isAnnotation(aAccess)) {
+			mType.setType(TypeType.Annotation);
+		}
+		else {
+			mType.setType(TypeType.Class);
 		}
 	}
 	
@@ -50,21 +46,17 @@ public class TypeVisitor extends ClassVisitor {
 	}
 	
 	private void setTypeAccessInner(int aAccess) {
-		mType.setAccess(TypeAccess.Default);
-		for (;;) {
-			if (isPublic(aAccess)) {
-				mType.setAccess(TypeAccess.Public);
-				break;
-			}
-			if (isProtected(aAccess)) {
-				mType.setAccess(TypeAccess.Protected);
-				break;
-			}
-			if (isPrivate(aAccess)) {
-				mType.setAccess(TypeAccess.Private);
-				break;
-			}			
-			break;
+		if (isPublic(aAccess)) {
+			mType.setAccess(TypeAccess.Public);
+		}
+		else if (isProtected(aAccess)) {
+			mType.setAccess(TypeAccess.Protected);
+		}
+		else if (isPrivate(aAccess)) {
+			mType.setAccess(TypeAccess.Private);
+		}
+		else {
+			mType.setAccess(TypeAccess.Default);
 		}
 	}
 	
