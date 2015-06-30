@@ -15,27 +15,34 @@ public enum TypeAccess {
 
 	private final Image[][] IMAGES;
 	
-	private void createImage(TypeType aTypeType, TypeSource aSource) {
-		Path imagePath = Paths.get("type", aSource.name().toLowerCase(), name().toLowerCase(), aTypeType.getImageFilename());
-		IMAGES[aSource.ordinal()][aTypeType.ordinal()] = new Image(imagePath.toString());
+	private void createImage(TypeType aType, TypeDeprecated aDeprecated) {
+		Path imagePath = Paths.get("type", aDeprecated.getLabel(), getLabel(), aType.getImageFilename());
+		IMAGES[aDeprecated.ordinal()][aType.ordinal()] = new Image(imagePath.toString());
+	}
+	
+	private void createImages(TypeDeprecated aDeprecated) {
+		Arrays.stream(TypeType.values()).forEach(t -> createImage(t, aDeprecated));
 	}
 	
 	private TypeAccess() {
-		IMAGES = new Image[TypeSource.values().length][TypeType.values().length];
+		IMAGES = new Image[TypeDeprecated.values().length][TypeType.values().length];
 		//
 		Image defaultImage = TypeType.Class.getImage();
-		for (TypeSource source : TypeSource.values()) {
-			for (TypeType typeType : TypeType.values()) {
-				IMAGES[source.ordinal()][typeType.ordinal()] = defaultImage;
+		for (TypeDeprecated dprecated : TypeDeprecated.values()) {
+			for (TypeType type : TypeType.values()) {
+				IMAGES[dprecated.ordinal()][type.ordinal()] = defaultImage;
 			}
 		}
 		//
-		Arrays.stream(TypeType.values()).forEach(t -> createImage(t, TypeSource.Normal));
-		Arrays.stream(TypeType.values()).forEach(t -> createImage(t, TypeSource.Deprecated));
+		Arrays.stream(TypeDeprecated.values()).forEach(d -> createImages(d));
 	}
 	
-	public Image getImage(TypeType aTypeType, boolean aDeprecated) {
-		return IMAGES[aDeprecated ? 1 : 0][aTypeType.ordinal()];
+	public String getLabel() {
+		return name().toLowerCase();
+	}
+	
+	public Image getImage(TypeType aType, TypeDeprecated aDeprecated) {
+		return IMAGES[aDeprecated.ordinal()][aType.ordinal()];
 	}
 	
 }

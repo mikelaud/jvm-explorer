@@ -23,16 +23,16 @@ public class TypeVisitor extends ClassVisitor {
 		mType.setFullName(BytecodeUtils.toTypeFullname(aName));
 		mType.setType(BytecodeUtils.toTypeType(aAccess));
 		mType.setAccess(BytecodeUtils.toTypeAccess(aAccess));
-		mType.setDeprecated(BytecodeUtils.isDeprecated(aAccess));
+		mType.setDeprecated(BytecodeUtils.toDeprecated(aAccess));
 	}
 
 	@Override
 	public void visitInnerClass(String aName, String aOuterName, String aInnerName, int aAccess) {
 		if (mTypeInternalName.equals(aName)) {
-			mType.setInner(true);
+			mType.setInner(TypeInner.Yes);
 			mType.setType(BytecodeUtils.toTypeType(aAccess));
 			mType.setAccess(BytecodeUtils.toTypeAccessInner(aAccess));
-			mType.setDeprecated(BytecodeUtils.isDeprecated(aAccess));
+			mType.setDeprecated(BytecodeUtils.toDeprecated(aAccess));
 		}
 	}
 	
