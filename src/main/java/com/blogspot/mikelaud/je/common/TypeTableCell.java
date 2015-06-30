@@ -19,7 +19,7 @@ public class TypeTableCell extends TableCell<Type, Type> {
 			setGraphic(null);
 		}
 		else {
-			Image image = aType.getAccess().getImage(aType.getType());
+			Image image = aType.getAccess().getImage(aType.getType(), aType.isDeprecated());
 			VIEW.setImage(image);
 			setGraphic(BOX);
 		}

@@ -16,6 +16,8 @@ public interface BytecodeUtils {
 	static boolean isProtected(int aAccess) { return 0 != (aAccess & Opcodes.ACC_PROTECTED); }
 	static boolean isPrivate(int aAccess) { return 0 != (aAccess & Opcodes.ACC_PRIVATE); }
 	
+	static boolean isDeprecated(int aAccess) { return 0 != (aAccess & Opcodes.ACC_DEPRECATED); }
+
 	static TypeType toTypeType(int aAccess) {
 		if (isInterface(aAccess)) return TypeType.Interface;
 		else if (isEnum(aAccess)) return TypeType.Enum;

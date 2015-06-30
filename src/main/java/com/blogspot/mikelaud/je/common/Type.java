@@ -15,7 +15,7 @@ public class Type {
 	public TypeType getType() { return mType; }
 	public TypeAccess getAccess() { return mAccess; }
 	public boolean isInner() { return mInner; }
-	public boolean isDeprecates() { return mDeprecated; }
+	public boolean isDeprecated() { return mDeprecated; }
 	
 	public void setFullName(String aFullName) { mFullName = StringUtils.nvl(aFullName); }
 	public void setType(TypeType aTypeType) { mType = nvl(aTypeType); }

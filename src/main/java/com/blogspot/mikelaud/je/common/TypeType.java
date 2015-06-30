@@ -17,7 +17,7 @@ public enum TypeType {
 	
 	private TypeType() {
 		String imageFilename = name().toLowerCase() + ".png";
-		IMAGE_PATH = Paths.get("type", "public",  imageFilename);
+		IMAGE_PATH = Paths.get("type", "normal", "public",  imageFilename);
 		IMAGE = new Image(IMAGE_PATH.toString());
 	}
 	
