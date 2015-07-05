@@ -6,6 +6,9 @@ import com.blogspot.mikelaud.je.common.TypeTableCell;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -33,17 +36,33 @@ public class OpenTypeView {
 	private final String PACKAGE_ICON_FILENAME;
 	private final String DEFAULT_PACKAGE;
 	//
+	private ObservableList<Type> mObservableData;
+	private FilteredList<Type> mFilteredData;
+	private SortedList<Type> mSortedData;
+	//
 	private Pane mPane;
-	
+	private TextField mSearchField;
+
 	private Node createTop() {
 		Label searchLabel = new Label(SEARCH_LABEL_STRING);
-		TextField searchText = new TextField();
-		searchText.setEditable(true);
-		searchText.setAlignment(Pos.CENTER);
+		mSearchField = new TextField();
+		mSearchField.setEditable(true);
+		mSearchField.setAlignment(Pos.CENTER);
+		//
+		mSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
+			mFilteredData.setPredicate(type -> {
+				if (newValue == null || newValue.isEmpty()) {
+					return true;
+				}
+				else {
+					return type.getName().startsWith(newValue);
+				}
+			});
+		});
 		//
 		Label matchingLabel = new Label(MATCHING_LABEL_STRING);
 		//
-		VBox top = new VBox(searchLabel, searchText, matchingLabel);
+		VBox top = new VBox(searchLabel, mSearchField, matchingLabel);
 		top.setSpacing(SPACING);
 		return top;
 	}
@@ -51,7 +70,7 @@ public class OpenTypeView {
 	private Node createCenter() {
 		TableView<Type> table = new TableView<>();
 		table.setEditable(false);
-		table.setItems(FXCollections.observableArrayList(MODEL.get()));
+		table.setItems(mSortedData);
 		//
 		TableColumn<Type,Type> imageColumn = new TableColumn<>();
 		imageColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<Type>(cellData.getValue()));
@@ -101,6 +120,10 @@ public class OpenTypeView {
 		//
 		PACKAGE_ICON_FILENAME = "library.png";
 		DEFAULT_PACKAGE = MODEL.getJarName();
+		//
+		mObservableData = FXCollections.observableArrayList(MODEL.get());
+		mFilteredData = new FilteredList<>(mObservableData, p -> true);
+		mSortedData = new SortedList<>(mFilteredData);
 		//
 		mPane = createPane();
 	}
