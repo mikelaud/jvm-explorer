@@ -4,7 +4,6 @@ import java.io.FileInputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -49,7 +48,6 @@ public class OpenType {
 		catch (Throwable t) {
 			t.printStackTrace();
 		}
-		Collections.sort(types, (a, b) -> a.getFullName().compareTo(b.getFullName()));
 		return types;
 	}
 	

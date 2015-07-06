@@ -8,8 +8,30 @@ public class TypeVisitor extends ClassVisitor {
 	private Type mType;
 	private String mTypeInternalName;
 	
-	private String getTypeName(String aTypeInternalName) {
-		return aTypeInternalName.substring(aTypeInternalName.lastIndexOf('.') + 1);
+	private void fillParsedNames(Type aType) {
+		String fullName = aType.getFullName();
+		int dotIndex = fullName.lastIndexOf('.');
+		//
+		String name = "";
+		String packageName = "";
+		if (dotIndex >= 0) {
+			int nameIndex = dotIndex + 1;
+			if (nameIndex >= fullName.length()) {
+				name = "";
+				packageName = fullName;
+			}
+			else {
+				name = fullName.substring(nameIndex);
+				packageName = fullName.substring(0, dotIndex);
+			}
+		}
+		else {
+			name = fullName;
+			packageName = "";
+		}
+		aType.setName(name);
+		aType.setNameLowCase(name.toLowerCase());
+		aType.setPackageName(packageName);
 	}
 	
 	public void reset() {
@@ -25,10 +47,10 @@ public class TypeVisitor extends ClassVisitor {
 	public void visit(int aVersion, int aAccess, String aName, String aSignature, String aSuperName, String[] aInterfaces) {
 		mTypeInternalName = aName;
 		mType.setFullName(BytecodeUtils.toTypeFullname(aName));
-		mType.setName(getTypeName(mType.getFullName()));
 		mType.setType(BytecodeUtils.toTypeType(aAccess));
 		mType.setAccess(BytecodeUtils.toTypeAccess(aAccess));
 		mType.setDeprecated(BytecodeUtils.toDeprecated(aAccess));
+		fillParsedNames(mType);
 	}
 
 	@Override

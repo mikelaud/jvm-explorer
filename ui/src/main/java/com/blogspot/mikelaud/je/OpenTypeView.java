@@ -1,10 +1,8 @@
 package com.blogspot.mikelaud.je;
 
 import com.blogspot.mikelaud.je.common.Type;
-import com.blogspot.mikelaud.je.common.TypeTableCell;
+import com.blogspot.mikelaud.je.common.TypeListCell;
 
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -13,8 +11,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,7 +25,6 @@ public class OpenTypeView {
 	private final int PADDING;
 	//
 	private final OpenType MODEL; 
-	private final String COLUMN_NAME;
 	//
 	private final String SEARCH_LABEL_STRING;
 	private final String MATCHING_LABEL_STRING;
@@ -50,12 +46,13 @@ public class OpenTypeView {
 		mSearchField.setAlignment(Pos.CENTER);
 		//
 		mSearchField.textProperty().addListener((observable, oldValue, newValue) -> {
+			String pattern = newValue.toLowerCase();
 			mFilteredData.setPredicate(type -> {
 				if (newValue == null || newValue.isEmpty()) {
 					return true;
 				}
 				else {
-					return type.getName().startsWith(newValue);
+					return type.getNameLowCase().startsWith(pattern);
 				}
 			});
 		});
@@ -68,20 +65,11 @@ public class OpenTypeView {
 	}
 	
 	private Node createCenter() {
-		TableView<Type> table = new TableView<>();
-		table.setEditable(false);
-		table.setItems(mSortedData);
-		//
-		TableColumn<Type,Type> imageColumn = new TableColumn<>();
-		imageColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<Type>(cellData.getValue()));
-		imageColumn.setCellFactory((tableColumn) -> new TypeTableCell());
-		table.getColumns().add(imageColumn);
-		//
-		TableColumn<Type,String> typeColumn = new TableColumn<>(COLUMN_NAME);
-		typeColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFullName()));
-		table.getColumns().add(typeColumn);
-		//
-		return table;
+		ListView<Type> listView = new ListView<>();
+		listView.setEditable(false);
+		listView.setItems(mSortedData);
+		listView.setCellFactory((tableColumn) -> new TypeListCell());
+		return listView;
 	}
 
 	private Node createBottom() {
@@ -113,7 +101,6 @@ public class OpenTypeView {
 		PADDING = 10;
 		//
 		MODEL = new OpenType();
-		COLUMN_NAME = "Type";
 		//
 		SEARCH_LABEL_STRING = "Enter type name prefix or pattern (*, ?, or camel case):";
 		MATCHING_LABEL_STRING = "Matching items:";
@@ -123,7 +110,7 @@ public class OpenTypeView {
 		//
 		mObservableData = FXCollections.observableArrayList(MODEL.get());
 		mFilteredData = new FilteredList<>(mObservableData, p -> true);
-		mSortedData = new SortedList<>(mFilteredData);
+		mSortedData = new SortedList<>(mFilteredData, (a, b) -> a.getName().compareTo(b.getName()));
 		//
 		mPane = createPane();
 	}
