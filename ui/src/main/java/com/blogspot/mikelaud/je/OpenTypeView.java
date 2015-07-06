@@ -68,7 +68,7 @@ public class OpenTypeView {
 		ListView<Type> listView = new ListView<>();
 		listView.setEditable(false);
 		listView.setItems(mSortedData);
-		listView.setCellFactory((tableColumn) -> new TypeListCell());
+		listView.setCellFactory((tableColumn) -> new TypeListCell(mSearchField));
 		return listView;
 	}
 
