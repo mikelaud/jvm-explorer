@@ -6,7 +6,7 @@
 		<artifactId>jvm-explorer</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<artifactId>search</artifactId>
+	<artifactId>je-ui</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
 </project>

@@ -9,8 +9,8 @@
 	<description>${project.artifactId}</description>
 
 	<modules>
-		<module>ui</module>
-		<module>search</module>
+		<module>je-search</module>
+		<module>je-ui</module>
 	</modules>
 
 	<properties>
