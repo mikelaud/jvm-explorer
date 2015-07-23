@@ -3,6 +3,7 @@ package com.blogspot.mikelaud.je;
 import com.blogspot.mikelaud.je.common.Type;
 import com.blogspot.mikelaud.je.common.TypeListCell;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -16,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
@@ -32,6 +34,10 @@ public class OpenTypeView {
 	private final String PACKAGE_ICON_FILENAME;
 	private final String DEFAULT_PACKAGE;
 	//
+	private final Label COUNT_FOUND_LABEL;
+	private final Label COUNT_LABEL;
+	private final Label COUNT_ALL_LABEL;
+	//
 	private ObservableList<Type> mObservableData;
 	private FilteredList<Type> mFilteredData;
 	private SortedList<Type> mSortedData;
@@ -39,6 +45,13 @@ public class OpenTypeView {
 	private Pane mPane;
 	private TextField mSearchField;
 
+	private Node createMatching() {
+		BorderPane pane = new BorderPane();
+		pane.setLeft(new Label(MATCHING_LABEL_STRING));
+		pane.setRight(new HBox(COUNT_FOUND_LABEL, COUNT_LABEL, COUNT_ALL_LABEL));
+		return pane;
+	}
+	
 	private Node createTop() {
 		Label searchLabel = new Label(SEARCH_LABEL_STRING);
 		mSearchField = new TextField();
@@ -57,9 +70,7 @@ public class OpenTypeView {
 			});
 		});
 		//
-		Label matchingLabel = new Label(MATCHING_LABEL_STRING);
-		//
-		VBox top = new VBox(searchLabel, mSearchField, matchingLabel);
+		VBox top = new VBox(searchLabel, mSearchField, createMatching());
 		top.setSpacing(SPACING);
 		return top;
 	}
@@ -108,11 +119,19 @@ public class OpenTypeView {
 		PACKAGE_ICON_FILENAME = "library.png";
 		DEFAULT_PACKAGE = MODEL.getJarName();
 		//
+		COUNT_FOUND_LABEL = new Label();
+		COUNT_LABEL = new Label(" of ");
+		COUNT_ALL_LABEL = new Label();
+		//
 		mObservableData = FXCollections.observableArrayList(MODEL.get());
 		mFilteredData = new FilteredList<>(mObservableData, p -> true);
 		mSortedData = new SortedList<>(mFilteredData, (a, b) -> a.getName().compareTo(b.getName()));
 		//
 		mPane = createPane();
+		//
+		COUNT_FOUND_LABEL.textProperty().bind(Bindings.size(mFilteredData).asString());
+		COUNT_ALL_LABEL.textProperty().bind(Bindings.size(mObservableData).asString());
+		
 	}
 	
 }
