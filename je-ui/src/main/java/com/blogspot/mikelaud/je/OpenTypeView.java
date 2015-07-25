@@ -1,5 +1,9 @@
 package com.blogspot.mikelaud.je;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import com.blogspot.mikelaud.je.common.ImagePane;
 import com.blogspot.mikelaud.je.common.Type;
 import com.blogspot.mikelaud.je.common.TypeListCell;
 
@@ -23,6 +27,8 @@ import javafx.scene.layout.VBox;
 
 public class OpenTypeView {
 
+	private final Path BACKGROUND_PATH;
+	//
 	private final int SPACING;
 	private final int PADDING;
 	//
@@ -34,10 +40,6 @@ public class OpenTypeView {
 	private final String PACKAGE_ICON_FILENAME;
 	private final String DEFAULT_PACKAGE;
 	//
-	private final Label COUNT_FOUND_LABEL;
-	private final Label COUNT_LABEL;
-	private final Label COUNT_ALL_LABEL;
-	//
 	private ObservableList<Type> mObservableData;
 	private FilteredList<Type> mFilteredData;
 	private SortedList<Type> mSortedData;
@@ -46,9 +48,16 @@ public class OpenTypeView {
 	private TextField mSearchField;
 
 	private Node createMatching() {
+		Label countFoundLabel = new Label();
+		Label countLabel = new Label(" of ");
+		Label countAllLabel = new Label();
+		//
+		countFoundLabel.textProperty().bind(Bindings.size(mFilteredData).asString());
+		countAllLabel.textProperty().bind(Bindings.size(mObservableData).asString());
+		//
 		BorderPane pane = new BorderPane();
 		pane.setLeft(new Label(MATCHING_LABEL_STRING));
-		pane.setRight(new HBox(COUNT_FOUND_LABEL, COUNT_LABEL, COUNT_ALL_LABEL));
+		pane.setRight(new HBox(countFoundLabel, countLabel, countAllLabel));
 		return pane;
 	}
 	
@@ -80,7 +89,12 @@ public class OpenTypeView {
 		listView.setEditable(false);
 		listView.setItems(mSortedData);
 		listView.setCellFactory((tableColumn) -> new TypeListCell(mSearchField));
-		return listView;
+		listView.visibleProperty().bind(Bindings.isNotEmpty(mSortedData));
+		//
+		ImagePane imagePane = new ImagePane();
+		imagePane.setImage(new Image(BACKGROUND_PATH.toString()));
+		imagePane.getChildren().add(listView);
+		return imagePane; 
 	}
 
 	private Node createBottom() {
@@ -108,6 +122,8 @@ public class OpenTypeView {
 	}
 	
 	public OpenTypeView() {
+		BACKGROUND_PATH = Paths.get("background.png");
+		//
 		SPACING = 5;
 		PADDING = 10;
 		//
@@ -119,19 +135,11 @@ public class OpenTypeView {
 		PACKAGE_ICON_FILENAME = "library.png";
 		DEFAULT_PACKAGE = MODEL.getJarName();
 		//
-		COUNT_FOUND_LABEL = new Label();
-		COUNT_LABEL = new Label(" of ");
-		COUNT_ALL_LABEL = new Label();
-		//
 		mObservableData = FXCollections.observableArrayList(MODEL.get());
 		mFilteredData = new FilteredList<>(mObservableData, p -> true);
 		mSortedData = new SortedList<>(mFilteredData, (a, b) -> a.getName().compareTo(b.getName()));
 		//
 		mPane = createPane();
-		//
-		COUNT_FOUND_LABEL.textProperty().bind(Bindings.size(mFilteredData).asString());
-		COUNT_ALL_LABEL.textProperty().bind(Bindings.size(mObservableData).asString());
-		
 	}
 	
 }
