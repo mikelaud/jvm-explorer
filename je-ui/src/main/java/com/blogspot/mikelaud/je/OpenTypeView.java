@@ -21,7 +21,7 @@ import javafx.scene.layout.VBox;
 public class OpenTypeView {
 
 	private static interface Const {
-		
+		//
 		String BACKGROUND_IMAGE = "background.png";
 		String PACKAGE_ICON = "library.png";
 		//
@@ -34,8 +34,8 @@ public class OpenTypeView {
 	}
 	
 	private final OpenType MODEL;
+	private final BorderPane FORM;
 	private final TextField SEARCH_FIELD;
-	private Pane mPane;
 
 	private Node createMatching() {
 		Label countFoundLabel = new Label();
@@ -95,25 +95,24 @@ public class OpenTypeView {
 		return bottom;
 	}
 	
-	private Pane createPane() {
-		BorderPane pane = new BorderPane();
-		pane.setTop(createTop());
-		pane.setCenter(createCenter());
-		pane.setBottom(createBottom());
+	private void buildForm() {
+		FORM.setTop(createTop());
+		FORM.setCenter(createCenter());
+		FORM.setBottom(createBottom());
 		//
-		BorderPane.setMargin(pane.getCenter(), new Insets(Const.SPACING, 0, Const.SPACING, 0));
-		pane.setPadding(new Insets(Const.PADDING, Const.PADDING, Const.PADDING, Const.PADDING));
-		return pane;
+		BorderPane.setMargin(FORM.getCenter(), new Insets(Const.SPACING, 0, Const.SPACING, 0));
+		FORM.setPadding(new Insets(Const.PADDING, Const.PADDING, Const.PADDING, Const.PADDING));
 	}
 		
-	public Pane getPane() {
-		return mPane;
+	public Pane getForm() {
+		return FORM;
 	}
 	
 	public OpenTypeView() {
 		MODEL = new OpenType();
+		FORM = new BorderPane();
 		SEARCH_FIELD = new TextField();
-		mPane = createPane();
+		buildForm();
 	}
 	
 }

@@ -9,19 +9,24 @@ import javafx.stage.Stage;
 
 public class ProgramView {
 
-	private final String TITLE;
-	private final String PROGRAM_ICON_FILENAME;
-	private final double SCALE_WIDTH;
-	private final double SCALE_HEIGHT;
+	private static interface Const {
+		//
+		String TITLE = "JVM Explorer: Open Type";
+		String PROGRAM_ICON = "program.png";
+		String EMPTY_HINT = "";
+		//
+		double SCALE_WIDTH = 3;
+		double SCALE_HEIGHT = 2;
+	}
+	
+	private final BorderPane FORM;
+	private final Scene SCENE;
+	private final Stage WINDOW;
 	//
-	private BorderPane mPane;
-	private Scene mScene;
-	private Stage mWindow;
-	//
-	private OpenTypeView mTypesView;
+	private final OpenTypeView OPEN_TYPE_VIEW;
 
 	private Image createIcon() {
-		return new Image(PROGRAM_ICON_FILENAME);
+		return new Image(Const.PROGRAM_ICON);
 	}
 	
 	private Rectangle2D createVisualBounds() {
@@ -29,49 +34,48 @@ public class ProgramView {
 	}
 	
 	private Rectangle2D createDefaultBounds(Rectangle2D aVisualBounds) {
-		double defaultWidth = aVisualBounds.getWidth() / SCALE_WIDTH;
-		double defaultHeight = aVisualBounds.getHeight() / SCALE_HEIGHT;
+		double defaultWidth = aVisualBounds.getWidth() / Const.SCALE_WIDTH;
+		double defaultHeight = aVisualBounds.getHeight() / Const.SCALE_HEIGHT;
 		return new Rectangle2D(0, 0, defaultWidth, defaultHeight);
 	}
 	
-	private void initWindow() {
-		mWindow.setScene(mScene);
-		mWindow.setTitle(TITLE);
-		mWindow.getIcons().setAll(createIcon());
-		mWindow.fullScreenExitHintProperty().setValue("");
+	private void buildWindow() {
+		WINDOW.setScene(SCENE);
+		WINDOW.setTitle(Const.TITLE);
+		WINDOW.getIcons().setAll(createIcon());
+		WINDOW.fullScreenExitHintProperty().setValue(Const.EMPTY_HINT);
 		//
 		Rectangle2D visualBounds = createVisualBounds();
 		Rectangle2D defaultBounds = createDefaultBounds(visualBounds);
 		//
-		mWindow.setWidth(defaultBounds.getWidth());
-		mWindow.setHeight(defaultBounds.getHeight());
+		WINDOW.setWidth(defaultBounds.getWidth());
+		WINDOW.setHeight(defaultBounds.getHeight());
 		//
-		mWindow.setMinWidth(mWindow.getWidth());
-		mWindow.setMinHeight(mWindow.getHeight());
+		WINDOW.setMinWidth(WINDOW.getWidth());
+		WINDOW.setMinHeight(WINDOW.getHeight());
 		//
-		mWindow.setMaxWidth(visualBounds.getWidth());
-		mWindow.setMaxHeight(visualBounds.getHeight());
+		WINDOW.setMaxWidth(visualBounds.getWidth());
+		WINDOW.setMaxHeight(visualBounds.getHeight());
+	}
+	
+	private void buildForm() {
+		FORM.setCenter(OPEN_TYPE_VIEW.getForm());
+		buildWindow();
 	}
 	
 	public void show() {
-		if (! mWindow.isShowing()) {
-			initWindow();
-			mWindow.show();
+		if (! WINDOW.isShowing()) {
+			WINDOW.show();
 		}
 	}
 	
 	public ProgramView(Stage aWindow) {
-		TITLE = "JVM Explorer: Open Type";
-		PROGRAM_ICON_FILENAME = "program.png";
-		SCALE_WIDTH = 3;
-		SCALE_HEIGHT = 2;
+		FORM = new BorderPane();
+		SCENE = new Scene(FORM);
+		WINDOW = aWindow;
 		//
-		mPane = new BorderPane();
-		mScene = new Scene(mPane);
-		mWindow = aWindow;
-		//
-		mTypesView = new OpenTypeView();
-		mPane.setCenter(mTypesView.getPane());
+		OPEN_TYPE_VIEW = new OpenTypeView();
+		buildForm();
 	}
 	
 }

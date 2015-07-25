@@ -18,38 +18,44 @@ import javafx.collections.transformation.SortedList;
 
 public class OpenType {
 
-	private final String JAVA_HOME_PROPERTY;
-	private final String JAR_NAME;
-	private final String JAR_DIR;
-	private final String CLASS_EXT;
-	private final Bytecode BYTECODE;
-	//
+	private static interface Const {
+		//
+		String JAVA_HOME_PROPERTY = "java.home";
+		String JAVA_HOME_EMPTY = "";
+		//
+		String JAR_NAME = "rt.jar";
+		String JAR_DIR = "lib";
+		//
+		String CLASS_EXT = ".class";
+	}
+	
 	private final ObservableList<Type> DATA;
 	private final FilteredList<Type> FILTERED_DATA;
 	private final SortedList<Type> SORTED_DATA;
 	
 	private Path getJavaHome() {
-		String javaHome = System.getProperty(JAVA_HOME_PROPERTY);
+		String javaHome = System.getProperty(Const.JAVA_HOME_PROPERTY);
 		if (null == javaHome) { 
-			javaHome = "";
+			javaHome = Const.JAVA_HOME_EMPTY;
 		}
 		return Paths.get(javaHome);
 	}
 	
 	private Path getJavaJar() {
-		final Path javaJar = Paths.get(JAR_DIR, JAR_NAME);
+		final Path javaJar = Paths.get(Const.JAR_DIR, Const.JAR_NAME);
 		Path javaHome = getJavaHome();
 		return javaHome.resolve(javaJar);
 	}
 
-	private List<Type> getJarFiles() {
+	private List<Type> getJarTypes() {
 		List<Type> types = new ArrayList<>();
 		try {
+			Bytecode bytecode = new Bytecode();
 			try (ZipInputStream zip = new ZipInputStream(new FileInputStream(getJavaJar().toFile()))) {
 				ZipEntry entry;
 				while ((entry = zip.getNextEntry()) != null) {
-					if (!entry.isDirectory() && entry.getName().endsWith(CLASS_EXT)) {
-						types.add(BYTECODE.read(zip));
+					if (!entry.isDirectory() && entry.getName().endsWith(Const.CLASS_EXT)) {
+						types.add(bytecode.read(zip));
 					}
 				}
 			}
@@ -61,7 +67,7 @@ public class OpenType {
 	}
 	
 	public String getDefaultPackage() {
-		return JAR_NAME;
+		return Const.JAR_NAME;
 	}
 	
 	public ObservableList<Type> getData() { return DATA; }
@@ -69,13 +75,7 @@ public class OpenType {
 	public SortedList<Type> getSortedData() { return SORTED_DATA; }
 	
 	public OpenType() {
-		JAVA_HOME_PROPERTY = "java.home";
-		JAR_NAME = "rt.jar";
-		JAR_DIR = "lib";
-		CLASS_EXT = ".class";
-		BYTECODE = new Bytecode();
-		//
-		DATA = FXCollections.observableArrayList(getJarFiles());
+		DATA = FXCollections.observableArrayList(getJarTypes());
 		FILTERED_DATA = new FilteredList<>(DATA, p -> true);
 		SORTED_DATA = new SortedList<>(FILTERED_DATA, (a, b) -> a.getName().compareTo(b.getName()));
 	}
