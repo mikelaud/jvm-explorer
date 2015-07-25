@@ -5,6 +5,10 @@ import java.io.InputStream;
 
 public class Bytes {
 
+	private static interface Const {
+		int DEFAULT_BUFFER_SIZE = 1024;
+	}
+	
 	private final int BUFFER_SIZE;
 	private final byte[] BUFFER;
 	private final ByteArrayOutputStream STREAM;
@@ -56,7 +60,7 @@ public class Bytes {
 	}
 	
 	public Bytes() {
-		this(1024);
+		this(Const.DEFAULT_BUFFER_SIZE);
 	}
 	
 }

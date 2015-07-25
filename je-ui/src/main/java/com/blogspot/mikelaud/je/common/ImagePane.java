@@ -60,15 +60,10 @@ public class ImagePane extends StackPane {
 		};
 	}
 
-	public Image getImage() { return IMAGE_VIEW.getImage(); }
-	public void setImage(Image aImage) { IMAGE_VIEW.setImage(aImage); }
-	
-	public ImagePane() {
-		IMAGE_VIEW = new ImageView();
+	private void buildForm() {
 		IMAGE_VIEW.setPreserveRatio(true);
 		IMAGE_VIEW.setSmooth(true);
 		//
-		IMAGE_PANE = new Pane();
 		IMAGE_PANE.getChildren().addAll(IMAGE_VIEW);
 		IMAGE_PANE.setMinSize(0, 0);
 		IMAGE_PANE.layoutBoundsProperty().addListener(createBoundsListener());
@@ -78,6 +73,15 @@ public class ImagePane extends StackPane {
 		//
 		IMAGE_VIEW.fitWidthProperty().bind(IMAGE_PANE.widthProperty());
 		IMAGE_VIEW.fitHeightProperty().bind(IMAGE_PANE.heightProperty());
+	}
+	
+	public Image getImage() { return IMAGE_VIEW.getImage(); }
+	public void setImage(Image aImage) { IMAGE_VIEW.setImage(aImage); }
+	
+	public ImagePane() {
+		IMAGE_VIEW = new ImageView();
+		IMAGE_PANE = new Pane();
+		buildForm();
 	}
 	
 }

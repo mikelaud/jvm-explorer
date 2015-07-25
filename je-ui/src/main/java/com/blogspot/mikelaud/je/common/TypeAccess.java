@@ -13,10 +13,14 @@ public enum TypeAccess {
 	Protected,
 	Private;
 
+	private static interface Const {
+		String IMAGES_DIR = "type";
+	}
+	
 	private final Image[][] IMAGES;
 	
 	private void createImage(TypeType aType, TypeDeprecated aDeprecated) {
-		Path imagePath = Paths.get("type", aDeprecated.getLabel(), getLabel(), aType.getImageFilename());
+		Path imagePath = Paths.get(Const.IMAGES_DIR, aDeprecated.getLabel(), getLabel(), aType.getImageFilename());
 		IMAGES[aDeprecated.ordinal()][aType.ordinal()] = new Image(imagePath.toString());
 	}
 	
