@@ -11,6 +11,11 @@ import java.util.zip.ZipInputStream;
 import com.blogspot.mikelaud.je.common.Bytecode;
 import com.blogspot.mikelaud.je.common.Type;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
+
 public class OpenType {
 
 	private final String JAVA_HOME_PROPERTY;
@@ -18,6 +23,10 @@ public class OpenType {
 	private final String JAR_DIR;
 	private final String CLASS_EXT;
 	private final Bytecode BYTECODE;
+	//
+	private final ObservableList<Type> DATA;
+	private final FilteredList<Type> FILTERED_DATA;
+	private final SortedList<Type> SORTED_DATA;
 	
 	private Path getJavaHome() {
 		String javaHome = System.getProperty(JAVA_HOME_PROPERTY);
@@ -51,13 +60,13 @@ public class OpenType {
 		return types;
 	}
 	
-	public String getJarName() {
+	public String getDefaultPackage() {
 		return JAR_NAME;
 	}
 	
-	public List<Type> get() {
-		return getJarFiles();
-	}
+	public ObservableList<Type> getData() { return DATA; }
+	public FilteredList<Type> getFilteredData() { return FILTERED_DATA; }
+	public SortedList<Type> getSortedData() { return SORTED_DATA; }
 	
 	public OpenType() {
 		JAVA_HOME_PROPERTY = "java.home";
@@ -65,6 +74,10 @@ public class OpenType {
 		JAR_DIR = "lib";
 		CLASS_EXT = ".class";
 		BYTECODE = new Bytecode();
+		//
+		DATA = FXCollections.observableArrayList(getJarFiles());
+		FILTERED_DATA = new FilteredList<>(DATA, p -> true);
+		SORTED_DATA = new SortedList<>(FILTERED_DATA, (a, b) -> a.getName().compareTo(b.getName()));
 	}
 	
 }
