@@ -1,13 +1,13 @@
 package com.blogspot.mikelaud.je.common;
 
-public enum TypeInner {
-	
-	No("non_inner"),
-	Yes("inner");
+public enum TypeStatic {
+
+	No("non_static"),
+	Yes("static");
 	
 	private final String LABEL;
 	
-	private TypeInner(String aLabel) {
+	private TypeStatic(String aLabel) {
 		LABEL = aLabel;
 	}
 

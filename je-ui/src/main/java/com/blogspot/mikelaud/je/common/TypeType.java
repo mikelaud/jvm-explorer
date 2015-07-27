@@ -13,20 +13,16 @@ public enum TypeType {
 	Interface;
 
 	private static interface Const {
-		//
-		String IMAGES_DIR1 = "type";
-		String IMAGES_DIR2 = "normal";
-		String IMAGES_DIR3 = "public";
-		//
-		String CLASS_EXT = ".png";
+		Path IMAGES_PATH = Paths.get("type", "access", "normal", "public");
+		String IMAGE_EXT = ".png";
 	}
 	
 	private final Path IMAGE_PATH;
 	private final Image IMAGE;
 	
 	private TypeType() {
-		String imageFilename = name().toLowerCase() + Const.CLASS_EXT;
-		IMAGE_PATH = Paths.get(Const.IMAGES_DIR1, Const.IMAGES_DIR2, Const.IMAGES_DIR3,  imageFilename);
+		String imageFilename = name().toLowerCase() + Const.IMAGE_EXT;
+		IMAGE_PATH = Const.IMAGES_PATH.resolve(imageFilename);
 		IMAGE = new Image(IMAGE_PATH.toString());
 	}
 	

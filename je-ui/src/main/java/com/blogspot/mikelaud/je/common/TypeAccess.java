@@ -14,13 +14,13 @@ public enum TypeAccess {
 	Private;
 
 	private static interface Const {
-		String IMAGES_DIR = "type";
+		Path IMAGES_PATH = Paths.get("type", "access");
 	}
 	
 	private final Image[][] IMAGES;
 	
 	private void createImage(TypeType aType, TypeDeprecated aDeprecated) {
-		Path imagePath = Paths.get(Const.IMAGES_DIR, aDeprecated.getLabel(), getLabel(), aType.getImageFilename());
+		Path imagePath = Paths.get(Const.IMAGES_PATH.toString(), aDeprecated.getLabel(), getLabel(), aType.getImageFilename());
 		IMAGES[aDeprecated.ordinal()][aType.ordinal()] = new Image(imagePath.toString());
 	}
 	
@@ -32,9 +32,9 @@ public enum TypeAccess {
 		IMAGES = new Image[TypeDeprecated.values().length][TypeType.values().length];
 		//
 		Image defaultImage = TypeType.Class.getImage();
-		for (TypeDeprecated dprecated : TypeDeprecated.values()) {
+		for (TypeDeprecated deprecated : TypeDeprecated.values()) {
 			for (TypeType type : TypeType.values()) {
-				IMAGES[dprecated.ordinal()][type.ordinal()] = defaultImage;
+				IMAGES[deprecated.ordinal()][type.ordinal()] = defaultImage;
 			}
 		}
 		//

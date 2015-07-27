@@ -17,15 +17,29 @@ public interface BytecodeUtils {
 	static boolean isPrivate(int aAccess) { return 0 != (aAccess & Opcodes.ACC_PRIVATE); }
 	
 	static boolean isDeprecated(int aAccess) { return 0 != (aAccess & Opcodes.ACC_DEPRECATED); }
+	static boolean isStatic(int aStatic) { return 0 != (aStatic & Opcodes.ACC_STATIC); }
 
-	static TypeDeprecated toDeprecated(int aAccess) {
+	static boolean isAbstract(int aAccess) { return 0 != (aAccess & Opcodes.ACC_ABSTRACT); }
+	static boolean isFinal(int aAccess) { return 0 != (aAccess & Opcodes.ACC_FINAL); }
+
+	static TypeDeprecated toTypeDeprecated(int aAccess) {
 		return isDeprecated(aAccess) ? TypeDeprecated.Yes : TypeDeprecated.No;
 	}
 
+	static TypeStatic toTypeStatic(int aStatic) {
+		return isStatic(aStatic) ? TypeStatic.Yes : TypeStatic.No;
+	}
+
+	static TypeInheritance toTypeInheritance(int aAccess) {
+		if (isFinal(aAccess)) return TypeInheritance.Final;
+		else if (isAbstract(aAccess)) return TypeInheritance.Abstract;
+		else return TypeInheritance.No;
+	}
+	
 	static TypeType toTypeType(int aAccess) {
-		if (isInterface(aAccess)) return TypeType.Interface;
+		if (isAnnotation(aAccess)) return TypeType.Annotation; // check annotation before interface
+		else if (isInterface(aAccess)) return TypeType.Interface;
 		else if (isEnum(aAccess)) return TypeType.Enum;
-		else if (isAnnotation(aAccess)) return TypeType.Annotation;
 		else return TypeType.Class;
 	}
 	

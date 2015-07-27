@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -17,6 +18,7 @@ public class TypeListCell extends ListCell<Type> {
 	private final Font FILTER_FONT;
 	private final HBox BOX;
 	private final ImageView VIEW;
+	private final ImageView VIEW2;
 	//
 	private final Label LABEL_FILTER;
 	private final Label LABEL_TYPE;
@@ -35,7 +37,9 @@ public class TypeListCell extends ListCell<Type> {
 		}
 		else {
 			Image image = aType.getAccess().getImage(aType.getType(), aType.getDeprecated());
+			Image image2 = TypeModifier.getImage(aType.getInheritance(), aType.getStatic(), aType.getType());
 			VIEW.setImage(image);
+			VIEW2.setImage(image2);
 			String filter = TEXT_FIELD.getText();
 			String text = aType.getName();
 			if (filter.length() >= text.length()) {
@@ -62,13 +66,21 @@ public class TypeListCell extends ListCell<Type> {
 		VIEW.setCache(true);
 		VIEW.setImage(TypeType.Class.getImage());
 		//
+		VIEW2 = new ImageView();
+		VIEW2.setVisible(true);
+		VIEW2.setCache(true);
+		VIEW2.setImage(TypeModifier.getImage(TypeInheritance.No, TypeStatic.No, TypeType.Class));
+		//
+		StackPane viewPane = new StackPane(VIEW, VIEW2);
+		viewPane.setAlignment(Pos.TOP_LEFT);
+		//
 		LABEL_FILTER = new Label();
 		LABEL_FILTER.setFont(FILTER_FONT);
 		LABEL_TYPE = new Label();
 		LABEL_PACKAGE = new  Label();
 		LABEL_PACKAGE.setTextFill(Color.GREY);
 		//
-		BOX.getChildren().addAll(VIEW, LABEL_FILTER, LABEL_TYPE, LABEL_PACKAGE);
+		BOX.getChildren().addAll(viewPane, LABEL_FILTER, LABEL_TYPE, LABEL_PACKAGE);
 		setGraphic(BOX);
 		setText(null);
 	}

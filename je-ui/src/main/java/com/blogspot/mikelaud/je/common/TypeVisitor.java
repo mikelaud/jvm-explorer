@@ -34,6 +34,13 @@ public class TypeVisitor extends ClassVisitor {
 		aType.setPackageName(packageName);
 	}
 	
+	private void setModifiers(int aAccess) {
+		mType.setType(BytecodeUtils.toTypeType(aAccess));
+		mType.setDeprecated(BytecodeUtils.toTypeDeprecated(aAccess));
+		mType.setStatic(BytecodeUtils.toTypeStatic(aAccess));
+		mType.setInheritance(BytecodeUtils.toTypeInheritance(aAccess));
+	}
+	
 	public void reset() {
 		mType = new Type();
 		mTypeInternalName = "";
@@ -47,9 +54,8 @@ public class TypeVisitor extends ClassVisitor {
 	public void visit(int aVersion, int aAccess, String aName, String aSignature, String aSuperName, String[] aInterfaces) {
 		mTypeInternalName = aName;
 		mType.setFullName(BytecodeUtils.toTypeFullname(aName));
-		mType.setType(BytecodeUtils.toTypeType(aAccess));
 		mType.setAccess(BytecodeUtils.toTypeAccess(aAccess));
-		mType.setDeprecated(BytecodeUtils.toDeprecated(aAccess));
+		setModifiers(aAccess);
 		fillParsedNames(mType);
 	}
 
@@ -57,9 +63,8 @@ public class TypeVisitor extends ClassVisitor {
 	public void visitInnerClass(String aName, String aOuterName, String aInnerName, int aAccess) {
 		if (mTypeInternalName.equals(aName)) {
 			mType.setInner(TypeInner.Yes);
-			mType.setType(BytecodeUtils.toTypeType(aAccess));
 			mType.setAccess(BytecodeUtils.toTypeAccessInner(aAccess));
-			mType.setDeprecated(BytecodeUtils.toDeprecated(aAccess));
+			setModifiers(aAccess);
 		}
 	}
 	
