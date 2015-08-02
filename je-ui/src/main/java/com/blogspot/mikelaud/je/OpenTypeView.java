@@ -1,5 +1,8 @@
 package com.blogspot.mikelaud.je;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import com.blogspot.mikelaud.je.common.ImagePane;
 import com.blogspot.mikelaud.je.common.Type;
 import com.blogspot.mikelaud.je.common.TypeListCell;
@@ -22,7 +25,7 @@ public class OpenTypeView {
 
 	private static interface Const {
 		//
-		String BACKGROUND_IMAGE = "background.png";
+		Path BACKGROUND_IMAGE = Paths.get("background", "type.png");
 		String PACKAGE_ICON = "library.png";
 		//
 		String SEARCH_LABEL = "Enter type name prefix or pattern (*, ?, or camel case):";
@@ -81,7 +84,7 @@ public class OpenTypeView {
 		listView.visibleProperty().bind(Bindings.isNotEmpty(MODEL.getFilteredData()));
 		//
 		ImagePane imagePane = new ImagePane();
-		imagePane.setImage(new Image(Const.BACKGROUND_IMAGE));
+		imagePane.setImage(new Image(Const.BACKGROUND_IMAGE.toString()));
 		imagePane.getChildren().add(listView);
 		return imagePane; 
 	}

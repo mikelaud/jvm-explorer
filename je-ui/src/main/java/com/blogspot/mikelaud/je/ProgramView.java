@@ -2,8 +2,8 @@ package com.blogspot.mikelaud.je;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -11,19 +11,20 @@ public class ProgramView {
 
 	private static interface Const {
 		//
-		String TITLE = "JVM Explorer: Open Type";
+		String TITLE = "JVM Explorer";
 		String PROGRAM_ICON = "program.png";
 		String EMPTY_HINT = "";
 		//
-		double SCALE_WIDTH = 3;
+		double SCALE_WIDTH = 2;
 		double SCALE_HEIGHT = 2;
 	}
 	
-	private final BorderPane FORM;
+	private final SplitPane FORM;
 	private final Scene SCENE;
 	private final Stage WINDOW;
 	//
 	private final OpenTypeView OPEN_TYPE_VIEW;
+	private final OpenMethodsView OPEN_METHODS_VIEW;
 
 	private Image createIcon() {
 		return new Image(Const.PROGRAM_ICON);
@@ -59,7 +60,7 @@ public class ProgramView {
 	}
 	
 	private void buildForm() {
-		FORM.setCenter(OPEN_TYPE_VIEW.getForm());
+		FORM.getItems().addAll(OPEN_TYPE_VIEW.getForm(), OPEN_METHODS_VIEW.getForm());
 		buildWindow();
 	}
 	
@@ -70,11 +71,12 @@ public class ProgramView {
 	}
 	
 	public ProgramView(Stage aWindow) {
-		FORM = new BorderPane();
+		FORM = new SplitPane();
 		SCENE = new Scene(FORM);
 		WINDOW = aWindow;
 		//
 		OPEN_TYPE_VIEW = new OpenTypeView();
+		OPEN_METHODS_VIEW = new OpenMethodsView();
 		buildForm();
 	}
 	
