@@ -8,6 +8,8 @@ import com.blogspot.mikelaud.je.common.Type;
 import com.blogspot.mikelaud.je.common.TypeListCell;
 
 import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -25,7 +27,7 @@ public class OpenTypeView {
 
 	private static interface Const {
 		//
-		Path BACKGROUND_IMAGE = Paths.get("background", "type.png");
+		Path BACKGROUND_IMAGE = Paths.get("background", "type.jpg");
 		String PACKAGE_ICON = "library.png";
 		//
 		String SEARCH_LABEL = "Enter type name prefix or pattern (*, ?, or camel case):";
@@ -36,6 +38,7 @@ public class OpenTypeView {
 		int PADDING = 10;
 	}
 	
+	private final OpenMethod METHOD_MODEL;
 	private final OpenType MODEL;
 	private final BorderPane FORM;
 	private final TextField SEARCH_FIELD;
@@ -83,6 +86,13 @@ public class OpenTypeView {
 		listView.setCellFactory((tableColumn) -> new TypeListCell(SEARCH_FIELD));
 		listView.visibleProperty().bind(Bindings.isNotEmpty(MODEL.getFilteredData()));
 		//
+		listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Type>() {
+			@Override
+			public void changed(ObservableValue<? extends Type> observable, Type oldValue, Type newValue) {
+				METHOD_MODEL.setType(newValue);
+			}
+		});
+		//
 		ImagePane imagePane = new ImagePane();
 		imagePane.setImage(new Image(Const.BACKGROUND_IMAGE.toString()));
 		imagePane.getChildren().add(listView);
@@ -111,7 +121,8 @@ public class OpenTypeView {
 		return FORM;
 	}
 	
-	public OpenTypeView() {
+	public OpenTypeView(OpenMethod aOpenMethod) {
+		METHOD_MODEL = aOpenMethod;
 		MODEL = new OpenType();
 		FORM = new BorderPane();
 		SEARCH_FIELD = new TextField();

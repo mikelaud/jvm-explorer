@@ -23,8 +23,8 @@ public class ProgramView {
 	private final Scene SCENE;
 	private final Stage WINDOW;
 	//
+	private final OpenMethodView OPEN_METHODS_VIEW;
 	private final OpenTypeView OPEN_TYPE_VIEW;
-	private final OpenMethodsView OPEN_METHODS_VIEW;
 
 	private Image createIcon() {
 		return new Image(Const.PROGRAM_ICON);
@@ -75,8 +75,8 @@ public class ProgramView {
 		SCENE = new Scene(FORM);
 		WINDOW = aWindow;
 		//
-		OPEN_TYPE_VIEW = new OpenTypeView();
-		OPEN_METHODS_VIEW = new OpenMethodsView();
+		OPEN_METHODS_VIEW = new OpenMethodView();
+		OPEN_TYPE_VIEW = new OpenTypeView(OPEN_METHODS_VIEW.getModel());
 		buildForm();
 	}
 	

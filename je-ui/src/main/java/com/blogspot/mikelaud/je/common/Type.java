@@ -1,5 +1,8 @@
 package com.blogspot.mikelaud.je.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Type {
 	
 	private String mName;
@@ -12,7 +15,7 @@ public class Type {
 	private TypeDeprecated mDeprecated;
 	private TypeInheritance mInheritance;
 	private TypeStatic mStatic;
-	
+	private List<Method> mMethods;
 	
 	private TypeType nvl(TypeType aTypeType) { return (null == aTypeType ? TypeType.Class : aTypeType); }
 	private TypeAccess nvl(TypeAccess aTypeAccess) { return (null == aTypeAccess ? TypeAccess.Default : aTypeAccess); }
@@ -27,6 +30,7 @@ public class Type {
 	public TypeDeprecated getDeprecated() { return mDeprecated; }
 	public TypeInheritance getInheritance() { return mInheritance; }
 	public TypeStatic getStatic() { return mStatic; }
+	public List<Method> getMethods() { return mMethods; }
 	
 	public void setName(String aName) { mName = StringUtils.nvl(aName); }
 	public void setNameLowCase(String aNameLowCase) { mNameLowCase = StringUtils.nvl(aNameLowCase); }
@@ -38,6 +42,7 @@ public class Type {
 	public void setDeprecated(TypeDeprecated aDeprecated) { mDeprecated = aDeprecated; }
 	public void setInheritance(TypeInheritance aInheritance) { mInheritance = aInheritance; }
 	public void setStatic(TypeStatic aStatic) { mStatic = aStatic; }
+	public void setMethods(List<Method> aMethods) { mMethods = aMethods; }
 	
 	public Type() {
 		mName = "";
@@ -49,6 +54,7 @@ public class Type {
 		mDeprecated = TypeDeprecated.No;
 		mInheritance = TypeInheritance.No;
 		mStatic = TypeStatic.No;
+		mMethods = new ArrayList<>();
 	}
 	
 }

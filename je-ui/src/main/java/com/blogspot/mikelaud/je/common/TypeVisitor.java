@@ -1,12 +1,17 @@
 package com.blogspot.mikelaud.je.common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 public class TypeVisitor extends ClassVisitor {
 
 	private Type mType;
 	private String mTypeInternalName;
+	private List<Method> mMethods;
 	
 	private void fillParsedNames(Type aType) {
 		String fullName = aType.getFullName();
@@ -44,10 +49,15 @@ public class TypeVisitor extends ClassVisitor {
 	public void reset() {
 		mType = new Type();
 		mTypeInternalName = "";
+		mMethods = new ArrayList<>();
 	}
 	
 	public Type getType() {
 		return mType;
+	}
+	
+	public List<Method> getMethods() {
+		return mMethods;
 	}
 	
 	@Override
@@ -66,6 +76,17 @@ public class TypeVisitor extends ClassVisitor {
 			mType.setAccess(BytecodeUtils.toTypeAccessInner(aAccess));
 			setModifiers(aAccess);
 		}
+	}
+	
+	@Override
+	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+		mMethods.add(new Method(name));
+		return super.visitMethod(access, name, desc, signature, exceptions);
+	}
+	
+	@Override
+	public void visitEnd() {
+		mType.setMethods(mMethods);
 	}
 	
 	public TypeVisitor() {
