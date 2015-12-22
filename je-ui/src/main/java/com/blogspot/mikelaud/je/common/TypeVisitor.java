@@ -80,7 +80,10 @@ public class TypeVisitor extends ClassVisitor {
 	
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-		mMethods.add(new Method(name));
+		Method method = new Method();
+		method.setName(name);
+		method.setAccess(BytecodeUtils.toMethodAccess(access));
+		mMethods.add(method);
 		return super.visitMethod(access, name, desc, signature, exceptions);
 	}
 	

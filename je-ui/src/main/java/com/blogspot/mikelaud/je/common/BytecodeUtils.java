@@ -55,4 +55,11 @@ public interface BytecodeUtils {
 		else return TypeAccess.Default;
 	}
 	
+	static MethodAccess toMethodAccess(int aAccess) {
+		if (isPublic(aAccess)) return MethodAccess.Public;
+		else if (isProtected(aAccess)) return MethodAccess.Protected;
+		else if (isPrivate(aAccess)) return MethodAccess.Private;
+		else return MethodAccess.Default;
+	}
+	
 }

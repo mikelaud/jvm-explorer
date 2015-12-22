@@ -3,15 +3,17 @@ package com.blogspot.mikelaud.je.common;
 public class Method {
 
 	private String mName;
+	private MethodAccess mAccess;
 	
 	public String getName() { return mName; }
+	public MethodAccess getAccess() { return mAccess; }
 	
-	public Method(String aName) {
-		mName = aName;
-	}
+	public void setName(String aName) { mName = aName; }
+	public void setAccess(MethodAccess aAccess) { mAccess = aAccess; }
 	
 	public Method() {
-		this("");
+		mName = "";
+		mAccess = MethodAccess.Default;
 	}
 	
 }

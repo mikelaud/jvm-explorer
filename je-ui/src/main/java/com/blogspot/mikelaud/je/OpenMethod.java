@@ -24,18 +24,22 @@ public class OpenMethod {
 	public SortedList<Method> getSortedData() { return SORTED_DATA; }
 	
 	public void setType(Type aType) {
-		if (null == aType) {
-			DATA.clear();
-		}
-		else {
-			DATA.setAll(aType.getMethods());
+		DATA.clear();
+		if (null != aType) {
+			DATA.addAll(aType.getMethods());
 		}
 	}
 	
 	public OpenMethod() {
 		DATA = FXCollections.observableArrayList();
 		FILTERED_DATA = new FilteredList<>(DATA, p -> true);
-		SORTED_DATA = new SortedList<>(FILTERED_DATA, (a, b) -> a.getName().compareTo(b.getName()));
+		SORTED_DATA = new SortedList<>(FILTERED_DATA, (a, b) -> {
+			int cmp = a.getAccess().compareTo(b.getAccess());
+			if (cmp == 0) {
+				cmp = a.getName().compareTo(b.getName());
+			}
+			return cmp;
+		});
 	}
 	
 }
