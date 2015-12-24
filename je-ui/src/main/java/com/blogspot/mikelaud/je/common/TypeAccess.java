@@ -8,15 +8,16 @@ import javafx.scene.image.Image;
 
 public enum TypeAccess {
 
-	Default,
-	Public,
-	Protected,
-	Private;
+	Default(""),
+	Public("public"),
+	Protected("protected"),
+	Private("private");
 
 	private static interface Const {
 		Path IMAGES_PATH = Paths.get("type", "access");
 	}
 	
+	private final String CODE;
 	private final Image[][] IMAGES;
 	
 	private void createImage(TypeType aType, TypeDeprecated aDeprecated) {
@@ -28,7 +29,8 @@ public enum TypeAccess {
 		Arrays.stream(TypeType.values()).forEach(t -> createImage(t, aDeprecated));
 	}
 	
-	private TypeAccess() {
+	private TypeAccess(String aCode) {
+		CODE = aCode;
 		IMAGES = new Image[TypeDeprecated.values().length][TypeType.values().length];
 		//
 		Image defaultImage = TypeType.Class.getImage();
@@ -39,6 +41,10 @@ public enum TypeAccess {
 		}
 		//
 		Arrays.stream(TypeDeprecated.values()).forEach(d -> createImages(d));
+	}
+	
+	public String getCode() {
+		return CODE;
 	}
 	
 	public String getLabel() {

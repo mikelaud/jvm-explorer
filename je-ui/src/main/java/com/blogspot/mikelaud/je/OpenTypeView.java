@@ -38,7 +38,7 @@ public class OpenTypeView {
 		int PADDING = 10;
 	}
 	
-	private final OpenMethod METHOD_MODEL;
+	private final OpenMethodView METHOD_VIEW;
 	private final OpenType MODEL;
 	private final BorderPane FORM;
 	private final TextField SEARCH_FIELD;
@@ -89,7 +89,7 @@ public class OpenTypeView {
 		listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Type>() {
 			@Override
 			public void changed(ObservableValue<? extends Type> observable, Type oldValue, Type newValue) {
-				METHOD_MODEL.setType(newValue);
+				METHOD_VIEW.setType(newValue);
 			}
 		});
 		//
@@ -121,8 +121,8 @@ public class OpenTypeView {
 		return FORM;
 	}
 	
-	public OpenTypeView(OpenMethod aOpenMethod) {
-		METHOD_MODEL = aOpenMethod;
+	public OpenTypeView(OpenMethodView aOpenMethodView) {
+		METHOD_VIEW = aOpenMethodView;
 		MODEL = new OpenType();
 		FORM = new BorderPane();
 		SEARCH_FIELD = new TextField();

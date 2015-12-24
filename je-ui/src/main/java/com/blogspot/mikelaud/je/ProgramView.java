@@ -76,7 +76,7 @@ public class ProgramView {
 		WINDOW = aWindow;
 		//
 		OPEN_METHODS_VIEW = new OpenMethodView();
-		OPEN_TYPE_VIEW = new OpenTypeView(OPEN_METHODS_VIEW.getModel());
+		OPEN_TYPE_VIEW = new OpenTypeView(OPEN_METHODS_VIEW);
 		buildForm();
 	}
 	
