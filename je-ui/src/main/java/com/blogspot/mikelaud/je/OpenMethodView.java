@@ -131,12 +131,12 @@ public class OpenMethodView {
 	
 	private Font createDefaultFont() {
 		Font defaultFont = new Text().getFont();
-		return Font.font(java.awt.Font.MONOSPACED, defaultFont.getSize());
+		return Font.font("Consolas", defaultFont.getSize());
 	}
 	
 	private Font createKeywordFont() {
 		Font defaultFont = createDefaultFont();
-		return Font.font(java.awt.Font.MONOSPACED, FontWeight.BOLD, defaultFont.getSize());
+		return Font.font(defaultFont.getFamily(), FontWeight.BOLD, defaultFont.getSize());
 	}
 	
 	public OpenMethodView() {
