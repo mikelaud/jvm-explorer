@@ -11,6 +11,7 @@ import com.blogspot.mikelaud.je.common.Type;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -32,6 +33,7 @@ public class OpenMethodView {
 
 	private final OpenMethod MODEL;
 	private final BorderPane FORM;
+	private final ScrollPane CODE_PANE;
 	private final TextFlow CODE;
 	private final Font FONT_DEFAULT;
 	private final Font FONT_KEYWORD;
@@ -45,13 +47,15 @@ public class OpenMethodView {
 		methodView.visibleProperty().bind(Bindings.isNotEmpty(MODEL.getFilteredData()));
 		*/
 		//
+		CODE_PANE.setPadding(new Insets(Const.SPACING, Const.SPACING, Const.SPACING, Const.SPACING));
+		CODE_PANE.setContent(CODE);
+		CODE_PANE.setVisible(false);
+		//
 		ImagePane imagePane = new ImagePane();
 		imagePane.setImage(new Image(Const.BACKGROUND_IMAGE.toString()));
+		imagePane.getChildren().add(CODE_PANE);
 		//imagePane.getChildren().add(methodView);
-		imagePane.getChildren().add(CODE);
-		BorderPane pane = new BorderPane();
-		pane.setCenter(CODE);
-		return pane;
+		return imagePane;
 	}
 	
 	private void buildForm() {
@@ -80,29 +84,41 @@ public class OpenMethodView {
 	}
 	
 	private Text newKeyword(String aText) {
-		Text text = new Text(aText + " ");
+		if (null == aText) {
+			aText = "";
+		}
+		else if (aText.length() > 0) {
+			aText += " ";
+		}
+		Text text = new Text(aText);
 		text.setFont(FONT_KEYWORD);
 		text.setFill(Color.rgb(0x7f, 0, 0x55));
 		return text;
 	}
 	
 	public void setType(Type aType) {
-		MODEL.setType(aType);
-		List<Node> nodes = new ArrayList<>();
-		//
-		nodes.add(newKeyword(aType.getAccess().getCode()));
-		nodes.add(newKeyword(aType.getType().getCode()));
-		nodes.add(newCode(aType.getName()));
-		nodes.add(newEnd("{"));
-		for (Method method : aType.getMethods()) {
-			nodes.add(newTab());
-			nodes.add(newKeyword("void"));
-			nodes.add(newKeyword(method.getAccess().getCode()));
-			nodes.add(newEnd(method.getName() + "();"));
+		if (null == aType) {
+			CODE_PANE.setVisible(false);
 		}
-		nodes.add(newEnd("}"));		
-		//
-		CODE.getChildren().setAll(nodes);
+		else {
+			CODE_PANE.setVisible(true);
+			MODEL.setType(aType);
+			List<Node> nodes = new ArrayList<>();
+			//
+			nodes.add(newKeyword(aType.getAccess().getCode()));
+			nodes.add(newKeyword(aType.getType().getCode()));
+			nodes.add(newCode(aType.getName()));
+			nodes.add(newEnd("{"));
+			for (Method method : aType.getMethods()) {
+				nodes.add(newTab());
+				nodes.add(newKeyword(method.getAccess().getCode()));
+				nodes.add(newKeyword("void"));
+				nodes.add(newEnd(method.getName() + "();"));
+			}
+			nodes.add(newEnd("}"));		
+			//
+			CODE.getChildren().setAll(nodes);
+		}
 	}
 	
 	public Pane getForm() {
@@ -126,6 +142,7 @@ public class OpenMethodView {
 	public OpenMethodView() {
 		MODEL = new OpenMethod();
 		FORM = new BorderPane();
+		CODE_PANE = new ScrollPane();
 		CODE = new TextFlow();
 		FONT_DEFAULT = createDefaultFont();
 		FONT_KEYWORD = createKeywordFont();
