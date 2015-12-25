@@ -10,6 +10,7 @@
 
 	<modules>
 		<module>je-search</module>
+		<module>je-core</module>
 		<module>je-ui</module>
 	</modules>
 
