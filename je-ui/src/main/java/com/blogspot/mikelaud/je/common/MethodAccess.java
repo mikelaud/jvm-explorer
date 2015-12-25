@@ -7,10 +7,10 @@ import javafx.scene.image.Image;
 
 public enum MethodAccess {
 
-	Private("private"),
-	Default(""),
+	Public("public"),
 	Protected("protected"),
-	Public("public");
+	Default(""),
+	Private("private");
 	
 	private static interface Const {
 		Path IMAGES_PATH = Paths.get("method", "access");
