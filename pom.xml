@@ -12,6 +12,7 @@
 		<module>je-search</module>
 		<module>je-core</module>
 		<module>je-ui</module>
+		<module>je-main</module>
 	</modules>
 
 	<properties>
