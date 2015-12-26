@@ -6,48 +6,37 @@ import com.google.inject.assistedinject.Assisted;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
-import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class ViewImpl implements View {
 
+	private final ViewContext CONTEXT;
 	private final ViewConst CONST;
-	@SuppressWarnings("unused")
-	private final Model MODEL;
-	@SuppressWarnings("unused")
-	private final Controller CONTROLLER;
 	//
-	private final SplitPane FORM;
+	private final SplitPane PANE;
 	private final Scene SCENE;
-	private final Stage WINDOW;
+	private final Stage STAGE;
 	
 	@Inject
 	private ViewImpl
-	(	ViewConst aConst
-	,	Model aModel
-	,	Controller aController
+	(	ViewContext aContext
+	,	ViewConst aConst
 	,	@Assisted Stage aStage
 	) {
+		CONTEXT = aContext;
 		CONST = aConst;
-		MODEL = aModel;
-		CONTROLLER = aController;
 		//
-		FORM = new SplitPane();
-		SCENE = new Scene(FORM);
-		WINDOW = aStage;
+		PANE = new SplitPane();
+		SCENE = new Scene(PANE);
+		STAGE = aStage;
 		//
-		buildForm();
+		buildPane();
 	}
 	
-	//
 	//private final OpenMethodView OPEN_METHODS_VIEW;
 	//private final OpenTypeView OPEN_TYPE_VIEW;
 
-	private Image createIcon() {
-		return new Image(CONST.getProgramIcon());
-	}
-	
 	private Rectangle2D createVisualBounds() {
 		return Screen.getPrimary().getVisualBounds();
 	}
@@ -58,34 +47,34 @@ public class ViewImpl implements View {
 		return new Rectangle2D(0, 0, defaultWidth, defaultHeight);
 	}
 	
-	private void buildWindow() {
-		WINDOW.setScene(SCENE);
-		WINDOW.setTitle(CONST.getProgramTitle());
-		WINDOW.getIcons().setAll(createIcon());
-		WINDOW.fullScreenExitHintProperty().setValue(CONST.getEmptyHint());
+	private void buildStage() {
+		STAGE.setScene(SCENE);
+		STAGE.setTitle(CONST.getProgramTitle());
+		STAGE.getIcons().setAll(CONTEXT.getUtils().createImage(CONST.getProgramIcon()));
+		STAGE.fullScreenExitHintProperty().setValue(CONST.getEmptyHint());
 		//
 		Rectangle2D visualBounds = createVisualBounds();
 		Rectangle2D defaultBounds = createDefaultBounds(visualBounds);
 		//
-		WINDOW.setWidth(defaultBounds.getWidth());
-		WINDOW.setHeight(defaultBounds.getHeight());
+		STAGE.setWidth(defaultBounds.getWidth());
+		STAGE.setHeight(defaultBounds.getHeight());
 		//
-		WINDOW.setMinWidth(WINDOW.getWidth());
-		WINDOW.setMinHeight(WINDOW.getHeight());
+		STAGE.setMinWidth(STAGE.getWidth());
+		STAGE.setMinHeight(STAGE.getHeight());
 		//
-		WINDOW.setMaxWidth(visualBounds.getWidth());
-		WINDOW.setMaxHeight(visualBounds.getHeight());
+		STAGE.setMaxWidth(visualBounds.getWidth());
+		STAGE.setMaxHeight(visualBounds.getHeight());
 	}
 	
-	private void buildForm() {
+	private void buildPane() {
 		//FORM.getItems().addAll(OPEN_TYPE_VIEW.getForm(), OPEN_METHODS_VIEW.getForm());
-		buildWindow();
+		buildStage();
 	}
 	
 	@Override
 	public void show() {
-		if (! WINDOW.isShowing()) {
-			WINDOW.show();
+		if (! STAGE.isShowing()) {
+			STAGE.show();
 		}
 	}
 	
