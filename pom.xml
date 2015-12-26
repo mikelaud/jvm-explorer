@@ -9,10 +9,12 @@
 	<description>${project.artifactId}</description>
 
 	<modules>
-		<module>je-search</module>
-		<module>je-core</module>
-		<module>je-ui</module>
-		<module>je-main</module>
+		<module>search</module>
+		<module>mvc</module>
+		<module>mvc-model</module>
+		<module>mvc-controller</module>
+		<module>mvc-view</module>
+		<module>main</module>
 	</modules>
 
 	<properties>
