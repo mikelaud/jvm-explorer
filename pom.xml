@@ -22,6 +22,9 @@
 		<module>main</module>
 		<module>ui-main</module>
 		<module>ui-program</module>
+		<module>ui-mvc</module>
+		<module>ui</module>
+		<module>je-search</module>
 	</modules>
 
 	<properties>
