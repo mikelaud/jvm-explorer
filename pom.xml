@@ -9,22 +9,17 @@
 	<description>${project.artifactId}</description>
 
 	<modules>
-		<module>search</module>
 		<module>je-utils</module>
+		<module>je-search</module>
 		<module>je-domain</module>
 		<module>je-model</module>
 		<module>je-core</module>
+		<module>ui</module>		
 		<module>ui-background</module>
-		<module>mvc-view</module>
-		<module>je-main</module>
 		<module>ui-search</module>
-		<module>ui-model</module>
-		<module>main</module>
-		<module>ui-main</module>
 		<module>ui-program</module>
 		<module>ui-mvc</module>
-		<module>ui</module>
-		<module>je-search</module>
+		<module>main</module>
 	</modules>
 
 	<properties>
