@@ -14,7 +14,7 @@
 		<module>mvc-model</module>
 		<module>mvc-controller</module>
 		<module>mvc-view</module>
-		<module>main</module>
+		<module>je-main</module>
 	</modules>
 
 	<properties>
