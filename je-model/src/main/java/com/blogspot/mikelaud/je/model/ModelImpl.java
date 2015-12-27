@@ -2,8 +2,8 @@ package com.blogspot.mikelaud.je.model;
 
 import java.util.Collection;
 
-import com.blogspot.mikelaud.je.domain.StringUtils;
 import com.blogspot.mikelaud.je.domain.Type;
+import com.blogspot.mikelaud.je.utils.StringUtils;
 import com.google.inject.Inject;
 
 import javafx.beans.property.SimpleStringProperty;

@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.domain;
+package com.blogspot.mikelaud.je.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,10 @@ import java.util.List;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+
+import com.blogspot.mikelaud.je.domain.Method;
+import com.blogspot.mikelaud.je.domain.Type;
+import com.blogspot.mikelaud.je.domain.TypeInner;
 
 public class TypeVisitor extends ClassVisitor {
 

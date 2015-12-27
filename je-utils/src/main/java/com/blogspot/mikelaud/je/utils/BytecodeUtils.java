@@ -1,6 +1,13 @@
-package com.blogspot.mikelaud.je.domain;
+package com.blogspot.mikelaud.je.utils;
 
 import org.objectweb.asm.Opcodes;
+
+import com.blogspot.mikelaud.je.domain.MethodAccess;
+import com.blogspot.mikelaud.je.domain.TypeAccess;
+import com.blogspot.mikelaud.je.domain.TypeDeprecated;
+import com.blogspot.mikelaud.je.domain.TypeInheritance;
+import com.blogspot.mikelaud.je.domain.TypeStatic;
+import com.blogspot.mikelaud.je.domain.TypeType;
 
 public interface BytecodeUtils {
 

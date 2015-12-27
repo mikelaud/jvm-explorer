@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import com.blogspot.mikelaud.je.domain.Bytecode;
 import com.blogspot.mikelaud.je.domain.Type;
 import com.blogspot.mikelaud.je.model.Model;
+import com.blogspot.mikelaud.je.utils.Bytecode;
 import com.google.inject.Inject;
 
 public class ControllerImpl implements Controller {

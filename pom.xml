@@ -11,6 +11,7 @@
 	<modules>
 		<module>search</module>
 		<module>je-domain</module>
+		<module>je-utils</module>
 		<module>je-model</module>
 		<module>ui-background</module>
 		<module>mvc-controller</module>

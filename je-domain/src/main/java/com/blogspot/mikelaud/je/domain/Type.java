@@ -32,10 +32,10 @@ public class Type {
 	public TypeStatic getStatic() { return mStatic; }
 	public List<Method> getMethods() { return mMethods; }
 	
-	public void setName(String aName) { mName = StringUtils.nvl(aName); }
-	public void setNameLowCase(String aNameLowCase) { mNameLowCase = StringUtils.nvl(aNameLowCase); }
-	public void setPackageName(String aPackageName) { mPackageName = StringUtils.nvl(aPackageName); }
-	public void setFullName(String aFullName) { mFullName = StringUtils.nvl(aFullName); }
+	public void setName(String aName) { mName = aName; }
+	public void setNameLowCase(String aNameLowCase) { mNameLowCase = aNameLowCase; }
+	public void setPackageName(String aPackageName) { mPackageName = aPackageName; }
+	public void setFullName(String aFullName) { mFullName = aFullName; }
 	public void setType(TypeType aTypeType) { mType = nvl(aTypeType); }
 	public void setAccess(TypeAccess aTypeAccess) { mAccess = nvl(aTypeAccess); }
 	public void setInner(TypeInner aInner) { mInner = aInner; }

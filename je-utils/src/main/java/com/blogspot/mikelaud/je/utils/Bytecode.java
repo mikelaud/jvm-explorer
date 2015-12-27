@@ -1,8 +1,10 @@
-package com.blogspot.mikelaud.je.domain;
+package com.blogspot.mikelaud.je.utils;
 
 import java.io.InputStream;
 
 import org.objectweb.asm.ClassReader;
+
+import com.blogspot.mikelaud.je.domain.Type;
 
 public class Bytecode {
 
