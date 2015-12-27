@@ -65,7 +65,12 @@ public class CoreImpl implements Core {
 		}
 		return types;
 	}
-	
+
+	@Override
+	public final Model getModel() {
+		return MODEL;
+	}
+
 	@Override
 	public final void setDefaultTypes() {
 		MODEL.getTypes().addAll(getJarTypes());
