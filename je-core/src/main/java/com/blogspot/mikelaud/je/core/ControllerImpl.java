@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.mvc;
+package com.blogspot.mikelaud.je.core;
 
 import java.io.FileInputStream;
 import java.nio.file.Path;
@@ -10,7 +10,6 @@ import java.util.zip.ZipInputStream;
 
 import com.blogspot.mikelaud.je.domain.Type;
 import com.blogspot.mikelaud.je.model.Model;
-import com.blogspot.mikelaud.je.utils.Bytecode;
 import com.google.inject.Inject;
 
 public class ControllerImpl implements Controller {

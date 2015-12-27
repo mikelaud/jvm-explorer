@@ -10,11 +10,11 @@
 
 	<modules>
 		<module>search</module>
-		<module>je-domain</module>
 		<module>je-utils</module>
+		<module>je-domain</module>
 		<module>je-model</module>
+		<module>je-core</module>
 		<module>ui-background</module>
-		<module>mvc-controller</module>
 		<module>mvc-view</module>
 		<module>je-main</module>
 	</modules>

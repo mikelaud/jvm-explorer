@@ -8,7 +8,7 @@
 		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>mvc-controller</artifactId>
+	<artifactId>je-core</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
 

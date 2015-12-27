@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.mvc;
+package com.blogspot.mikelaud.je.core;
 
 public interface Controller {
 

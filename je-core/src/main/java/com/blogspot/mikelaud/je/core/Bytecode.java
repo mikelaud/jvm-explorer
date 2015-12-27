@@ -1,10 +1,11 @@
-package com.blogspot.mikelaud.je.utils;
+package com.blogspot.mikelaud.je.core;
 
 import java.io.InputStream;
 
 import org.objectweb.asm.ClassReader;
 
 import com.blogspot.mikelaud.je.domain.Type;
+import com.blogspot.mikelaud.je.utils.Bytes;
 
 public class Bytecode {
 

@@ -2,6 +2,7 @@ package com.blogspot.mikelaud.je.mvc;
 
 import java.nio.file.Paths;
 
+import com.blogspot.mikelaud.je.core.ControllerModule;
 import com.blogspot.mikelaud.je.mvc.search.VSearchModule;
 import com.blogspot.mikelaud.je.ui.UiBackgroundModule;
 import com.google.inject.AbstractModule;

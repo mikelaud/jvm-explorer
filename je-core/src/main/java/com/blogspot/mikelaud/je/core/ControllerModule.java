@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.mvc;
+package com.blogspot.mikelaud.je.core;
 
 import com.blogspot.mikelaud.je.model.ModelModule;
 import com.google.inject.AbstractModule;
