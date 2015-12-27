@@ -17,6 +17,12 @@
 		<module>ui-background</module>
 		<module>mvc-view</module>
 		<module>je-main</module>
+		<module>ui-search</module>
+		<module>ui-model</module>
+		<module>main</module>
+		<module>ui-main</module>
+		<module>ui-program</module>
+		<module>je-search</module>
 	</modules>
 
 	<properties>

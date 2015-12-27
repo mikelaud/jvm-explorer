@@ -1,18 +1,18 @@
 package com.blogspot.mikelaud.je.mvc;
 
-import com.blogspot.mikelaud.je.core.Controller;
+import com.blogspot.mikelaud.je.core.Core;
 import com.blogspot.mikelaud.je.model.Model;
 import com.google.inject.Inject;
 
 public class ViewContextImpl implements ViewContext {
 
 	private final Model MODEL;
-	private final Controller CONTROLLER;
+	private final Core CONTROLLER;
 	
 	@Inject
 	private ViewContextImpl
 	(	Model aModel
-	,	Controller aController
+	,	Core aController
 	) {
 		MODEL = aModel;
 		CONTROLLER = aController;
@@ -24,7 +24,7 @@ public class ViewContextImpl implements ViewContext {
 	}
 
 	@Override
-	public final Controller getController() {
+	public final Core getController() {
 		return CONTROLLER;
 	}
 
