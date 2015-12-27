@@ -1,5 +1,7 @@
 package com.blogspot.mikelaud.je.ui.search;
 
+import com.blogspot.mikelaud.je.domain.Type;
+import com.blogspot.mikelaud.je.ui.background.UiBackground;
 import com.google.inject.Inject;
 
 import javafx.beans.binding.Bindings;
