@@ -4,6 +4,5 @@ public interface ViewContext {
 
 	Model getModel();
 	Controller getController();
-	ViewUtils getUtils();
 	
 }

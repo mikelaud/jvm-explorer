@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.mvc;
+package com.blogspot.mikelaud.je.mvc.search;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,33 +9,41 @@ import com.google.inject.BindingAnnotation;
 
 import javafx.scene.image.Image;
 
-public interface ViewConst {
+public interface VSearchConst {
 
-	String getProgramTitle();
-	Image getProgramIcon();
+	Image getBackgroundImage();
+	Image getPackageIcon();
 	//
-	double getScaleWidth();
-	double getScaleHeight();
+	String getSearchLabel();
+	String getMatchingLabel();
+	String getCountLabel();
 	//
-	String getEmptyHint();
+	int getSpacing();
+	int getPadding();
 	
 	//------------------------------------------------------------------------
 	
 	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
-	@interface ProgramTitle {}
+	@interface BackgroundImage {}
 	//
 	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
-	@interface ProgramIcon {}
-	//
-	//
-	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
-	@interface ScaleWidth {}
-	//
-	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
-	@interface ScaleHeight {}
+	@interface PackageIcon {}
 	//
 	//
 	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
-	@interface EmptyHint {}	
+	@interface SearchLabel {}
+	//
+	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
+	@interface MatchingLabel {}
+	//
+	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
+	@interface CountLabel {}
+	//
+	//
+	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
+	@interface Spacing {}
+	//
+	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
+	@interface Padding {}
 	
 }

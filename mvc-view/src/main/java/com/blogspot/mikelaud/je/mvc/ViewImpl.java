@@ -1,8 +1,10 @@
 package com.blogspot.mikelaud.je.mvc;
 
+import com.blogspot.mikelaud.je.mvc.search.VSearch;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
@@ -13,6 +15,7 @@ public class ViewImpl implements View {
 
 	private final ViewContext CONTEXT;
 	private final ViewConst CONST;
+	private final VSearch V_SEARCH;
 	//
 	private final SplitPane PANE;
 	private final Scene SCENE;
@@ -22,35 +25,30 @@ public class ViewImpl implements View {
 	private ViewImpl
 	(	ViewContext aContext
 	,	ViewConst aConst
+	,	VSearch aVSearch
 	,	@Assisted Stage aStage
 	) {
 		CONTEXT = aContext;
 		CONST = aConst;
+		V_SEARCH = aVSearch;
 		//
 		PANE = new SplitPane();
 		SCENE = new Scene(PANE);
 		STAGE = aStage;
 		//
-		buildPane();
+		buildePane();
 	}
 	
-	//private final OpenMethodView OPEN_METHODS_VIEW;
-	//private final OpenTypeView OPEN_TYPE_VIEW;
+	private void buildePane() {
+		//FORM.getItems().addAll(OPEN_TYPE_VIEW.getForm(), OPEN_METHODS_VIEW.getForm());
+		PANE.getItems().addAll(V_SEARCH.getPane());
+		buildStage();
+	}
 
-	private Rectangle2D createVisualBounds() {
-		return Screen.getPrimary().getVisualBounds();
-	}
-	
-	private Rectangle2D createDefaultBounds(Rectangle2D aVisualBounds) {
-		double defaultWidth = aVisualBounds.getWidth() / CONST.getScaleWidth();
-		double defaultHeight = aVisualBounds.getHeight() / CONST.getScaleHeight();
-		return new Rectangle2D(0, 0, defaultWidth, defaultHeight);
-	}
-	
 	private void buildStage() {
 		STAGE.setScene(SCENE);
 		STAGE.setTitle(CONST.getProgramTitle());
-		STAGE.getIcons().setAll(CONTEXT.getUtils().createImage(CONST.getProgramIcon()));
+		STAGE.getIcons().setAll(CONST.getProgramIcon());
 		STAGE.fullScreenExitHintProperty().setValue(CONST.getEmptyHint());
 		//
 		Rectangle2D visualBounds = createVisualBounds();
@@ -65,16 +63,22 @@ public class ViewImpl implements View {
 		STAGE.setMaxWidth(visualBounds.getWidth());
 		STAGE.setMaxHeight(visualBounds.getHeight());
 	}
-	
-	private void buildPane() {
-		//FORM.getItems().addAll(OPEN_TYPE_VIEW.getForm(), OPEN_METHODS_VIEW.getForm());
-		buildStage();
+
+	private Rectangle2D createVisualBounds() {
+		return Screen.getPrimary().getVisualBounds();
 	}
 	
+	private Rectangle2D createDefaultBounds(Rectangle2D aVisualBounds) {
+		double defaultWidth = aVisualBounds.getWidth() / CONST.getScaleWidth();
+		double defaultHeight = aVisualBounds.getHeight() / CONST.getScaleHeight();
+		return new Rectangle2D(0, 0, defaultWidth, defaultHeight);
+	}	
+	
 	@Override
-	public void show() {
+	public final void show() {
 		if (! STAGE.isShowing()) {
 			STAGE.show();
+			Platform.runLater(() -> CONTEXT.getController().setDefaultTypes());
 		}
 	}
 	
