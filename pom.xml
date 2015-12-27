@@ -10,6 +10,7 @@
 
 	<modules>
 		<module>search</module>
+		<module>ui-background</module>
 		<module>mvc-model</module>
 		<module>mvc-controller</module>
 		<module>mvc-view</module>
