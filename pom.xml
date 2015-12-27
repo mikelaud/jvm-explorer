@@ -22,7 +22,6 @@
 		<module>main</module>
 		<module>ui-main</module>
 		<module>ui-program</module>
-		<module>je-search</module>
 	</modules>
 
 	<properties>
