@@ -1,5 +1,6 @@
 package com.blogspot.mikelaud.je.mvc;
 
+import com.blogspot.mikelaud.je.model.ModelModule;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 

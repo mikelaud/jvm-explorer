@@ -1,5 +1,6 @@
 package com.blogspot.mikelaud.je.mvc;
 
+import com.blogspot.mikelaud.je.model.Model;
 import com.google.inject.Inject;
 
 public class ViewContextImpl implements ViewContext {
