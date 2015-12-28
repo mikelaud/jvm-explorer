@@ -13,7 +13,7 @@
 		<module>je-search</module>
 		<module>je-domain</module>
 		<module>je-model</module>
-		<module>je-controller</module>
+		<module>je-core</module>
 		<module>ui</module>		
 		<module>ui-background</module>
 		<module>ui-search</module>
