@@ -1,7 +1,9 @@
 package com.blogspot.mikelaud.je.ui.search;
 
 import com.blogspot.mikelaud.je.domain.Type;
-import com.blogspot.mikelaud.je.ui.background.UiBackground;
+import com.blogspot.mikelaud.je.ui.MvcController;
+import com.blogspot.mikelaud.je.ui.UiBackground;
+import com.blogspot.mikelaud.je.ui.UiSearch;
 import com.google.inject.Inject;
 
 import javafx.beans.binding.Bindings;
@@ -21,7 +23,7 @@ import javafx.scene.layout.VBox;
 
 public class UiSearchImpl implements UiSearch {
 
-	private final ViewContext CONTEXT;
+	private final MvcController CTX;
 	private final UiSearchConst CONST;
 	private final UiBackground BACKGROUND;
 	//
@@ -30,11 +32,11 @@ public class UiSearchImpl implements UiSearch {
 	
 	@Inject
 	private UiSearchImpl
-	(	ViewContext aContext
+	(	MvcController aMvcController
 	,	UiSearchConst aConst
 	,	UiBackground aBackground
 	) {
-		CONTEXT = aContext;
+		CTX = aMvcController;
 		CONST = aConst;
 		BACKGROUND = aBackground;
 		//
@@ -49,8 +51,8 @@ public class UiSearchImpl implements UiSearch {
 		Label countLabel = new Label(CONST.getCountLabel());
 		Label countAllLabel = new Label();
 		//
-		countFoundLabel.textProperty().bind(Bindings.size(CONTEXT.getModel().getTypesFiltered()).asString());
-		countAllLabel.textProperty().bind(Bindings.size(CONTEXT.getModel().getTypes()).asString());
+		countFoundLabel.textProperty().bind(Bindings.size(CTX.getModel().getTypesFiltered()).asString());
+		countAllLabel.textProperty().bind(Bindings.size(CTX.getModel().getTypes()).asString());
 		//
 		BorderPane pane = new BorderPane();
 		pane.setLeft(new Label(CONST.getMatchingLabel()));
@@ -65,7 +67,7 @@ public class UiSearchImpl implements UiSearch {
 		//
 		SEARCH_FIELD.textProperty().addListener((observable, oldValue, newValue) -> {
 			String pattern = newValue.toLowerCase();
-			CONTEXT.getModel().getTypesFiltered().setPredicate(type -> {
+			CTX.getModel().getTypesFiltered().setPredicate(type -> {
 				if (newValue == null || newValue.isEmpty()) {
 					return true;
 				}
@@ -83,9 +85,9 @@ public class UiSearchImpl implements UiSearch {
 	private Node createCenter() {
 		ListView<Type> listView = new ListView<>();
 		listView.setEditable(false);
-		listView.setItems(CONTEXT.getModel().getTypesSorted());
+		listView.setItems(CTX.getModel().getTypesSorted());
 		listView.setCellFactory((tableColumn) -> new UiSearchListCell(SEARCH_FIELD));
-		listView.visibleProperty().bind(Bindings.isNotEmpty(CONTEXT.getModel().getTypesFiltered()));
+		listView.visibleProperty().bind(Bindings.isNotEmpty(CTX.getModel().getTypesFiltered()));
 		//
 		listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Type>() {
 			@Override
@@ -101,7 +103,7 @@ public class UiSearchImpl implements UiSearch {
 
 	private Node createBottom() {
 		Label locationLabel = new Label();
-		locationLabel.textProperty().bind(CONTEXT.getModel().takeTypesSource());
+		locationLabel.textProperty().bind(CTX.getModel().takeTypesSource());
 		locationLabel.setGraphic(new ImageView(CONST.getPackageIcon()));
 		locationLabel.setBorder(new TextField().getBorder());
 		//

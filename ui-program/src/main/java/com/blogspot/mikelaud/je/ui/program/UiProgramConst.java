@@ -9,7 +9,7 @@ import com.google.inject.BindingAnnotation;
 
 import javafx.scene.image.Image;
 
-public interface ViewConst {
+public interface UiProgramConst {
 
 	String getProgramTitle();
 	Image getProgramIcon();

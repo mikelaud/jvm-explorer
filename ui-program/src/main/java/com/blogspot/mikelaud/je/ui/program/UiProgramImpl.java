@@ -1,6 +1,8 @@
 package com.blogspot.mikelaud.je.ui.program;
 
-import com.blogspot.mikelaud.je.mvc.search.VSearch;
+import com.blogspot.mikelaud.je.ui.MvcController;
+import com.blogspot.mikelaud.je.ui.UiProgram;
+import com.blogspot.mikelaud.je.ui.UiSearch;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -11,26 +13,27 @@ import javafx.scene.control.SplitPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class ViewImpl implements View {
+public class UiProgramImpl implements UiProgram {
 
-	private final ViewContext CONTEXT;
-	private final ViewConst CONST;
-	private final VSearch V_SEARCH;
+	private final MvcController CTX;
+	private final UiProgramConst CONST;
+	private final UiSearch SEARCH;
 	//
 	private final SplitPane PANE;
 	private final Scene SCENE;
 	private final Stage STAGE;
 	
 	@Inject
-	private ViewImpl
-	(	ViewContext aContext
-	,	ViewConst aConst
-	,	VSearch aVSearch
+	private UiProgramImpl
+	(	MvcController aMvcController
+	,	UiProgramConst aConst
+	,	UiSearch aSearch
+	,	@Assisted String[] args
 	,	@Assisted Stage aStage
 	) {
-		CONTEXT = aContext;
+		CTX = aMvcController;
 		CONST = aConst;
-		V_SEARCH = aVSearch;
+		SEARCH = aSearch;
 		//
 		PANE = new SplitPane();
 		SCENE = new Scene(PANE);
@@ -40,8 +43,7 @@ public class ViewImpl implements View {
 	}
 	
 	private void buildePane() {
-		//FORM.getItems().addAll(OPEN_TYPE_VIEW.getForm(), OPEN_METHODS_VIEW.getForm());
-		PANE.getItems().addAll(V_SEARCH.getPane());
+		PANE.getItems().addAll(SEARCH.getPane()); //, CODE.getPane()
 		buildStage();
 	}
 
@@ -73,12 +75,17 @@ public class ViewImpl implements View {
 		double defaultHeight = aVisualBounds.getHeight() / CONST.getScaleHeight();
 		return new Rectangle2D(0, 0, defaultWidth, defaultHeight);
 	}	
-	
+
+	@Override
+	public final SplitPane getPane() {
+		return PANE;
+	}
+
 	@Override
 	public final void show() {
 		if (! STAGE.isShowing()) {
 			STAGE.show();
-			Platform.runLater(() -> CONTEXT.getController().setDefaultTypes());
+			Platform.runLater(() -> CTX.getController().setDefaultTypes());
 		}
 	}
 	

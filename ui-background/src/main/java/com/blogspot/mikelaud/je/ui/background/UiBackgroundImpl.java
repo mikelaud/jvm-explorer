@@ -14,7 +14,7 @@ import javafx.scene.layout.StackPane;
 public class UiBackgroundImpl implements UiBackground {
 
 	@SuppressWarnings("unused")
-	private final MvcController MVC_CONTROLLER;
+	private final MvcController CTX;
 	//
 	private final ImageView IMAGE_VIEW;
 	private final Pane IMAGE_PANE;
@@ -83,7 +83,7 @@ public class UiBackgroundImpl implements UiBackground {
 	}
 
 	public UiBackgroundImpl(MvcController aMvcController) {
-		MVC_CONTROLLER = aMvcController;
+		CTX = aMvcController;
 		//
 		IMAGE_VIEW = new ImageView();
 		IMAGE_PANE = new Pane();

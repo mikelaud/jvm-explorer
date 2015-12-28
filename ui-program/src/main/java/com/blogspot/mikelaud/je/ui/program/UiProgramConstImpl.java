@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 
 import javafx.scene.image.Image;
 
-public class ViewConstImpl implements ViewConst {
+public class UiProgramConstImpl implements UiProgramConst {
 
 	private final String PROGRAM_TITLE;
 	private final Image PROGRAM_ICON;
@@ -15,14 +15,14 @@ public class ViewConstImpl implements ViewConst {
 	private final String EMPTY_HINT;
 	
 	@Inject
-	private ViewConstImpl
-	(	@ViewConst.ProgramTitle String aProgramTitle
-	,	@ViewConst.ProgramIcon Image aProgramIcon
+	private UiProgramConstImpl
+	(	@UiProgramConst.ProgramTitle String aProgramTitle
+	,	@UiProgramConst.ProgramIcon Image aProgramIcon
 	//
-	,	@ViewConst.ScaleWidth double aScaleWidth
-	,	@ViewConst.ScaleHeight double aScaleHeight
+	,	@UiProgramConst.ScaleWidth double aScaleWidth
+	,	@UiProgramConst.ScaleHeight double aScaleHeight
 	//
-	,	@ViewConst.EmptyHint String aEmptyHint
+	,	@UiProgramConst.EmptyHint String aEmptyHint
 	) {
 		PROGRAM_TITLE = aProgramTitle;
 		PROGRAM_ICON = aProgramIcon;

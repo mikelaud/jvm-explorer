@@ -1,6 +1,6 @@
 package com.blogspot.mikelaud.je.ui;
 
-import javafx.scene.layout.Pane;
+import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;
 
 public interface UiProgram {
@@ -9,7 +9,7 @@ public interface UiProgram {
 		UiProgram create(String[] args, Stage aStage); 
 	}
 
-	Pane getPane();
+	SplitPane getPane();
 	void show();
 
 }

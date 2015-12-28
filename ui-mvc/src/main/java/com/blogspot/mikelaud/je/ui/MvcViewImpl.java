@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 public class MvcViewImpl extends Application implements MvcView {
 
-	private final UiProgram.Factory UI_PROGRAM_FACTORY;
+	private final UiProgram.Factory PROGRAM_FACTORY;
 	private final String[] ARGS;
 	
 	@Inject
@@ -16,18 +16,18 @@ public class MvcViewImpl extends Application implements MvcView {
 	(	UiProgram.Factory aUiProgramFactory
 	,	@Assisted String[] args
 	) {
-		UI_PROGRAM_FACTORY = aUiProgramFactory;
+		PROGRAM_FACTORY = aUiProgramFactory;
 		ARGS = args;
 	}
 
 	@Override
-	public void start(Stage aStage) throws Exception {
-		UiProgram uiProgram = UI_PROGRAM_FACTORY.create(ARGS, aStage);
+	public final void start(Stage aStage) throws Exception {
+		UiProgram uiProgram = PROGRAM_FACTORY.create(ARGS, aStage);
 		uiProgram.show();
 	}
 
 	@Override
-	public void show() {
+	public final void show() {
 		Application.launch(ARGS);
 	}
 	

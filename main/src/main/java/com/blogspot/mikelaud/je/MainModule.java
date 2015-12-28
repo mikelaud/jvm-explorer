@@ -6,7 +6,7 @@ import com.google.inject.AbstractModule;
 public class MainModule extends AbstractModule {
 
 	@Override
-	protected void configure() {
+	protected final void configure() {
 		install(new MvcModule());
 	}
 

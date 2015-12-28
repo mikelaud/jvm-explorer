@@ -2,6 +2,7 @@ package com.blogspot.mikelaud.je.ui.search;
 
 import java.nio.file.Paths;
 
+import com.blogspot.mikelaud.je.ui.UiSearch;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 
