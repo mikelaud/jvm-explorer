@@ -1,5 +1,8 @@
 package com.blogspot.mikelaud.je.ui.background;
 
+import com.blogspot.mikelaud.je.ui.MvcController;
+import com.blogspot.mikelaud.je.ui.UiBackground;
+
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
@@ -10,6 +13,9 @@ import javafx.scene.layout.StackPane;
 
 public class UiBackgroundImpl implements UiBackground {
 
+	@SuppressWarnings("unused")
+	private final MvcController MVC_CONTROLLER;
+	//
 	private final ImageView IMAGE_VIEW;
 	private final Pane IMAGE_PANE;
 	private final StackPane PANE;
@@ -76,7 +82,9 @@ public class UiBackgroundImpl implements UiBackground {
 		IMAGE_VIEW.fitHeightProperty().bind(IMAGE_PANE.heightProperty());
 	}
 
-	public UiBackgroundImpl() {
+	public UiBackgroundImpl(MvcController aMvcController) {
+		MVC_CONTROLLER = aMvcController;
+		//
 		IMAGE_VIEW = new ImageView();
 		IMAGE_PANE = new Pane();
 		PANE = new StackPane();
