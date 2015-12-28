@@ -5,10 +5,6 @@ import javafx.scene.layout.Pane;
 
 public interface UiBackground {
 
-	interface Factory {
-		UiBackground create(MvcController aMvcController); 
-	}
-	
 	Pane getPane();
 	//
 	Image getImage();

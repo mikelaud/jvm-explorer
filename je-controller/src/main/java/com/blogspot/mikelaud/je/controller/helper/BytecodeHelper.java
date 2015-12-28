@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.core.helper;
+package com.blogspot.mikelaud.je.controller.helper;
 
 import org.objectweb.asm.Opcodes;
 

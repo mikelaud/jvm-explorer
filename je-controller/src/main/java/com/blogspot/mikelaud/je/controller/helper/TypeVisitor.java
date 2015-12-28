@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.core.helper;
+package com.blogspot.mikelaud.je.controller.helper;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.core;
+package com.blogspot.mikelaud.je.controller;
 
 import java.io.FileInputStream;
 import java.nio.file.Path;
@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import com.blogspot.mikelaud.je.core.helper.Bytecode;
+import com.blogspot.mikelaud.je.controller.helper.Bytecode;
 import com.blogspot.mikelaud.je.domain.Type;
 import com.blogspot.mikelaud.je.model.Model;
 import com.google.inject.Inject;
 
-public class CoreImpl implements Core {
+public class ControllerImpl implements Controller {
 
 	private static interface Const {
 		//
@@ -29,7 +29,7 @@ public class CoreImpl implements Core {
 	private final Model MODEL;
 	
 	@Inject
-	private CoreImpl(Model aModel) {
+	private ControllerImpl(Model aModel) {
 		MODEL = aModel;
 	}
 
