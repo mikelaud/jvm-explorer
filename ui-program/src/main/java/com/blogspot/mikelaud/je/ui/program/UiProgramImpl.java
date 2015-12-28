@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 public class UiProgramImpl implements UiProgram {
 
-	private final MvcController CTX;
+	private final MvcController CTL;
 	private final UiProgramConst CONST;
 	private final UiSearch SEARCH;
 	//
@@ -31,7 +31,7 @@ public class UiProgramImpl implements UiProgram {
 	,	@Assisted String[] args
 	,	@Assisted Stage aStage
 	) {
-		CTX = aMvcController;
+		CTL = aMvcController;
 		CONST = aConst;
 		SEARCH = aSearch;
 		//
@@ -85,7 +85,7 @@ public class UiProgramImpl implements UiProgram {
 	public final void show() {
 		if (! STAGE.isShowing()) {
 			STAGE.show();
-			Platform.runLater(() -> CTX.getController().setDefaultTypes());
+			Platform.runLater(() -> CTL.getCore().setDefaultTypes());
 		}
 	}
 	

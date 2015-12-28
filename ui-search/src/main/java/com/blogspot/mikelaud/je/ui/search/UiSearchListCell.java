@@ -1,10 +1,10 @@
 package com.blogspot.mikelaud.je.ui.search;
 
-import com.blogspot.mikelaud.je.domain.Type;
-import com.blogspot.mikelaud.je.domain.TypeInheritance;
-import com.blogspot.mikelaud.je.domain.TypeModifier;
-import com.blogspot.mikelaud.je.domain.TypeStatic;
-import com.blogspot.mikelaud.je.domain.TypeType;
+import com.blogspot.mikelaud.je.domain.types.Type;
+import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
+import com.blogspot.mikelaud.je.domain.types.TypeModifier;
+import com.blogspot.mikelaud.je.domain.types.TypeStatic;
+import com.blogspot.mikelaud.je.domain.types.TypeType;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;

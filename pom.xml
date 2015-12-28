@@ -12,7 +12,6 @@
 		<module>je-utils</module>
 		<module>je-search</module>
 		<module>je-domain</module>
-		<module>je-model</module>
 		<module>je-core</module>
 		<module>ui</module>		
 		<module>ui-background</module>

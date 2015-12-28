@@ -1,11 +1,11 @@
 package com.blogspot.mikelaud.je.ui;
 
-import com.blogspot.mikelaud.je.controller.Controller;
-import com.blogspot.mikelaud.je.model.Model;
+import com.blogspot.mikelaud.je.core.Core;
+import com.blogspot.mikelaud.je.domain.Domain;
 
 public interface MvcModel {
 
-	Model getModel();
-	Controller getController();
+	Domain getDomain();
+	Core getCore();
 	
 }
