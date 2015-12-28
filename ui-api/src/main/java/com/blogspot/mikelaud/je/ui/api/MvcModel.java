@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.ui;
+package com.blogspot.mikelaud.je.ui.api;
 
 import com.blogspot.mikelaud.je.core.Core;
 import com.blogspot.mikelaud.je.domain.Domain;

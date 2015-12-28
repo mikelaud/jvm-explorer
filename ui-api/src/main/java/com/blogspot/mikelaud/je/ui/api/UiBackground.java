@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.ui;
+package com.blogspot.mikelaud.je.ui.api;
 
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;

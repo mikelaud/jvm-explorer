@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je;
+package com.blogspot.mikelaud.je.main;
 
 import com.blogspot.mikelaud.je.core.CoreModule;
 import com.blogspot.mikelaud.je.domain.DomainModule;

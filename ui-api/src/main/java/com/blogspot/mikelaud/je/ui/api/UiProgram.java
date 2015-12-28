@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.ui;
+package com.blogspot.mikelaud.je.ui.api;
 
 import javafx.scene.control.SplitPane;
 import javafx.stage.Stage;

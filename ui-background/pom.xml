@@ -15,7 +15,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>ui</artifactId>
+			<artifactId>ui-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

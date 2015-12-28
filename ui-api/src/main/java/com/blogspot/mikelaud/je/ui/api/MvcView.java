@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.ui;
+package com.blogspot.mikelaud.je.ui.api;
 
 public interface MvcView {
 
