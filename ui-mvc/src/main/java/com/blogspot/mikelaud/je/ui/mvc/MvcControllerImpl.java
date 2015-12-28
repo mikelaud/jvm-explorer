@@ -2,6 +2,7 @@ package com.blogspot.mikelaud.je.ui.mvc;
 
 import com.blogspot.mikelaud.je.core.Core;
 import com.blogspot.mikelaud.je.domain.Domain;
+import com.blogspot.mikelaud.je.domain.types.Type;
 import com.blogspot.mikelaud.je.ui.api.MvcController;
 import com.blogspot.mikelaud.je.ui.api.MvcModel;
 import com.google.inject.Inject;
@@ -28,6 +29,11 @@ public class MvcControllerImpl implements MvcController {
 	@Override
 	public final MvcModel getModel() {
 		return MODEL;
+	}
+
+	@Override
+	public void showTypeCode(Type aType) {
+		// TODO Auto-generated method stub	
 	}
 	
 }
