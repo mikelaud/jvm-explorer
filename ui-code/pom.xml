@@ -8,19 +8,14 @@
 		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>ui-program</artifactId>
+	<artifactId>ui-code</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>ui-search</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>ui-code</artifactId>
+			<artifactId>ui-background</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

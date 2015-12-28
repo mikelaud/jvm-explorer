@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.ui.api;
+package com.blogspot.mikelaud.je.ui.search;
 
 import javafx.scene.layout.Pane;
 

@@ -1,8 +1,8 @@
 package com.blogspot.mikelaud.je.ui.program;
 
 import com.blogspot.mikelaud.je.ui.api.MvcController;
-import com.blogspot.mikelaud.je.ui.api.UiProgram;
-import com.blogspot.mikelaud.je.ui.api.UiSearch;
+import com.blogspot.mikelaud.je.ui.code.UiCode;
+import com.blogspot.mikelaud.je.ui.search.UiSearch;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -18,6 +18,7 @@ public class UiProgramImpl implements UiProgram {
 	private final MvcController CONTROLLER;
 	private final UiProgramConst CONST;
 	private final UiSearch SEARCH;
+	private final UiCode CODE;
 	//
 	private final SplitPane PANE;
 	private final Scene SCENE;
@@ -28,12 +29,14 @@ public class UiProgramImpl implements UiProgram {
 	(	MvcController aMvcController
 	,	UiProgramConst aConst
 	,	UiSearch aSearch
+	,	UiCode aCode
 	,	@Assisted String[] args
 	,	@Assisted Stage aStage
 	) {
 		CONTROLLER = aMvcController;
 		CONST = aConst;
 		SEARCH = aSearch;
+		CODE = aCode;
 		//
 		PANE = new SplitPane();
 		SCENE = new Scene(PANE);
@@ -43,7 +46,7 @@ public class UiProgramImpl implements UiProgram {
 	}
 	
 	private void buildePane() {
-		PANE.getItems().addAll(SEARCH.getPane()); //, CODE.getPane()
+		PANE.getItems().addAll(SEARCH.getPane(), CODE.getPane());
 		buildStage();
 	}
 

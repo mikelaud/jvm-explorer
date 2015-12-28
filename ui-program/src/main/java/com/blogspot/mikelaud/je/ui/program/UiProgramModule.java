@@ -2,7 +2,6 @@ package com.blogspot.mikelaud.je.ui.program;
 
 import java.nio.file.Paths;
 
-import com.blogspot.mikelaud.je.ui.api.UiProgram;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
@@ -16,7 +15,7 @@ public class UiProgramModule extends AbstractModule {
 		bind(Image.class).annotatedWith(UiProgramConst.ProgramIcon.class).toInstance(new Image(Paths.get("program.png").toString()));
 		//
 		bindConstant().annotatedWith(UiProgramConst.ScaleWidth.class).to(4.0d);
-		bindConstant().annotatedWith(UiProgramConst.ScaleHeight.class).to(2.0d);
+		bindConstant().annotatedWith(UiProgramConst.ScaleHeight.class).to(4.0d);
 		//
 		bindConstant().annotatedWith(UiProgramConst.EmptyHint.class).to("");
 		//
