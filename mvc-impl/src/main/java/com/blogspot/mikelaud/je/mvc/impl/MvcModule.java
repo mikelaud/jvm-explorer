@@ -1,8 +1,8 @@
-package com.blogspot.mikelaud.je.ui.mvc;
+package com.blogspot.mikelaud.je.mvc.impl;
 
-import com.blogspot.mikelaud.je.ui.api.MvcController;
-import com.blogspot.mikelaud.je.ui.api.MvcModel;
-import com.blogspot.mikelaud.je.ui.api.MvcView;
+import com.blogspot.mikelaud.je.mvc.MvcController;
+import com.blogspot.mikelaud.je.mvc.MvcModel;
+import com.blogspot.mikelaud.je.mvc.MvcView;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;

@@ -1,10 +1,10 @@
-package com.blogspot.mikelaud.je.ui.mvc;
+package com.blogspot.mikelaud.je.mvc.impl;
 
 import com.blogspot.mikelaud.je.core.Core;
 import com.blogspot.mikelaud.je.domain.Domain;
 import com.blogspot.mikelaud.je.domain.types.Type;
-import com.blogspot.mikelaud.je.ui.api.MvcController;
-import com.blogspot.mikelaud.je.ui.api.MvcModel;
+import com.blogspot.mikelaud.je.mvc.MvcController;
+import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.google.inject.Inject;
 
 public class MvcControllerImpl implements MvcController {

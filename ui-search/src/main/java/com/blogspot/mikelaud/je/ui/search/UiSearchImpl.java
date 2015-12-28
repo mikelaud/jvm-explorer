@@ -1,7 +1,7 @@
 package com.blogspot.mikelaud.je.ui.search;
 
 import com.blogspot.mikelaud.je.domain.types.Type;
-import com.blogspot.mikelaud.je.ui.api.MvcController;
+import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
 import com.google.inject.Inject;
 

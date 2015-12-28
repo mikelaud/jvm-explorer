@@ -8,14 +8,14 @@
 		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>ui-api</artifactId>
+	<artifactId>mvc-impl</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>je-core</artifactId>
+			<artifactId>ui-program</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

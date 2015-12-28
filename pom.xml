@@ -13,13 +13,13 @@
 		<module>je-search</module>
 		<module>je-domain</module>
 		<module>je-core</module>
-		<module>ui-api</module>	
+		<module>mvc</module>
 		<module>ui-background</module>
 		<module>ui-search</module>
-		<module>ui-program</module>
-		<module>ui-mvc</module>
-		<module>main</module>
 		<module>ui-code</module>
+		<module>ui-program</module>
+		<module>mvc-impl</module>
+		<module>main</module>
 	</modules>
 
 	<properties>

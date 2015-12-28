@@ -1,6 +1,6 @@
 package com.blogspot.mikelaud.je.ui.program;
 
-import com.blogspot.mikelaud.je.ui.api.MvcController;
+import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.ui.code.UiCode;
 import com.blogspot.mikelaud.je.ui.search.UiSearch;
 import com.google.inject.Inject;

@@ -15,7 +15,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>ui-mvc</artifactId>
+			<artifactId>mvc-impl</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

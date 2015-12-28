@@ -1,6 +1,6 @@
 package com.blogspot.mikelaud.je.ui.background;
 
-import com.blogspot.mikelaud.je.ui.api.MvcController;
+import com.blogspot.mikelaud.je.mvc.MvcController;
 
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Bounds;
