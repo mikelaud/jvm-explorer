@@ -1,7 +1,7 @@
 package com.blogspot.mikelaud.je.ui.mvc;
 
-import com.blogspot.mikelaud.je.ui.MvcView;
-import com.blogspot.mikelaud.je.ui.UiProgram;
+import com.blogspot.mikelaud.je.ui.api.MvcView;
+import com.blogspot.mikelaud.je.ui.api.UiProgram;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 

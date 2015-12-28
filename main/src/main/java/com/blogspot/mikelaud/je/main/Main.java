@@ -1,6 +1,6 @@
 package com.blogspot.mikelaud.je.main;
 
-import com.blogspot.mikelaud.je.ui.MvcView;
+import com.blogspot.mikelaud.je.ui.api.MvcView;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 

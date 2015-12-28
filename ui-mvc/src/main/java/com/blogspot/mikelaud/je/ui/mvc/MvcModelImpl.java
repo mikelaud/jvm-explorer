@@ -2,7 +2,7 @@ package com.blogspot.mikelaud.je.ui.mvc;
 
 import com.blogspot.mikelaud.je.core.Core;
 import com.blogspot.mikelaud.je.domain.Domain;
-import com.blogspot.mikelaud.je.ui.MvcModel;
+import com.blogspot.mikelaud.je.ui.api.MvcModel;
 import com.google.inject.Inject;
 
 public class MvcModelImpl implements MvcModel {

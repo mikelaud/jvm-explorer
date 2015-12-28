@@ -2,7 +2,7 @@ package com.blogspot.mikelaud.je.ui.program;
 
 import java.nio.file.Paths;
 
-import com.blogspot.mikelaud.je.ui.UiProgram;
+import com.blogspot.mikelaud.je.ui.api.UiProgram;
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;

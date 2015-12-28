@@ -1,8 +1,8 @@
 package com.blogspot.mikelaud.je.ui.program;
 
-import com.blogspot.mikelaud.je.ui.MvcController;
-import com.blogspot.mikelaud.je.ui.UiProgram;
-import com.blogspot.mikelaud.je.ui.UiSearch;
+import com.blogspot.mikelaud.je.ui.api.MvcController;
+import com.blogspot.mikelaud.je.ui.api.UiProgram;
+import com.blogspot.mikelaud.je.ui.api.UiSearch;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 public class UiProgramImpl implements UiProgram {
 
-	private final MvcController CTL;
+	private final MvcController CONTROLLER;
 	private final UiProgramConst CONST;
 	private final UiSearch SEARCH;
 	//
@@ -31,7 +31,7 @@ public class UiProgramImpl implements UiProgram {
 	,	@Assisted String[] args
 	,	@Assisted Stage aStage
 	) {
-		CTL = aMvcController;
+		CONTROLLER = aMvcController;
 		CONST = aConst;
 		SEARCH = aSearch;
 		//
@@ -85,7 +85,7 @@ public class UiProgramImpl implements UiProgram {
 	public final void show() {
 		if (! STAGE.isShowing()) {
 			STAGE.show();
-			Platform.runLater(() -> CTL.getCore().setDefaultTypes());
+			Platform.runLater(() -> CONTROLLER.getCore().setDefaultTypes());
 		}
 	}
 	
