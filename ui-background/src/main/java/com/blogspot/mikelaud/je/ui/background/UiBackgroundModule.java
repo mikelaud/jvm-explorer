@@ -6,7 +6,7 @@ import com.google.inject.AbstractModule;
 public class UiBackgroundModule extends AbstractModule {
 
 	@Override
-	protected void configure() {
+	protected final void configure() {
 		bind(UiBackground.class).to(UiBackgroundImpl.class);
 	}
 

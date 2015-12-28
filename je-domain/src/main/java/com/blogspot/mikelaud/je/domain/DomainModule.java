@@ -6,7 +6,7 @@ import com.google.inject.Singleton;
 public class DomainModule extends AbstractModule {
 
 	@Override
-	protected void configure() {
+	protected final void configure() {
 		bind(Domain.class).to(DomainImpl.class).in(Singleton.class);
 	}
 

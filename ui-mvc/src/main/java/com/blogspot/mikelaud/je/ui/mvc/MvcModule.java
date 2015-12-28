@@ -10,7 +10,7 @@ import com.google.inject.assistedinject.FactoryModuleBuilder;
 public class MvcModule extends AbstractModule {
 
 	@Override
-	protected void configure() {
+	protected final void configure() {
 		bind(MvcController.class).to(MvcControllerImpl.class).in(Singleton.class);
 		bind(MvcModel.class).to(MvcModelImpl.class).in(Singleton.class);
 		//

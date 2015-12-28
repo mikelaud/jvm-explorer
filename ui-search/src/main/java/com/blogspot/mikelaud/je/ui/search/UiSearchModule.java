@@ -27,7 +27,7 @@ public class UiSearchModule extends AbstractModule {
 	}
 	
 	@Override
-	protected void configure() {
+	protected final void configure() {
 		configureConst();
 		//
 		bind(UiSearch.class).to(UiSearchImpl.class).in(Singleton.class);

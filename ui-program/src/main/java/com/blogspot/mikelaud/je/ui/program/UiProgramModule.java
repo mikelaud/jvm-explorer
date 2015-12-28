@@ -25,7 +25,7 @@ public class UiProgramModule extends AbstractModule {
 	}
 	
 	@Override
-	protected void configure() {
+	protected final void configure() {
 		configureConst();
 		//
 		install(new FactoryModuleBuilder()
