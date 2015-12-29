@@ -2,6 +2,7 @@ package com.blogspot.mikelaud.je.ui.search;
 
 import com.blogspot.mikelaud.je.domain.types.Type;
 import com.blogspot.mikelaud.je.mvc.MvcController;
+import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
 import com.google.inject.Inject;
 
@@ -23,6 +24,7 @@ import javafx.scene.layout.VBox;
 public class UiSearchImpl implements UiSearch {
 
 	private final MvcController CONTROLLER;
+	private final MvcModel MODEL;
 	private final UiSearchConst CONST;
 	private final UiBackground BACKGROUND;
 	//
@@ -31,11 +33,13 @@ public class UiSearchImpl implements UiSearch {
 	
 	@Inject
 	private UiSearchImpl
-	(	MvcController aMvcController
+	(	MvcController aController
+	,	MvcModel aModel
 	,	UiSearchConst aConst
 	,	UiBackground aBackground
 	) {
-		CONTROLLER = aMvcController;
+		CONTROLLER = aController;
+		MODEL = aModel;
 		CONST = aConst;
 		BACKGROUND = aBackground;
 		//
@@ -95,7 +99,7 @@ public class UiSearchImpl implements UiSearch {
 			}
 		});
 		//
-		BACKGROUND.setImage(CONST.getBackgroundImage());
+		BACKGROUND.setImage(MODEL.getImage(CONST.getBackgroundImage()));
 		BACKGROUND.getPane().getChildren().add(listView);
 		return BACKGROUND.getPane();
 	}
@@ -103,7 +107,7 @@ public class UiSearchImpl implements UiSearch {
 	private Node createBottom() {
 		Label locationLabel = new Label();
 		locationLabel.textProperty().bind(CONTROLLER.getDomain().takeTypesSource());
-		locationLabel.setGraphic(new ImageView(CONST.getPackageIcon()));
+		locationLabel.setGraphic(new ImageView(MODEL.getImage(CONST.getPackageIcon())));
 		locationLabel.setBorder(new TextField().getBorder());
 		//
 		VBox bottom = new VBox(locationLabel);

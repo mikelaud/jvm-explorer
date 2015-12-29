@@ -1,6 +1,7 @@
 package com.blogspot.mikelaud.je.ui.background;
 
 import com.blogspot.mikelaud.je.mvc.MvcController;
+import com.google.inject.Inject;
 
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Bounds;
@@ -81,8 +82,9 @@ public class UiBackgroundImpl implements UiBackground {
 		IMAGE_VIEW.fitHeightProperty().bind(IMAGE_PANE.heightProperty());
 	}
 
-	public UiBackgroundImpl(MvcController aMvcController) {
-		CONTROLLER = aMvcController;
+	@Inject
+	private UiBackgroundImpl(MvcController aController) {
+		CONTROLLER = aController;
 		//
 		IMAGE_VIEW = new ImageView();
 		IMAGE_PANE = new Pane();

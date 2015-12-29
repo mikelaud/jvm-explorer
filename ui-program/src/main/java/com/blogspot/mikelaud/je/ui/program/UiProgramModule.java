@@ -1,18 +1,17 @@
 package com.blogspot.mikelaud.je.ui.program;
 
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
-import javafx.scene.image.Image;
-
 public class UiProgramModule extends AbstractModule {
 
 	private void configureConst() {
 		bindConstant().annotatedWith(UiProgramConst.ProgramTitle.class).to("JVM Explorer");
-		bind(Image.class).annotatedWith(UiProgramConst.ProgramIcon.class).toInstance(new Image(Paths.get("program.png").toString()));
+		bind(Path.class).annotatedWith(UiProgramConst.ProgramIcon.class).toInstance(Paths.get("program.png"));
 		//
 		bindConstant().annotatedWith(UiProgramConst.ScaleWidth.class).to(4.0d);
 		bindConstant().annotatedWith(UiProgramConst.ScaleHeight.class).to(4.0d);

@@ -1,13 +1,13 @@
 package com.blogspot.mikelaud.je.ui.search;
 
-import com.google.inject.Inject;
+import java.nio.file.Path;
 
-import javafx.scene.image.Image;
+import com.google.inject.Inject;
 
 public class UiSearchConstImpl implements UiSearchConst {
 
-	private final Image BACKGROUND_IMAGE;
-	private final Image PACKAGE_ICON;
+	private final Path BACKGROUND_IMAGE;
+	private final Path PACKAGE_ICON;
 	//
 	private final String SEARCH_LABEL;
 	private final String MATCHING_LABEL;
@@ -18,8 +18,8 @@ public class UiSearchConstImpl implements UiSearchConst {
 	
 	@Inject
 	private UiSearchConstImpl
-	(	@UiSearchConst.BackgroundImage Image aBackgroundImage
-	,	@UiSearchConst.PackageIcon Image aPackageIcon
+	(	@UiSearchConst.BackgroundImage Path aBackgroundImage
+	,	@UiSearchConst.PackageIcon Path aPackageIcon
 	//
 	,	@UiSearchConst.SearchLabel String aSearchLabel
 	,	@UiSearchConst.MatchingLabel String aMatchingLabel
@@ -39,8 +39,8 @@ public class UiSearchConstImpl implements UiSearchConst {
 		PADDING = aPadding;
 	}
 	
-	@Override public final Image getBackgroundImage() { return BACKGROUND_IMAGE; }
-	@Override public final Image getPackageIcon() { return PACKAGE_ICON; }
+	@Override public final Path getBackgroundImage() { return BACKGROUND_IMAGE; }
+	@Override public final Path getPackageIcon() { return PACKAGE_ICON; }
 	//
 	@Override public final String getSearchLabel() { return SEARCH_LABEL; }
 	@Override public final String getMatchingLabel() { return MATCHING_LABEL; }

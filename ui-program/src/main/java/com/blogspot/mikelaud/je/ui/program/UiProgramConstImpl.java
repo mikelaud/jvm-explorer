@@ -1,13 +1,13 @@
 package com.blogspot.mikelaud.je.ui.program;
 
-import com.google.inject.Inject;
+import java.nio.file.Path;
 
-import javafx.scene.image.Image;
+import com.google.inject.Inject;
 
 public class UiProgramConstImpl implements UiProgramConst {
 
 	private final String PROGRAM_TITLE;
-	private final Image PROGRAM_ICON;
+	private final Path PROGRAM_ICON;
 	//
 	private final double SCALE_WIDTH;
 	private final double SCALE_HEIGHT;
@@ -17,7 +17,7 @@ public class UiProgramConstImpl implements UiProgramConst {
 	@Inject
 	private UiProgramConstImpl
 	(	@UiProgramConst.ProgramTitle String aProgramTitle
-	,	@UiProgramConst.ProgramIcon Image aProgramIcon
+	,	@UiProgramConst.ProgramIcon Path aProgramIcon
 	//
 	,	@UiProgramConst.ScaleWidth double aScaleWidth
 	,	@UiProgramConst.ScaleHeight double aScaleHeight
@@ -34,7 +34,7 @@ public class UiProgramConstImpl implements UiProgramConst {
 	}
 	
 	@Override public final String getProgramTitle() { return PROGRAM_TITLE; }
-	@Override public final Image getProgramIcon() { return PROGRAM_ICON; }
+	@Override public final Path getProgramIcon() { return PROGRAM_ICON; }
 	//
 	@Override public final double getScaleWidth() { return SCALE_WIDTH; }
 	@Override public final double getScaleHeight() { return SCALE_HEIGHT; }

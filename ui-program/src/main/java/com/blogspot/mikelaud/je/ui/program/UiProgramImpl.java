@@ -1,6 +1,7 @@
 package com.blogspot.mikelaud.je.ui.program;
 
 import com.blogspot.mikelaud.je.mvc.MvcController;
+import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.code.UiCode;
 import com.blogspot.mikelaud.je.ui.search.UiSearch;
 import com.google.inject.Inject;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 public class UiProgramImpl implements UiProgram {
 
 	private final MvcController CONTROLLER;
+	private final MvcModel MODEL;
 	private final UiProgramConst CONST;
 	private final UiSearch SEARCH;
 	private final UiCode CODE;
@@ -26,14 +28,15 @@ public class UiProgramImpl implements UiProgram {
 	
 	@Inject
 	private UiProgramImpl
-	(	MvcController aMvcController
+	(	MvcController aController
+	,	MvcModel aModel
 	,	UiProgramConst aConst
 	,	UiSearch aSearch
 	,	UiCode aCode
-	,	@Assisted String[] args
 	,	@Assisted Stage aStage
 	) {
-		CONTROLLER = aMvcController;
+		CONTROLLER = aController;
+		MODEL = aModel;
 		CONST = aConst;
 		SEARCH = aSearch;
 		CODE = aCode;
@@ -53,7 +56,7 @@ public class UiProgramImpl implements UiProgram {
 	private void buildStage() {
 		STAGE.setScene(SCENE);
 		STAGE.setTitle(CONST.getProgramTitle());
-		STAGE.getIcons().setAll(CONST.getProgramIcon());
+		STAGE.getIcons().setAll(MODEL.getImage(CONST.getProgramIcon()));
 		STAGE.fullScreenExitHintProperty().setValue(CONST.getEmptyHint());
 		//
 		Rectangle2D visualBounds = createVisualBounds();
