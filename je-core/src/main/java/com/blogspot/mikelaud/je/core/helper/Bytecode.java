@@ -4,7 +4,7 @@ import java.io.InputStream;
 
 import org.objectweb.asm.ClassReader;
 
-import com.blogspot.mikelaud.je.domain.types.Type;
+import com.blogspot.mikelaud.je.domain.pojo.Type;
 import com.blogspot.mikelaud.je.utils.Bytes;
 
 public class Bytecode {

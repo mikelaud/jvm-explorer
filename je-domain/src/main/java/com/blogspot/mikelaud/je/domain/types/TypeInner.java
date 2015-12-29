@@ -5,14 +5,14 @@ public enum TypeInner {
 	No("non_inner"),
 	Yes("inner");
 	
-	private final String LABEL;
+	private final String PATH;
 	
-	private TypeInner(String aLabel) {
-		LABEL = aLabel;
+	private TypeInner(String aPath) {
+		PATH = aPath;
 	}
 
-	public String getLabel() {
-		return LABEL;
+	public final String getPath() {
+		return PATH;
 	}
 	
 }

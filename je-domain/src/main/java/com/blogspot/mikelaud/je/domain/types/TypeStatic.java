@@ -5,14 +5,14 @@ public enum TypeStatic {
 	No("non_static"),
 	Yes("static");
 	
-	private final String LABEL;
+	private final String PATH;
 	
-	private TypeStatic(String aLabel) {
-		LABEL = aLabel;
+	private TypeStatic(String aPath) {
+		PATH = aPath;
 	}
 
-	public String getLabel() {
-		return LABEL;
+	public final String getPath() {
+		return PATH;
 	}
 	
 }

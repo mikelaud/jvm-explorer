@@ -2,7 +2,7 @@ package com.blogspot.mikelaud.je.domain;
 
 import java.util.Collection;
 
-import com.blogspot.mikelaud.je.domain.types.Type;
+import com.blogspot.mikelaud.je.domain.pojo.Type;
 import com.blogspot.mikelaud.je.utils.StringUtils;
 import com.google.inject.Inject;
 

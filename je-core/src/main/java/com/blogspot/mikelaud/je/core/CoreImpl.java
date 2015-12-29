@@ -10,7 +10,7 @@ import java.util.zip.ZipInputStream;
 
 import com.blogspot.mikelaud.je.core.helper.Bytecode;
 import com.blogspot.mikelaud.je.domain.Domain;
-import com.blogspot.mikelaud.je.domain.types.Type;
+import com.blogspot.mikelaud.je.domain.pojo.Type;
 import com.google.inject.Inject;
 
 public class CoreImpl implements Core {

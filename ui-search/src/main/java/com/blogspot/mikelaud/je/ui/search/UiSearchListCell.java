@@ -1,6 +1,6 @@
 package com.blogspot.mikelaud.je.ui.search;
 
-import com.blogspot.mikelaud.je.domain.types.Type;
+import com.blogspot.mikelaud.je.domain.pojo.Type;
 import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
 import com.blogspot.mikelaud.je.domain.types.TypeModifier;
 import com.blogspot.mikelaud.je.domain.types.TypeStatic;

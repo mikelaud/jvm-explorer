@@ -2,7 +2,7 @@ package com.blogspot.mikelaud.je.domain;
 
 import java.util.Collection;
 
-import com.blogspot.mikelaud.je.domain.types.Type;
+import com.blogspot.mikelaud.je.domain.pojo.Type;
 
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;

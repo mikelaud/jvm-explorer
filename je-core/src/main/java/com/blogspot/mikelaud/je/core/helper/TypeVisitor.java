@@ -7,8 +7,8 @@ import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import com.blogspot.mikelaud.je.domain.types.Method;
-import com.blogspot.mikelaud.je.domain.types.Type;
+import com.blogspot.mikelaud.je.domain.pojo.Method;
+import com.blogspot.mikelaud.je.domain.pojo.Type;
 import com.blogspot.mikelaud.je.domain.types.TypeInner;
 
 public class TypeVisitor extends ClassVisitor {

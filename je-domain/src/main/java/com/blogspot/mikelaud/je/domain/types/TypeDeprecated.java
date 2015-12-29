@@ -2,17 +2,17 @@ package com.blogspot.mikelaud.je.domain.types;
 
 public enum TypeDeprecated {
 	
-	No("normal"),
+	No("non_deprecated"),
 	Yes("deprecated");
 	
-	private final String LABEL;
+	private final String PATH;
 	
-	private TypeDeprecated(String aLabel) {
-		LABEL = aLabel;
+	private TypeDeprecated(String aPath) {
+		PATH = aPath;
 	}
 
-	public String getLabel() {
-		return LABEL;
+	public final String getPath() {
+		return PATH;
 	}
-	
+
 }

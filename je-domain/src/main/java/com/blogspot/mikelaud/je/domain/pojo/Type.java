@@ -1,7 +1,14 @@
-package com.blogspot.mikelaud.je.domain.types;
+package com.blogspot.mikelaud.je.domain.pojo;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.blogspot.mikelaud.je.domain.types.TypeAccess;
+import com.blogspot.mikelaud.je.domain.types.TypeDeprecated;
+import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
+import com.blogspot.mikelaud.je.domain.types.TypeInner;
+import com.blogspot.mikelaud.je.domain.types.TypeStatic;
+import com.blogspot.mikelaud.je.domain.types.TypeType;
 
 public class Type {
 	

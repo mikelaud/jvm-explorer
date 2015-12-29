@@ -1,4 +1,6 @@
-package com.blogspot.mikelaud.je.domain.types;
+package com.blogspot.mikelaud.je.domain.pojo;
+
+import com.blogspot.mikelaud.je.domain.types.MethodAccess;
 
 public class Method {
 
