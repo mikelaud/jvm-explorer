@@ -15,12 +15,17 @@ import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.resources.UiResources;
 import com.google.inject.Inject;
 
+import javafx.application.Application.Parameters;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public class MvcModelImpl implements MvcModel {
 
 	private final Core CORE;
 	private final UiResources RESOURCES;
+	//
+	private Parameters mParameters;
+	private Stage mStage;
 	
 	@Inject
 	private MvcModelImpl
@@ -29,17 +34,19 @@ public class MvcModelImpl implements MvcModel {
 	) {
 		CORE = aCore;
 		RESOURCES = aResources;
+		//
+		mParameters = null;
+		mStage = null;
 	}
 
-	@Override
-	public final Domain getDomain() {
-		return CORE.getDomain();
-	}
+	@Override public final Domain getDomain() { return CORE.getDomain(); }
+	@Override public final Core getCore() { return CORE; }
 
-	@Override
-	public final Core getCore() {
-		return CORE;
-	}
+	@Override public void setParameters(Parameters aParameters) { mParameters = aParameters; }
+	@Override public Parameters getParameters() { return mParameters; }
+
+	@Override public void setStage(Stage aStage) { mStage = aStage; }
+	@Override public Stage getStage() { return mStage; }
 
 	@Override
 	public final Image getImage(Path aPath) {

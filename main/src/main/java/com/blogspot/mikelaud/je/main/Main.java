@@ -1,16 +1,25 @@
 package com.blogspot.mikelaud.je.main;
 
-import com.blogspot.mikelaud.je.mvc.MvcView;
+import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
-public class Main {
+import javafx.application.Application;
+import javafx.stage.Stage;
+
+public class Main extends Application {
+
+	@Override
+	public void start(Stage aStage) throws Exception {
+		Injector injector = Guice.createInjector(new MainModule());
+		MvcController controller = injector.getInstance(MvcController.class);
+		controller.getModel().setParameters(getParameters());
+		controller.getModel().setStage(aStage);
+		controller.showApplication();
+	}
 
 	public static void main(String[] args) {
-		Injector injector = Guice.createInjector(new MainModule());
-		MvcView.Factory factory = injector.getInstance(MvcView.Factory.class);
-		MvcView view = factory.create(args);
-		view.show();
+		Application.launch(args);
 	}
 
 }

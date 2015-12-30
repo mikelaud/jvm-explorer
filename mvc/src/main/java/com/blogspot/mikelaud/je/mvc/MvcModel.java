@@ -11,12 +11,20 @@ import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
 import com.blogspot.mikelaud.je.domain.types.TypeStatic;
 import com.blogspot.mikelaud.je.domain.types.TypeType;
 
+import javafx.application.Application.Parameters;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
 
 public interface MvcModel {
 
 	Domain getDomain();
 	Core getCore();
+	//
+	void setParameters(Parameters aParameters);
+	Parameters getParameters();
+	//
+	void setStage(Stage aStage);
+	Stage getStage();
 	//
 	Image getImage(Path aPath);
 	Image getImage(MethodAccess aAccess);

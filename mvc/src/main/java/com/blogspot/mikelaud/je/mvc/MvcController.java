@@ -10,6 +10,7 @@ public interface MvcController {
 	Core getCore(); 
 	MvcModel getModel();
 	//
+	void showApplication();
 	void showTypeCode(Type aType);
 	
 }

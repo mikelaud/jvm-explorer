@@ -5,7 +5,6 @@ import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.code.UiCode;
 import com.blogspot.mikelaud.je.ui.search.UiSearch;
 import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -32,7 +31,6 @@ public class UiProgramImpl implements UiProgram {
 	,	UiProgramConst aConst
 	,	UiSearch aSearch
 	,	UiCode aCode
-	,	@Assisted Stage aStage
 	) {
 		CONTROLLER = aController;
 		MODEL = CONTROLLER.getModel();
@@ -42,7 +40,7 @@ public class UiProgramImpl implements UiProgram {
 		//
 		PANE = new SplitPane();
 		SCENE = new Scene(PANE);
-		STAGE = aStage;
+		STAGE = MODEL.getStage();
 		//
 		buildePane();
 	}

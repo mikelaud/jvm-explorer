@@ -5,15 +5,20 @@ import com.blogspot.mikelaud.je.domain.Domain;
 import com.blogspot.mikelaud.je.domain.pojo.Type;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
+import com.blogspot.mikelaud.je.mvc.MvcView;
 import com.google.inject.Inject;
 
 public class MvcControllerImpl implements MvcController {
 
 	private final MvcModel MODEL;
+	private final MvcView VIEW;
 	
 	@Inject
-	private MvcControllerImpl(MvcModel aModel) {
+	private MvcControllerImpl
+	(	MvcModel aModel
+	,	MvcView aView) {
 		MODEL = aModel;
+		VIEW = aView;
 	}
 
 	@Override
@@ -29,6 +34,11 @@ public class MvcControllerImpl implements MvcController {
 	@Override
 	public final MvcModel getModel() {
 		return MODEL;
+	}
+
+	@Override
+	public void showApplication() {
+		VIEW.show();
 	}
 
 	@Override

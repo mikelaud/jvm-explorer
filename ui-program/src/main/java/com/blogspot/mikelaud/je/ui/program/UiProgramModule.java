@@ -5,7 +5,6 @@ import java.nio.file.Paths;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 public class UiProgramModule extends AbstractModule {
 
@@ -26,9 +25,7 @@ public class UiProgramModule extends AbstractModule {
 	protected final void configure() {
 		configureConst();
 		//
-		install(new FactoryModuleBuilder()
-			.implement(UiProgram.class, UiProgramImpl.class)
-			.build(UiProgram.Factory.class));
+		bind(UiProgram.class).to(UiProgramImpl.class).in(Singleton.class);
 	}
 
 }
