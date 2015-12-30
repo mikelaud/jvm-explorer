@@ -41,8 +41,10 @@ public class MvcControllerImpl implements MvcController {
 
 	@Override
 	public void showApplication() {
-		mView = VIEW_PROVIDER.get();
-		mView.show();
+		if (null == mView) {
+			mView = VIEW_PROVIDER.get();
+			mView.show();
+		}
 	}
 
 	@Override

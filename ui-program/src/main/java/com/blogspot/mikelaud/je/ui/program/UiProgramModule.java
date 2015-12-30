@@ -12,8 +12,8 @@ public class UiProgramModule extends AbstractModule {
 		bindConstant().annotatedWith(UiProgramConst.ProgramTitle.class).to("JVM Explorer");
 		bind(Path.class).annotatedWith(UiProgramConst.ProgramIcon.class).toInstance(Paths.get("program.png"));
 		//
-		bindConstant().annotatedWith(UiProgramConst.ScaleWidth.class).to(4.0d);
-		bindConstant().annotatedWith(UiProgramConst.ScaleHeight.class).to(4.0d);
+		bindConstant().annotatedWith(UiProgramConst.ScaleWidth.class).to(2.0d);
+		bindConstant().annotatedWith(UiProgramConst.ScaleHeight.class).to(2.0d);
 		//
 		bindConstant().annotatedWith(UiProgramConst.EmptyHint.class).to("");
 		//
