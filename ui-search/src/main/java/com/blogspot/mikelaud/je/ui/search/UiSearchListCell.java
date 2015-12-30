@@ -6,8 +6,6 @@ import com.blogspot.mikelaud.je.domain.types.TypeStatic;
 import com.blogspot.mikelaud.je.domain.types.TypeType;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -22,10 +20,6 @@ import javafx.scene.text.FontWeight;
 
 public class UiSearchListCell extends ListCell<Type> {
 
-	public interface Factory {
-		UiSearchListCell create(TextField aSearchField);
-	}
-	
 	private final MvcController CONTROLLER;
 	private final MvcModel MODEL; 
 	//
@@ -68,10 +62,9 @@ public class UiSearchListCell extends ListCell<Type> {
 		}
 	}
 	
-	@Inject
-	private UiSearchListCell
+	public UiSearchListCell
 	(	MvcController aController
-	,	@Assisted TextField aSearchField
+	,	TextField aSearchField
 	) {
 		CONTROLLER = aController;
 		MODEL = CONTROLLER.getModel();

@@ -5,7 +5,6 @@ import java.nio.file.Paths;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
-import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 public class UiSearchModule extends AbstractModule {
 
@@ -30,7 +29,6 @@ public class UiSearchModule extends AbstractModule {
 		configureConst();
 		//
 		bind(UiSearch.class).to(UiSearchImpl.class).in(Singleton.class);
-		install(new FactoryModuleBuilder().build(UiSearchListCell.Factory.class));
 	}
 
 }
