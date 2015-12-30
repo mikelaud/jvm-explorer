@@ -2,15 +2,17 @@ package com.blogspot.mikelaud.je.ui.search;
 
 import com.blogspot.mikelaud.je.domain.pojo.Type;
 import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
-import com.blogspot.mikelaud.je.domain.types.TypeModifier;
 import com.blogspot.mikelaud.je.domain.types.TypeStatic;
 import com.blogspot.mikelaud.je.domain.types.TypeType;
+import com.blogspot.mikelaud.je.mvc.MvcController;
+import com.blogspot.mikelaud.je.mvc.MvcModel;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -20,6 +22,13 @@ import javafx.scene.text.FontWeight;
 
 public class UiSearchListCell extends ListCell<Type> {
 
+	public interface Factory {
+		UiSearchListCell create(TextField aSearchField);
+	}
+	
+	private final MvcController CONTROLLER;
+	private final MvcModel MODEL; 
+	//
 	private final TextField TEXT_FIELD;
 	private final Font FILTER_FONT;
 	private final HBox BOX;
@@ -42,10 +51,8 @@ public class UiSearchListCell extends ListCell<Type> {
 			setGraphic(null);
 		}
 		else {
-			Image image = aType.getAccess().getImage(aType.getType(), aType.getDeprecated());
-			Image image2 = TypeModifier.getImage(aType.getInheritance(), aType.getStatic(), aType.getType());
-			VIEW.setImage(image);
-			VIEW2.setImage(image2);
+			VIEW.setImage(MODEL.getImage(aType.getDeprecated(), aType.getAccess(), aType.getType()));
+			VIEW2.setImage(MODEL.getImage(aType.getStatic(), aType.getInheritance()));
 			String filter = TEXT_FIELD.getText();
 			String text = aType.getName();
 			if (filter.length() >= text.length()) {
@@ -61,7 +68,14 @@ public class UiSearchListCell extends ListCell<Type> {
 		}
 	}
 	
-	public UiSearchListCell(TextField aSearchField) {
+	@Inject
+	private UiSearchListCell
+	(	MvcController aController
+	,	@Assisted TextField aSearchField
+	) {
+		CONTROLLER = aController;
+		MODEL = CONTROLLER.getModel();
+		//
 		TEXT_FIELD = aSearchField;
 		FILTER_FONT = createFilterFont();
 		BOX = new HBox();
@@ -70,12 +84,13 @@ public class UiSearchListCell extends ListCell<Type> {
 		VIEW = new ImageView();
 		VIEW.setVisible(true);
 		VIEW.setCache(true);
-		VIEW.setImage(TypeType.Class.getImage());
+		VIEW.setImage(MODEL.getImage(TypeType.Class));
 		//
 		VIEW2 = new ImageView();
 		VIEW2.setVisible(true);
 		VIEW2.setCache(true);
-		VIEW2.setImage(TypeModifier.getImage(TypeInheritance.No, TypeStatic.No, TypeType.Class));
+		
+		VIEW2.setImage(MODEL.getImage(TypeStatic.No, TypeInheritance.No));
 		//
 		StackPane viewPane = new StackPane(VIEW, VIEW2);
 		viewPane.setAlignment(Pos.TOP_LEFT);

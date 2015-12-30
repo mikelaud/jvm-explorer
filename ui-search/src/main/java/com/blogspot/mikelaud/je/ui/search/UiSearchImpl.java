@@ -27,6 +27,7 @@ public class UiSearchImpl implements UiSearch {
 	private final MvcModel MODEL;
 	private final UiSearchConst CONST;
 	private final UiBackground BACKGROUND;
+	private final UiSearchListCell.Factory LIST_CELL_FACTORY;
 	//
 	private final BorderPane PANE;
 	private final TextField SEARCH_FIELD;
@@ -37,11 +38,13 @@ public class UiSearchImpl implements UiSearch {
 	,	MvcModel aModel
 	,	UiSearchConst aConst
 	,	UiBackground aBackground
+	,	UiSearchListCell.Factory aListCellFactory
 	) {
 		CONTROLLER = aController;
 		MODEL = aModel;
 		CONST = aConst;
 		BACKGROUND = aBackground;
+		LIST_CELL_FACTORY = aListCellFactory;
 		//
 		PANE = new BorderPane();
 		SEARCH_FIELD = new TextField();
@@ -89,7 +92,7 @@ public class UiSearchImpl implements UiSearch {
 		ListView<Type> listView = new ListView<>();
 		listView.setEditable(false);
 		listView.setItems(CONTROLLER.getDomain().getTypesSorted());
-		listView.setCellFactory((tableColumn) -> new UiSearchListCell(SEARCH_FIELD));
+		listView.setCellFactory((tableColumn) -> LIST_CELL_FACTORY.create(SEARCH_FIELD));
 		listView.visibleProperty().bind(Bindings.isNotEmpty(CONTROLLER.getDomain().getTypesFiltered()));
 		//
 		listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Type>() {

@@ -29,14 +29,13 @@ public class UiProgramImpl implements UiProgram {
 	@Inject
 	private UiProgramImpl
 	(	MvcController aController
-	,	MvcModel aModel
 	,	UiProgramConst aConst
 	,	UiSearch aSearch
 	,	UiCode aCode
 	,	@Assisted Stage aStage
 	) {
 		CONTROLLER = aController;
-		MODEL = aModel;
+		MODEL = CONTROLLER.getModel();
 		CONST = aConst;
 		SEARCH = aSearch;
 		CODE = aCode;
