@@ -7,18 +7,21 @@ import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.mvc.MvcView;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 public class MvcControllerImpl implements MvcController {
 
 	private final MvcModel MODEL;
-	private final MvcView VIEW;
-	
+	private final Provider<MvcView> VIEW_PROVIDER;
+	private MvcView mView;
+
 	@Inject
 	private MvcControllerImpl
 	(	MvcModel aModel
-	,	MvcView aView) {
+	,	Provider<MvcView> aViewProvider) {
 		MODEL = aModel;
-		VIEW = aView;
+		VIEW_PROVIDER = aViewProvider;
+		mView = null;
 	}
 
 	@Override
@@ -38,7 +41,8 @@ public class MvcControllerImpl implements MvcController {
 
 	@Override
 	public void showApplication() {
-		VIEW.show();
+		mView = VIEW_PROVIDER.get();
+		mView.show();
 	}
 
 	@Override

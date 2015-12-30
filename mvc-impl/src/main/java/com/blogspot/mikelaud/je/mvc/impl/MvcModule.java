@@ -10,9 +10,9 @@ public class MvcModule extends AbstractModule {
 
 	@Override
 	protected final void configure() {
+		bind(MvcModel.class).to(MvcModelImpl.class).in(Singleton.class);
 		bind(MvcView.class).to(MvcViewImpl.class).in(Singleton.class);
 		bind(MvcController.class).to(MvcControllerImpl.class).in(Singleton.class);
-		bind(MvcModel.class).to(MvcModelImpl.class).in(Singleton.class);
 	}
 
 }
