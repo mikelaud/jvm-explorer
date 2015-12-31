@@ -11,6 +11,6 @@ public interface MvcController {
 	MvcModel getModel();
 	//
 	void showApplication();
-	void showTypeCode(Type aType);
+	void showCode(Type aType);
 	
 }

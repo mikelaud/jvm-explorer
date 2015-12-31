@@ -1,11 +1,10 @@
 package com.blogspot.mikelaud.je.mvc;
 
+import com.blogspot.mikelaud.je.domain.pojo.Type;
+
 public interface MvcView {
 
-	interface Factory {
-		MvcView create(MvcController aController);
-	}
-	
 	void show();
+	void showCode(Type aType);
 	
 }

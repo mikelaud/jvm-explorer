@@ -10,7 +10,7 @@ public class UiSearchModule extends AbstractModule {
 
 	private void configureConst() {
 		//
-		bind(Path.class).annotatedWith(UiSearchConst.BackgroundImage.class).toInstance(Paths.get("background", "type.jpg"));
+		bind(Path.class).annotatedWith(UiSearchConst.BackgroundImage.class).toInstance(Paths.get("background", "search.jpg"));
 		bind(Path.class).annotatedWith(UiSearchConst.PackageIcon.class).toInstance(Paths.get("library.png"));
 		//
 		bindConstant().annotatedWith(UiSearchConst.SearchLabel.class).to("Enter type name prefix or pattern (*, ?, or camel case):");

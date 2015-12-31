@@ -95,7 +95,7 @@ public class UiSearchImpl implements UiSearch {
 		listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Type>() {
 			@Override
 			public void changed(ObservableValue<? extends Type> observable, Type oldValue, Type newValue) {
-				CONTROLLER.showTypeCode(newValue);
+				CONTROLLER.showCode(newValue);
 			}
 		});
 		//

@@ -40,7 +40,7 @@ public class MvcControllerImpl implements MvcController {
 	}
 
 	@Override
-	public void showApplication() {
+	public final void showApplication() {
 		if (null == mView) {
 			mView = VIEW_PROVIDER.get();
 			mView.show();
@@ -48,8 +48,10 @@ public class MvcControllerImpl implements MvcController {
 	}
 
 	@Override
-	public void showTypeCode(Type aType) {
-		// TODO Auto-generated method stub	
+	public final void showCode(Type aType) {
+		if (null != mView) {
+			mView.showCode(aType);
+		}
 	}
 	
 }
