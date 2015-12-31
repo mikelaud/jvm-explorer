@@ -77,7 +77,6 @@ public class UiCodeImpl implements UiCode {
 	private void buildForm() {
 		PANE.setCenter(createCenter());
 		//
-		BorderPane.setMargin(PANE.getCenter(), new Insets(CONST.getSpacing(), 0, CONST.getSpacing(), 0));
 		PANE.setPadding(new Insets(CONST.getPadding(), CONST.getPadding(), CONST.getPadding(), CONST.getPadding()));
 	}
 	
