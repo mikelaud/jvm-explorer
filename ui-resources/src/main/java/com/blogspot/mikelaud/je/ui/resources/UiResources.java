@@ -8,6 +8,4 @@ public interface UiResources {
 
 	Image getImage(Path aPath);
 	
-	void load();
-	
 }

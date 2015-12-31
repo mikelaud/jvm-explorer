@@ -72,7 +72,7 @@ public class MvcModelImpl implements MvcModel {
 	@Override
 	public final Image getImage(TypeStatic aStatic, TypeInheritance aInheritance) {
 		final String fileName = aInheritance.getPath().concat(".png");
-		final Path fileDir = Paths.get("type", "modifier", "combo");
+		final Path fileDir = Paths.get("type", "modifier", "combo", aStatic.getPath());
 		final Path filePath = fileDir.resolve(fileName); 
 		return getImage(filePath);
 	}
