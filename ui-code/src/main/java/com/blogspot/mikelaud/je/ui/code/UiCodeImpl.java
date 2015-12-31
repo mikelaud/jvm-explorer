@@ -175,7 +175,8 @@ public class UiCodeImpl implements UiCode {
 			List<Node> nodes = new ArrayList<>();
 			//
 			nodes.add(newKeyword("package"));
-			nodes.add(newEnd(aType.getPackageName() + ";"));
+			nodes.add(newLink(aType.getPackageName()));
+			nodes.add(newEnd(";"));
 			nodes.add(newEnd());
 			//
 			nodes.add(newKeyword(aType.getAccess().getCode()));
