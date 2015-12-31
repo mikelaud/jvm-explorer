@@ -107,6 +107,10 @@ public class UiCodeImpl implements UiCode {
 		return text;
 	}
 	
+	private Text newEnd() {
+		return newEnd("");
+	}
+	
 	private Hyperlink newLink(String aText) {
 		Hyperlink link = new Hyperlink(aText);
 		link.setFont(FONT_DEFAULT);
@@ -168,9 +172,11 @@ public class UiCodeImpl implements UiCode {
 			});
 			methods.addAll(aType.getMethods());
 			//
-			CODE_PANE.setVisible(true);
-			//MODEL.setType(aType);
 			List<Node> nodes = new ArrayList<>();
+			//
+			nodes.add(newKeyword("package"));
+			nodes.add(newEnd(aType.getPackageName() + ";"));
+			nodes.add(newEnd());
 			//
 			nodes.add(newKeyword(aType.getAccess().getCode()));
 			nodes.add(newKeyword(aType.getType().getCode()));
@@ -199,6 +205,7 @@ public class UiCodeImpl implements UiCode {
 			nodes.add(newEnd("}"));		
 			//
 			CODE.getChildren().setAll(nodes);
+			CODE_PANE.setVisible(true);
 		}
 	}
 	
