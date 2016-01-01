@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import com.blogspot.mikelaud.je.domain.pojo.DomainMethod;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.domain.types.MethodAccess;
+import com.blogspot.mikelaud.je.domain.types.TypeAccess;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
@@ -87,7 +88,6 @@ public class UiCodeImpl implements UiCode {
 		return text;
 	}
 
-	@SuppressWarnings("unused")
 	private Text newCode(String aText) {
 		Text text = new Text(aText + " ");
 		text.setFont(FONT_DEFAULT);
@@ -178,7 +178,9 @@ public class UiCodeImpl implements UiCode {
 			nodes.add(newEnd(";"));
 			nodes.add(newEnd());
 			//
-			nodes.add(newKeyword(aType.getAccess().getCode()));
+			if (TypeAccess.Default != aType.getAccess()) {
+				nodes.add(newKeyword(aType.getAccess().getCode()));
+			}
 			nodes.add(newKeyword(aType.getType().getCode()));
 			nodes.add(newLink(aType.getName()));
 			nodes.add(newEnd(" {"));
@@ -196,7 +198,9 @@ public class UiCodeImpl implements UiCode {
 						nodes.add(newEnd(""));
 					}
 					nodes.add(newTab());
-					nodes.add(newKeyword(access.getCode()));
+					if (MethodAccess.Default != access) {
+						nodes.add(newKeyword(access.getCode()));
+					}
 					nodes.add(newCode(method.getReturnType().toString()));
 					nodes.add(newLink(method.getName() + "()"));
 					nodes.add(newEnd(";"));
