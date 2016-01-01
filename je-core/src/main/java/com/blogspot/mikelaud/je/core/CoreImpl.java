@@ -10,7 +10,7 @@ import java.util.zip.ZipInputStream;
 
 import com.blogspot.mikelaud.je.core.helper.Bytecode;
 import com.blogspot.mikelaud.je.domain.Domain;
-import com.blogspot.mikelaud.je.domain.pojo.Type;
+import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.google.inject.Inject;
 
 public class CoreImpl implements Core {
@@ -47,8 +47,8 @@ public class CoreImpl implements Core {
 		return javaHome.resolve(javaJar);
 	}
 
-	private List<Type> getJarTypes() {
-		List<Type> types = new ArrayList<>();
+	private List<DomainType> getJarTypes() {
+		List<DomainType> types = new ArrayList<>();
 		try {
 			Bytecode bytecode = new Bytecode();
 			try (ZipInputStream zip = new ZipInputStream(new FileInputStream(getJavaJar().toFile()))) {

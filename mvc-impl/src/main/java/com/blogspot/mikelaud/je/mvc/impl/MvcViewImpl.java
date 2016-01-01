@@ -1,6 +1,6 @@
 package com.blogspot.mikelaud.je.mvc.impl;
 
-import com.blogspot.mikelaud.je.domain.pojo.Type;
+import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcView;
 import com.blogspot.mikelaud.je.ui.program.UiProgram;
@@ -27,7 +27,7 @@ public class MvcViewImpl implements MvcView {
 	}
 
 	@Override
-	public final void showCode(Type aType) {
+	public final void showCode(DomainType aType) {
 		PROGRAM.showCode(aType);
 	}
 	

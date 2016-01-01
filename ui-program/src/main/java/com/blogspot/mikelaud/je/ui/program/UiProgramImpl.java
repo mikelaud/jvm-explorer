@@ -1,6 +1,6 @@
 package com.blogspot.mikelaud.je.ui.program;
 
-import com.blogspot.mikelaud.je.domain.pojo.Type;
+import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.code.UiCode;
@@ -94,7 +94,7 @@ public class UiProgramImpl implements UiProgram {
 	}
 	
 	@Override
-	public final void showCode(Type aType) {
+	public final void showCode(DomainType aType) {
 		CODE.setType(aType);
 	}
 }

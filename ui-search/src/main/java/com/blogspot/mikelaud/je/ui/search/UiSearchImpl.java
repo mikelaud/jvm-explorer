@@ -1,6 +1,6 @@
 package com.blogspot.mikelaud.je.ui.search;
 
-import com.blogspot.mikelaud.je.domain.pojo.Type;
+import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
@@ -86,15 +86,15 @@ public class UiSearchImpl implements UiSearch {
 	}
 	
 	private Node createCenter() {
-		ListView<Type> listView = new ListView<>();
+		ListView<DomainType> listView = new ListView<>();
 		listView.setEditable(false);
 		listView.setItems(CONTROLLER.getDomain().getTypesSorted());
 		listView.setCellFactory((tableColumn) -> new UiSearchListCell(CONTROLLER, SEARCH_FIELD));
 		listView.visibleProperty().bind(Bindings.isNotEmpty(CONTROLLER.getDomain().getTypesFiltered()));
 		//
-		listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Type>() {
+		listView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<DomainType>() {
 			@Override
-			public void changed(ObservableValue<? extends Type> observable, Type oldValue, Type newValue) {
+			public void changed(ObservableValue<? extends DomainType> observable, DomainType oldValue, DomainType newValue) {
 				CONTROLLER.showCode(newValue);
 			}
 		});

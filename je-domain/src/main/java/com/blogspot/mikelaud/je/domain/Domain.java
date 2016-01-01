@@ -2,7 +2,7 @@ package com.blogspot.mikelaud.je.domain;
 
 import java.util.Collection;
 
-import com.blogspot.mikelaud.je.domain.pojo.Type;
+import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 
 import javafx.beans.property.StringProperty;
 import javafx.collections.ObservableList;
@@ -15,9 +15,9 @@ public interface Domain {
 	String getTypesSource();
 	StringProperty takeTypesSource();
 	//
-	void setTypes(Collection<Type> aTypes);
-	ObservableList<Type> getTypes();
-	FilteredList<Type> getTypesFiltered();
-	SortedList<Type> getTypesSorted();
+	void setTypes(Collection<DomainType> aTypes);
+	ObservableList<DomainType> getTypes();
+	FilteredList<DomainType> getTypesFiltered();
+	SortedList<DomainType> getTypesSorted();
 	
 }

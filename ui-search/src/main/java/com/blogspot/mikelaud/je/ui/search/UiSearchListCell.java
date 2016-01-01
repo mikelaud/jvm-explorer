@@ -1,6 +1,6 @@
 package com.blogspot.mikelaud.je.ui.search;
 
-import com.blogspot.mikelaud.je.domain.pojo.Type;
+import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
 import com.blogspot.mikelaud.je.domain.types.TypeStatic;
 import com.blogspot.mikelaud.je.domain.types.TypeType;
@@ -18,7 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-public class UiSearchListCell extends ListCell<Type> {
+public class UiSearchListCell extends ListCell<DomainType> {
 
 	private final MvcController CONTROLLER;
 	private final MvcModel MODEL; 
@@ -39,7 +39,7 @@ public class UiSearchListCell extends ListCell<Type> {
 	}
 	
 	@Override
-	protected void updateItem(Type aType, boolean aEmpty) {
+	protected void updateItem(DomainType aType, boolean aEmpty) {
 		super.updateItem(aType, aEmpty);
 		if (aEmpty) {
 			setGraphic(null);

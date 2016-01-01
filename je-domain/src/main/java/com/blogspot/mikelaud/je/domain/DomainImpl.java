@@ -2,7 +2,7 @@ package com.blogspot.mikelaud.je.domain;
 
 import java.util.Collection;
 
-import com.blogspot.mikelaud.je.domain.pojo.Type;
+import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.utils.StringUtils;
 import com.google.inject.Inject;
 
@@ -17,9 +17,9 @@ public class DomainImpl implements Domain {
 
 	private final StringProperty TYPES_SOURCE;
 	//
-	private final ObservableList<Type> TYPES;
-	private final FilteredList<Type> TYPES_FILTERED;
-	private final SortedList<Type> TYPES_SORTED;
+	private final ObservableList<DomainType> TYPES;
+	private final FilteredList<DomainType> TYPES_FILTERED;
+	private final SortedList<DomainType> TYPES_SORTED;
 	
 	@Inject
 	private DomainImpl() {
@@ -35,7 +35,7 @@ public class DomainImpl implements Domain {
 	@Override public final StringProperty takeTypesSource() { return TYPES_SOURCE; }
 
 	@Override
-	public final void setTypes(Collection<Type> aTypes) {
+	public final void setTypes(Collection<DomainType> aTypes) {
 		if (null == aTypes) {
 			TYPES.clear();
 		}
@@ -44,8 +44,8 @@ public class DomainImpl implements Domain {
 		}
 	}
 	
-	@Override public final ObservableList<Type> getTypes() { return TYPES; }
-	@Override public final FilteredList<Type> getTypesFiltered() { return TYPES_FILTERED; }
-	@Override public final SortedList<Type> getTypesSorted() { return TYPES_SORTED; }
+	@Override public final ObservableList<DomainType> getTypes() { return TYPES; }
+	@Override public final FilteredList<DomainType> getTypesFiltered() { return TYPES_FILTERED; }
+	@Override public final SortedList<DomainType> getTypesSorted() { return TYPES_SORTED; }
 	
 }

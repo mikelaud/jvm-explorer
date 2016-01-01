@@ -6,18 +6,19 @@ import java.util.List;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 
-import com.blogspot.mikelaud.je.domain.pojo.Method;
-import com.blogspot.mikelaud.je.domain.pojo.Type;
+import com.blogspot.mikelaud.je.domain.pojo.DomainMethod;
+import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.domain.types.TypeInner;
 
 public class TypeVisitor extends ClassVisitor {
 
-	private Type mType;
+	private DomainType mType;
 	private String mTypeInternalName;
-	private List<Method> mMethods;
+	private List<DomainMethod> mMethods;
 	
-	private void fillParsedNames(Type aType) {
+	private void fillParsedNames(DomainType aType) {
 		String fullName = aType.getFullName();
 		int dotIndex = fullName.lastIndexOf('.');
 		//
@@ -51,16 +52,16 @@ public class TypeVisitor extends ClassVisitor {
 	}
 	
 	public void reset() {
-		mType = new Type();
+		mType = new DomainType();
 		mTypeInternalName = "";
 		mMethods = new ArrayList<>();
 	}
 	
-	public Type getType() {
+	public DomainType getType() {
 		return mType;
 	}
 	
-	public List<Method> getMethods() {
+	public List<DomainMethod> getMethods() {
 		return mMethods;
 	}
 	
@@ -84,9 +85,10 @@ public class TypeVisitor extends ClassVisitor {
 	
 	@Override
 	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-		Method method = new Method();
+		DomainMethod method = new DomainMethod();
 		method.setName(name);
 		method.setAccess(BytecodeHelper.toMethodAccess(access));
+		method.setReturnType(Type.getReturnType(desc));
 		mMethods.add(method);
 		return super.visitMethod(access, name, desc, signature, exceptions);
 	}

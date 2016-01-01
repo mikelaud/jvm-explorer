@@ -2,7 +2,7 @@ package com.blogspot.mikelaud.je.mvc.impl;
 
 import com.blogspot.mikelaud.je.core.Core;
 import com.blogspot.mikelaud.je.domain.Domain;
-import com.blogspot.mikelaud.je.domain.pojo.Type;
+import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.mvc.MvcView;
@@ -48,7 +48,7 @@ public class MvcControllerImpl implements MvcController {
 	}
 
 	@Override
-	public final void showCode(Type aType) {
+	public final void showCode(DomainType aType) {
 		if (null != mView) {
 			mView.showCode(aType);
 		}

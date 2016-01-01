@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import com.blogspot.mikelaud.je.domain.pojo.Method;
-import com.blogspot.mikelaud.je.domain.pojo.Type;
+import com.blogspot.mikelaud.je.domain.pojo.DomainMethod;
+import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.domain.types.MethodAccess;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
@@ -157,12 +157,12 @@ public class UiCodeImpl implements UiCode {
 		return Font.font(defaultFont.getFamily(), FontWeight.BOLD, defaultFont.getSize());
 	}
 	
-	public final void setType(Type aType) {
+	public final void setType(DomainType aType) {
 		if (null == aType) {
 			CODE_PANE.setVisible(false);
 		}
 		else {
-			SortedSet<Method> methods = new TreeSet<>((a, b) -> {
+			SortedSet<DomainMethod> methods = new TreeSet<>((a, b) -> {
 				int cmp = a.getAccess().compareTo(b.getAccess());
 				if (cmp == 0) {
 					cmp = a.getName().compareTo(b.getName());
@@ -188,7 +188,7 @@ public class UiCodeImpl implements UiCode {
 			}
 			else {
 				MethodAccess access = null;
-				for (Method method : methods) {
+				for (DomainMethod method : methods) {
 					if (method.getAccess() != access) {
 						access = method.getAccess();
 						nodes.add(newRem("\t// "));
@@ -197,7 +197,8 @@ public class UiCodeImpl implements UiCode {
 					}
 					nodes.add(newTab());
 					nodes.add(newKeyword(access.getCode()));
-					nodes.add(newKeyword("void"));
+					//nodes.add(newKeyword("void"));
+					nodes.add(newCode(method.getReturnType().toString()));
 					nodes.add(newLink(method.getName() + "()"));
 					nodes.add(newEnd(";"));
 				}

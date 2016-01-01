@@ -10,7 +10,7 @@ import com.blogspot.mikelaud.je.domain.types.TypeInner;
 import com.blogspot.mikelaud.je.domain.types.TypeStatic;
 import com.blogspot.mikelaud.je.domain.types.TypeType;
 
-public class Type {
+public class DomainType {
 	
 	private String mName;
 	private String mNameLowCase;
@@ -22,7 +22,7 @@ public class Type {
 	private TypeDeprecated mDeprecated;
 	private TypeInheritance mInheritance;
 	private TypeStatic mStatic;
-	private List<Method> mMethods;
+	private List<DomainMethod> mMethods;
 	
 	private TypeType nvl(TypeType aTypeType) { return (null == aTypeType ? TypeType.Class : aTypeType); }
 	private TypeAccess nvl(TypeAccess aTypeAccess) { return (null == aTypeAccess ? TypeAccess.Default : aTypeAccess); }
@@ -37,7 +37,7 @@ public class Type {
 	public TypeDeprecated getDeprecated() { return mDeprecated; }
 	public TypeInheritance getInheritance() { return mInheritance; }
 	public TypeStatic getStatic() { return mStatic; }
-	public List<Method> getMethods() { return mMethods; }
+	public List<DomainMethod> getMethods() { return mMethods; }
 	
 	public void setName(String aName) { mName = aName; }
 	public void setNameLowCase(String aNameLowCase) { mNameLowCase = aNameLowCase; }
@@ -49,9 +49,9 @@ public class Type {
 	public void setDeprecated(TypeDeprecated aDeprecated) { mDeprecated = aDeprecated; }
 	public void setInheritance(TypeInheritance aInheritance) { mInheritance = aInheritance; }
 	public void setStatic(TypeStatic aStatic) { mStatic = aStatic; }
-	public void setMethods(List<Method> aMethods) { mMethods = aMethods; }
+	public void setMethods(List<DomainMethod> aMethods) { mMethods = aMethods; }
 	
-	public Type() {
+	public DomainType() {
 		mName = "";
 		mNameLowCase = "";
 		mFullName = "";
