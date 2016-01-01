@@ -45,7 +45,7 @@ public class UiSearchListCell extends ListCell<DomainType> {
 			setGraphic(null);
 		}
 		else {
-			VIEW.setImage(MODEL.getImage(aType.getDeprecated(), aType.getAccess(), aType.getType()));
+			VIEW.setImage(MODEL.getImage(aType.getDeprecated(), aType.getAccess(), aType.getTypeType()));
 			VIEW2.setImage(MODEL.getImage(aType.getStatic(), aType.getInheritance()));
 			String filter = TEXT_FIELD.getText();
 			String text = aType.getName();

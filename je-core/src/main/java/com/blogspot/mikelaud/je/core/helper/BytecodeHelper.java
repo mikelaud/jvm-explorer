@@ -2,6 +2,7 @@ package com.blogspot.mikelaud.je.core.helper;
 
 import org.objectweb.asm.Opcodes;
 
+import com.blogspot.mikelaud.je.domain.types.AccFinal;
 import com.blogspot.mikelaud.je.domain.types.MethodAccess;
 import com.blogspot.mikelaud.je.domain.types.TypeAccess;
 import com.blogspot.mikelaud.je.domain.types.TypeDeprecated;
@@ -69,5 +70,9 @@ public interface BytecodeHelper {
 		else if (isPrivate(aAccess)) return MethodAccess.Private;
 		else return MethodAccess.Default;
 	}
-	
+
+	static AccFinal toAccFinal(int aAccess) {
+		return isFinal(aAccess) ? AccFinal.Yes : AccFinal.No;
+	}
+
 }

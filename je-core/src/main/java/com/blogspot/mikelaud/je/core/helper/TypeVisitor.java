@@ -45,7 +45,7 @@ public class TypeVisitor extends ClassVisitor {
 	}
 	
 	private void setModifiers(int aAccess) {
-		mType.setType(BytecodeHelper.toTypeType(aAccess));
+		mType.setTypeType(BytecodeHelper.toTypeType(aAccess));
 		mType.setDeprecated(BytecodeHelper.toTypeDeprecated(aAccess));
 		mType.setStatic(BytecodeHelper.toTypeStatic(aAccess));
 		mType.setInheritance(BytecodeHelper.toTypeInheritance(aAccess));
@@ -88,6 +88,7 @@ public class TypeVisitor extends ClassVisitor {
 		DomainMethod method = new DomainMethod();
 		method.setName(name);
 		method.setAccess(BytecodeHelper.toMethodAccess(access));
+		method.setFinal(BytecodeHelper.toAccFinal(access));
 		method.setReturnType(Type.getReturnType(desc));
 		mMethods.add(method);
 		return super.visitMethod(access, name, desc, signature, exceptions);

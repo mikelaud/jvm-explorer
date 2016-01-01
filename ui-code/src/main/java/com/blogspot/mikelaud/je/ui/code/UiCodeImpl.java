@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import com.blogspot.mikelaud.je.domain.pojo.DomainMethod;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
+import com.blogspot.mikelaud.je.domain.types.AccFinal;
 import com.blogspot.mikelaud.je.domain.types.MethodAccess;
 import com.blogspot.mikelaud.je.domain.types.TypeAccess;
 import com.blogspot.mikelaud.je.mvc.MvcController;
@@ -181,7 +182,7 @@ public class UiCodeImpl implements UiCode {
 			if (TypeAccess.Default != aType.getAccess()) {
 				nodes.add(newKeyword(aType.getAccess().getCode()));
 			}
-			nodes.add(newKeyword(aType.getType().getCode()));
+			nodes.add(newKeyword(aType.getTypeType().getCode()));
 			nodes.add(newLink(aType.getName()));
 			nodes.add(newEnd(" {"));
 			//
@@ -201,7 +202,10 @@ public class UiCodeImpl implements UiCode {
 					if (MethodAccess.Default != access) {
 						nodes.add(newKeyword(access.getCode()));
 					}
-					nodes.add(newCode(method.getReturnType().toString()));
+					if (AccFinal.Yes == method.getFinal()) {
+						nodes.add(newKeyword(method.getFinal().getCode()));
+					}
+					nodes.add(newCode(method.getReturnType().getClassName()));
 					nodes.add(newLink(method.getName() + "()"));
 					nodes.add(newEnd(";"));
 				}
