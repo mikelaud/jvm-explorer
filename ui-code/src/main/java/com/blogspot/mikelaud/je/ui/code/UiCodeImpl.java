@@ -13,6 +13,7 @@ import com.blogspot.mikelaud.je.domain.types.TypeAccess;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
+import com.blogspot.mikelaud.je.utils.TypeUtils;
 import com.google.inject.Inject;
 
 import javafx.event.ActionEvent;
@@ -208,7 +209,12 @@ public class UiCodeImpl implements UiCode {
 					if (AccFinal.Yes == method.getFinal()) {
 						nodes.add(newKeyword(method.getFinal().getCode()));
 					}
-					nodes.add(newCode(method.getReturnType().getClassName()));
+					if (TypeUtils.isObject(method.getReturnType())) {
+						nodes.add(newCode(method.getReturnType().getClassName()));
+					}
+					else {
+						nodes.add(newKeyword(method.getReturnType().getClassName()));
+					}
 					nodes.add(newLink(method.getName() + "()"));
 					nodes.add(newEnd(";"));
 				}
