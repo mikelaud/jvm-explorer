@@ -197,7 +197,6 @@ public class UiCodeImpl implements UiCode {
 					}
 					nodes.add(newTab());
 					nodes.add(newKeyword(access.getCode()));
-					//nodes.add(newKeyword("void"));
 					nodes.add(newCode(method.getReturnType().toString()));
 					nodes.add(newLink(method.getName() + "()"));
 					nodes.add(newEnd(";"));
