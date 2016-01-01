@@ -182,6 +182,9 @@ public class UiCodeImpl implements UiCode {
 			if (TypeAccess.Default != aType.getAccess()) {
 				nodes.add(newKeyword(aType.getAccess().getCode()));
 			}
+			if (AccFinal.Yes == aType.getFinal()) {
+				nodes.add(newKeyword(aType.getFinal().getCode()));
+			}
 			nodes.add(newKeyword(aType.getTypeType().getCode()));
 			nodes.add(newLink(aType.getName()));
 			nodes.add(newEnd(" {"));
