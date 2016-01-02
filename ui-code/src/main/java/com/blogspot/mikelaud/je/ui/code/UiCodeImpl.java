@@ -90,10 +90,20 @@ public class UiCodeImpl implements UiCode {
 		return text;
 	}
 
-	private Text newCode(String aText) {
-		Text text = new Text(aText + " ");
+	private Text newCode(String aText, boolean aSpace) {
+		if (null == aText) {
+			aText = "";
+		}
+		else if (aSpace && aText.length() > 0) {
+			aText += " ";
+		}
+		Text text = new Text(aText);
 		text.setFont(FONT_DEFAULT);
 		return text;
+	}
+	
+	private Text newCode(String aText) {
+		return newCode(aText, true);
 	}
 	
 	private Text newTab() {
@@ -136,17 +146,21 @@ public class UiCodeImpl implements UiCode {
 		return link;
 	}
 	
-	private Text newKeyword(String aText) {
+	private Text newKeyword(String aText, boolean aSpace) {
 		if (null == aText) {
 			aText = "";
 		}
-		else if (aText.length() > 0) {
+		else if (aSpace && aText.length() > 0) {
 			aText += " ";
 		}
 		Text text = new Text(aText);
 		text.setFont(FONT_KEYWORD);
 		text.setFill(Color.rgb(0x7f, 0, 0x55));
 		return text;
+	}
+	
+	private Text newKeyword(String aText) {
+		return newKeyword(aText, true);
 	}
 	
 	private Font createDefaultFont() {
@@ -200,7 +214,7 @@ public class UiCodeImpl implements UiCode {
 						access = method.getAccess();
 						nodes.add(newRem("\t// "));
 						nodes.add(new ImageView(MODEL.getImage(access)));
-						nodes.add(newEnd(""));
+						nodes.add(newEnd());
 					}
 					nodes.add(newTab());
 					if (MethodAccess.Default != access) {
@@ -209,12 +223,21 @@ public class UiCodeImpl implements UiCode {
 					if (AccFinal.Yes == method.getFinal()) {
 						nodes.add(newKeyword(method.getFinal().getCode()));
 					}
-					if (TypeUtils.isObject(method.getReturnType())) {
-						nodes.add(newCode(method.getReturnType().getClassName()));
+					//
+					final boolean isArray = TypeUtils.isArray(method.getReturnType());
+					if (TypeUtils.isElementarTypeIsObject(method.getReturnType())) {
+						nodes.add(newCode(TypeUtils.toElementarType(method.getReturnType()).getClassName(), !isArray));
+						if (isArray) {
+							nodes.add(newCode(TypeUtils.toDimentions(method.getReturnType())));
+						}
 					}
 					else {
-						nodes.add(newKeyword(method.getReturnType().getClassName()));
+						nodes.add(newKeyword(TypeUtils.toElementarType(method.getReturnType()).getClassName(), !isArray));
+						if (isArray) {
+							nodes.add(newCode(TypeUtils.toDimentions(method.getReturnType())));
+						}
 					}
+					//
 					nodes.add(newLink(method.getName() + "()"));
 					nodes.add(newEnd(";"));
 				}
