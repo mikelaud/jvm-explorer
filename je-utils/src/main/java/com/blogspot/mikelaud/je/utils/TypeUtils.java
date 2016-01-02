@@ -8,6 +8,38 @@ public class TypeUtils {
 		return (Type.ARRAY == aType.getSort());
 	}
 
+	public static String getPackage(Type aType) {
+		if (null == aType) {
+			return "";
+		}
+		else {
+			final String className = aType.getClassName();
+			final int lastIndex = className.lastIndexOf(".");
+			if (lastIndex <= -1) {
+				return "";
+			}
+			else {
+				return className.substring(0, lastIndex);
+			}
+		}
+	}
+	
+	public static String getName(Type aType) {
+		if (null == aType) {
+			return "";
+		}
+		else {
+			final String className = aType.getClassName();
+			final int lastIndex = className.lastIndexOf(".");
+			if (lastIndex <= -1) {
+				return className;
+			}
+			else {
+				return className.substring(lastIndex + 1);
+			}
+		}
+	}
+	
 	public static Type toElementarType(Type aType) {
 		return (isArray(aType) ? aType.getElementType() : aType);
 	}

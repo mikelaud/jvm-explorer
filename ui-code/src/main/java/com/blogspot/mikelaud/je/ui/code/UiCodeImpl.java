@@ -2,8 +2,13 @@ package com.blogspot.mikelaud.je.ui.code;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.SortedMap;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
+
+import org.objectweb.asm.Type;
 
 import com.blogspot.mikelaud.je.domain.pojo.DomainMethod;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
@@ -186,13 +191,41 @@ public class UiCodeImpl implements UiCode {
 				return cmp;
 			});
 			methods.addAll(aType.getMethods());
-			//
+			//----------------------------------------------------------------
+			SortedMap<String,String> importTypes = new TreeMap<>();
+			for (DomainMethod method : methods) {
+				Type retType = TypeUtils.toElementarType(method.getReturnType());
+				if (!TypeUtils.isElementarTypeIsObject(method.getReturnType())) continue;
+				String name = TypeUtils.getName(retType);
+				String newPackageName = TypeUtils.getPackage(retType);
+				String oldPackageName = importTypes.get(name);
+				if (null == oldPackageName) {
+					importTypes.put(name, newPackageName);
+				}
+				else {
+					if (oldPackageName.length() > 0) {
+						if (! oldPackageName.equals(newPackageName)) {
+							importTypes.put(name, "");
+						}
+					}
+				}
+			}
+			//----------------------------------------------------------------
 			List<Node> nodes = new ArrayList<>();
 			//
 			nodes.add(newKeyword("package"));
 			nodes.add(newLink(aType.getPackageName()));
 			nodes.add(newEnd(";"));
 			nodes.add(newEnd());
+			//
+			if (importTypes.size() > 0) {
+				for (Entry<String,String> entry : importTypes.entrySet()) {
+					nodes.add(newKeyword("import"));
+					nodes.add(newLink(entry.getValue().concat(".").concat(entry.getKey())));
+					nodes.add(newEnd(";"));
+				}
+				nodes.add(newEnd());
+			}
 			//
 			if (TypeAccess.Default != aType.getAccess()) {
 				nodes.add(newKeyword(aType.getAccess().getCode()));
@@ -216,6 +249,7 @@ public class UiCodeImpl implements UiCode {
 						nodes.add(new ImageView(MODEL.getImage(access)));
 						nodes.add(newEnd());
 					}
+					//
 					nodes.add(newTab());
 					if (MethodAccess.Default != access) {
 						nodes.add(newKeyword(access.getCode()));
@@ -224,17 +258,24 @@ public class UiCodeImpl implements UiCode {
 						nodes.add(newKeyword(method.getFinal().getCode()));
 					}
 					//
-					final boolean isArray = TypeUtils.isArray(method.getReturnType());
-					if (TypeUtils.isElementarTypeIsObject(method.getReturnType())) {
-						nodes.add(newCode(TypeUtils.toElementarType(method.getReturnType()).getClassName(), !isArray));
+					final Type retType = method.getReturnType();
+					final Type retElementarType = TypeUtils.toElementarType(retType);
+					final boolean isArray = TypeUtils.isArray(retType);
+					if (TypeUtils.isElementarTypeIsObject(retType)) {
+						String name = TypeUtils.getName(retElementarType);
+						String packageName = importTypes.get(name);
+						if (null == packageName || packageName.isEmpty()) {
+							name = retElementarType.getClassName();
+						}
+						nodes.add(newCode(name, !isArray));
 						if (isArray) {
-							nodes.add(newCode(TypeUtils.toDimentions(method.getReturnType())));
+							nodes.add(newCode(TypeUtils.toDimentions(retType)));
 						}
 					}
 					else {
-						nodes.add(newKeyword(TypeUtils.toElementarType(method.getReturnType()).getClassName(), !isArray));
+						nodes.add(newKeyword(retElementarType.getClassName(), !isArray));
 						if (isArray) {
-							nodes.add(newCode(TypeUtils.toDimentions(method.getReturnType())));
+							nodes.add(newCode(TypeUtils.toDimentions(retType)));
 						}
 					}
 					//
