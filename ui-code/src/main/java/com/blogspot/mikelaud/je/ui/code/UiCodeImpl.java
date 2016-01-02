@@ -127,7 +127,14 @@ public class UiCodeImpl implements UiCode {
 		return newEnd("");
 	}
 	
-	private Hyperlink newLink(String aText) {
+	private Hyperlink newLink(String aText, boolean aSpace) {
+		if (null == aText) {
+			aText = "";
+		}
+		else if (aSpace && aText.length() > 0) {
+			aText += " ";
+		}
+		final String text = aText; 
 		Hyperlink link = new Hyperlink(aText);
 		link.setFont(FONT_DEFAULT);
 		link.setPadding(Insets.EMPTY);
@@ -136,7 +143,7 @@ public class UiCodeImpl implements UiCode {
 			@Override
 			public void handle(ActionEvent event) {
 				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle(aText);
+				alert.setTitle(text);
 				alert.setContentText("Code bubble.");
 				alert.setHeaderText(null);
 				double nodeMinX = link.getLayoutBounds().getMinX();
@@ -149,6 +156,10 @@ public class UiCodeImpl implements UiCode {
 			}
 		});
 		return link;
+	}
+	
+	private Hyperlink newLink(String aText) {
+		return newLink(aText, true);
 	}
 	
 	private Text newKeyword(String aText, boolean aSpace) {
@@ -267,7 +278,7 @@ public class UiCodeImpl implements UiCode {
 						if (null == packageName || packageName.isEmpty()) {
 							name = retElementarType.getClassName();
 						}
-						nodes.add(newCode(name, !isArray));
+						nodes.add(newLink(name, !isArray));
 						if (isArray) {
 							nodes.add(newCode(TypeUtils.toDimentions(retType)));
 						}
