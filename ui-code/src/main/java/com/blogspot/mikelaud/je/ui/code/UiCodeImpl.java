@@ -17,6 +17,7 @@ import com.blogspot.mikelaud.je.domain.types.AccFinal;
 import com.blogspot.mikelaud.je.domain.types.MethodAccess;
 import com.blogspot.mikelaud.je.domain.types.TypeAccess;
 import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
+import com.blogspot.mikelaud.je.domain.types.TypeType;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
@@ -43,6 +44,10 @@ import javafx.scene.text.TextFlow;
 
 public class UiCodeImpl implements UiCode {
 
+	enum Ads {
+		
+	}
+	
 	private final MvcController CONTROLLER;
 	private final MvcModel MODEL;
 	private final UiCodeConst CONST;
@@ -257,7 +262,7 @@ public class UiCodeImpl implements UiCode {
 			if (TypeAccess.Default != aType.getAccess()) {
 				nodes.add(newKeyword(aType.getAccess().getCode()));
 			}
-			if (TypeInheritance.No != aType.getInheritance()) {
+			if (TypeInheritance.No != aType.getInheritance() && TypeType.Class == aType.getTypeType()) {
 				nodes.add(newKeyword(aType.getInheritance().getCode()));
 			}
 			nodes.add(newKeyword(aType.getTypeType().getCode()));
