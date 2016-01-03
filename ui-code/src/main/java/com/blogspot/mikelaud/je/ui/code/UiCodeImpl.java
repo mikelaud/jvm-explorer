@@ -202,7 +202,7 @@ public class UiCodeImpl implements UiCode {
 		return importTypes;
 	}
 	
-	private SortedSet<Entry<String,String>> getUiImportTypes(Map<String,String> aImportTypes) {
+	private SortedSet<Entry<String,String>> getUiImportTypes(DomainType aType, Map<String,String> aImportTypes) {
 		SortedSet<Entry<String,String>> uiImportTypes = new TreeSet<>((a, b) -> {
 			int cmp = a.getValue().compareTo(b.getValue());
 			if (cmp == 0) {
@@ -213,6 +213,7 @@ public class UiCodeImpl implements UiCode {
 		for (Entry<String,String> entry : aImportTypes.entrySet()) {
 			if (entry.getValue().isEmpty()) continue;
 			if (entry.getValue().equals("java.lang")) continue;
+			if (entry.getValue().equals(aType.getPackageName())) continue; 
 			uiImportTypes.add(new AbstractMap.SimpleEntry<String,String>(entry.getKey(), entry.getValue()));
 		}
 		return uiImportTypes;
@@ -233,7 +234,7 @@ public class UiCodeImpl implements UiCode {
 			methods.addAll(aType.getMethods());
 			//----------------------------------------------------------------
 			Map<String,String> importTypes = getImportTypes(aType);
-			SortedSet<Entry<String,String>> uiImportTypes = getUiImportTypes(importTypes);
+			SortedSet<Entry<String,String>> uiImportTypes = getUiImportTypes(aType, importTypes);
 			//----------------------------------------------------------------
 			List<Node> nodes = new ArrayList<>();
 			//
