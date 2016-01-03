@@ -1,6 +1,7 @@
 package com.blogspot.mikelaud.je.core.helper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.objectweb.asm.ClassVisitor;
@@ -91,6 +92,7 @@ public class TypeVisitor extends ClassVisitor {
 		method.setAccess(BytecodeHelper.toMethodAccess(access));
 		method.setFinal(BytecodeHelper.toAccFinal(access));
 		method.setReturnType(Type.getReturnType(desc));
+		method.setArgTypes(Arrays.asList(Type.getArgumentTypes(desc)));
 		mMethods.add(method);
 		return super.visitMethod(access, name, desc, signature, exceptions);
 	}

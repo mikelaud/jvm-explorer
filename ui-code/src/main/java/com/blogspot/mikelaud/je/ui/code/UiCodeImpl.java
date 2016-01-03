@@ -305,7 +305,7 @@ public class UiCodeImpl implements UiCode {
 					}
 					//
 					nodes.add(newCode(" ", false));
-					nodes.add(newLink(method.getName() + "()"));
+					nodes.add(newLink(method.getName() + getArguments(method)));
 					nodes.add(newEnd(";"));
 				}
 			}
@@ -313,6 +313,25 @@ public class UiCodeImpl implements UiCode {
 			//
 			CODE.getChildren().setAll(nodes);
 			CODE_PANE.setVisible(true);
+		}
+	}
+	
+	private String getArguments(DomainMethod aMethod) {
+		final int count = aMethod.getArgTypes().size();
+		if (count > 0) {
+			StringBuilder b = new StringBuilder();
+			b.append("(");
+			for (int i = 1; i <= count; i++) {
+				if (i > 1) {
+					b.append(", ");
+				}
+				b.append("a" + i);
+			}
+			b.append(")");
+			return b.toString();
+		}
+		else {
+			return "()";
 		}
 	}
 	
