@@ -1,7 +1,9 @@
 package com.blogspot.mikelaud.je.ui.code;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -127,15 +129,9 @@ public class UiCodeImpl implements UiCode {
 		return newEnd("");
 	}
 	
-	private Hyperlink newLink(String aText, boolean aSpace) {
-		if (null == aText) {
-			aText = "";
-		}
-		else if (aSpace && aText.length() > 0) {
-			aText += " ";
-		}
-		final String text = aText; 
-		Hyperlink link = new Hyperlink(aText);
+	private Hyperlink newLink(String aText) {
+		final String text = (null == aText ? "" : aText); 
+		Hyperlink link = new Hyperlink(text);
 		link.setFont(FONT_DEFAULT);
 		link.setPadding(Insets.EMPTY);
 		link.setTextFill(Color.BLACK);
@@ -156,10 +152,6 @@ public class UiCodeImpl implements UiCode {
 			}
 		});
 		return link;
-	}
-	
-	private Hyperlink newLink(String aText) {
-		return newLink(aText, true);
 	}
 	
 	private Text newKeyword(String aText, boolean aSpace) {
@@ -203,7 +195,7 @@ public class UiCodeImpl implements UiCode {
 			});
 			methods.addAll(aType.getMethods());
 			//----------------------------------------------------------------
-			SortedMap<String,String> importTypes = new TreeMap<>();
+			Map<String,String> importTypes = new HashMap<>();
 			for (DomainMethod method : methods) {
 				Type retType = TypeUtils.toElementarType(method.getReturnType());
 				if (!TypeUtils.isElementarTypeIsObject(method.getReturnType())) continue;
@@ -221,6 +213,11 @@ public class UiCodeImpl implements UiCode {
 					}
 				}
 			}
+			SortedMap<String,String> uiImportTypes = new TreeMap<>();
+			for (Entry<String,String> entry : importTypes.entrySet()) {
+				if (entry.getValue().isEmpty()) continue;
+				uiImportTypes.put(entry.getValue(), entry.getKey());
+			}
 			//----------------------------------------------------------------
 			List<Node> nodes = new ArrayList<>();
 			//
@@ -230,9 +227,9 @@ public class UiCodeImpl implements UiCode {
 			nodes.add(newEnd());
 			//
 			if (importTypes.size() > 0) {
-				for (Entry<String,String> entry : importTypes.entrySet()) {
+				for (Entry<String,String> entry : uiImportTypes.entrySet()) {
 					nodes.add(newKeyword("import"));
-					nodes.add(newLink(entry.getValue().concat(".").concat(entry.getKey())));
+					nodes.add(newLink(entry.getKey().concat(".").concat(entry.getValue())));
 					nodes.add(newEnd(";"));
 				}
 				nodes.add(newEnd());
@@ -278,18 +275,19 @@ public class UiCodeImpl implements UiCode {
 						if (null == packageName || packageName.isEmpty()) {
 							name = retElementarType.getClassName();
 						}
-						nodes.add(newLink(name, !isArray));
+						nodes.add(newLink(name));
 						if (isArray) {
-							nodes.add(newCode(TypeUtils.toDimentions(retType)));
+							nodes.add(newCode(TypeUtils.toDimentions(retType), false));
 						}
 					}
 					else {
-						nodes.add(newKeyword(retElementarType.getClassName(), !isArray));
+						nodes.add(newKeyword(retElementarType.getClassName(), false));
 						if (isArray) {
-							nodes.add(newCode(TypeUtils.toDimentions(retType)));
+							nodes.add(newCode(TypeUtils.toDimentions(retType), false));
 						}
 					}
 					//
+					nodes.add(newCode(" ", false));
 					nodes.add(newLink(method.getName() + "()"));
 					nodes.add(newEnd(";"));
 				}
