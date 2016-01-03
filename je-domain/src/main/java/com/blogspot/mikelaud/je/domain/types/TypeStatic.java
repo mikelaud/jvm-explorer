@@ -14,5 +14,9 @@ public enum TypeStatic {
 	public final String getPath() {
 		return PATH;
 	}
+
+	public final String getCode() {
+		return (this == No ? "" : PATH);
+	}
 	
 }

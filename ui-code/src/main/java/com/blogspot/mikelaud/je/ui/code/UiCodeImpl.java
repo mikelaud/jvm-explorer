@@ -17,6 +17,7 @@ import com.blogspot.mikelaud.je.domain.types.AccFinal;
 import com.blogspot.mikelaud.je.domain.types.MethodAccess;
 import com.blogspot.mikelaud.je.domain.types.TypeAccess;
 import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
+import com.blogspot.mikelaud.je.domain.types.TypeStatic;
 import com.blogspot.mikelaud.je.domain.types.TypeType;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
@@ -257,6 +258,9 @@ public class UiCodeImpl implements UiCode {
 			//
 			if (TypeAccess.Default != aType.getAccess()) {
 				nodes.add(newKeyword(aType.getAccess().getCode()));
+			}
+			if (TypeStatic.Yes == aType.getStatic()) {
+				nodes.add(newKeyword(aType.getStatic().getCode()));
 			}
 			if (TypeInheritance.No != aType.getInheritance() && TypeType.Class == aType.getTypeType()) {
 				nodes.add(newKeyword(aType.getInheritance().getCode()));
