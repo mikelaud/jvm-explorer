@@ -16,6 +16,7 @@ import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.domain.types.AccFinal;
 import com.blogspot.mikelaud.je.domain.types.MethodAccess;
 import com.blogspot.mikelaud.je.domain.types.TypeAccess;
+import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
@@ -256,8 +257,8 @@ public class UiCodeImpl implements UiCode {
 			if (TypeAccess.Default != aType.getAccess()) {
 				nodes.add(newKeyword(aType.getAccess().getCode()));
 			}
-			if (AccFinal.Yes == aType.getFinal()) {
-				nodes.add(newKeyword(aType.getFinal().getCode()));
+			if (TypeInheritance.No != aType.getInheritance()) {
+				nodes.add(newKeyword(aType.getInheritance().getCode()));
 			}
 			nodes.add(newKeyword(aType.getTypeType().getCode()));
 			nodes.add(newLink(aType.getName()));

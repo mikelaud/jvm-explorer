@@ -16,4 +16,8 @@ public enum TypeInheritance {
 		return PATH;
 	}
 
+	public final String getCode() {
+		return (this == No ? "" : PATH);
+	}
+
 }

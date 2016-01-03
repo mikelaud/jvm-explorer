@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.objectweb.asm.Type;
 
-import com.blogspot.mikelaud.je.domain.types.AccFinal;
 import com.blogspot.mikelaud.je.domain.types.TypeAccess;
 import com.blogspot.mikelaud.je.domain.types.TypeDeprecated;
 import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
@@ -22,7 +21,6 @@ public class DomainType {
 	private String mFullName;
 	private TypeType mTypeType;
 	private TypeAccess mAccess;
-	private AccFinal mFinal;
 	private TypeInner mInner;
 	private TypeDeprecated mDeprecated;
 	private TypeInheritance mInheritance;
@@ -39,7 +37,6 @@ public class DomainType {
 	public String getFullName() { return mFullName; }
 	public TypeType getTypeType() { return mTypeType; }
 	public TypeAccess getAccess() { return mAccess; }
-	public AccFinal getFinal() { return mFinal; }
 	public TypeInner getInner() { return mInner; }
 	public TypeDeprecated getDeprecated() { return mDeprecated; }
 	public TypeInheritance getInheritance() { return mInheritance; }
@@ -53,7 +50,6 @@ public class DomainType {
 	public void setFullName(String aFullName) { mFullName = aFullName; }
 	public void setTypeType(TypeType aTypeType) { mTypeType = nvl(aTypeType); }
 	public void setAccess(TypeAccess aTypeAccess) { mAccess = nvl(aTypeAccess); }
-	public void setFinal(AccFinal aFinal) { mFinal = aFinal; }
 	public void setInner(TypeInner aInner) { mInner = aInner; }
 	public void setDeprecated(TypeDeprecated aDeprecated) { mDeprecated = aDeprecated; }
 	public void setInheritance(TypeInheritance aInheritance) { mInheritance = aInheritance; }
@@ -67,7 +63,6 @@ public class DomainType {
 		mFullName = "";
 		mTypeType = TypeType.Class;
 		mAccess = TypeAccess.Default;
-		mFinal = AccFinal.No;
 		mInner = TypeInner.No;
 		mDeprecated = TypeDeprecated.No;
 		mInheritance = TypeInheritance.No;

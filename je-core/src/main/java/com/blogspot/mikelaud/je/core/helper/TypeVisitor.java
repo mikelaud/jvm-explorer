@@ -50,7 +50,6 @@ public class TypeVisitor extends ClassVisitor {
 		mType.setDeprecated(BytecodeHelper.toTypeDeprecated(aAccess));
 		mType.setStatic(BytecodeHelper.toTypeStatic(aAccess));
 		mType.setInheritance(BytecodeHelper.toTypeInheritance(aAccess));
-		mType.setFinal(BytecodeHelper.toAccFinal(aAccess));
 	}
 	
 	public void reset() {
