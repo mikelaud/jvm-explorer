@@ -108,6 +108,7 @@ public class UiCodeImpl implements UiCode {
 		return text;
 	}
 	
+	@SuppressWarnings("unused")
 	private Text newCode(String aText) {
 		return newCode(aText, true);
 	}
@@ -290,7 +291,9 @@ public class UiCodeImpl implements UiCode {
 						String name = TypeUtils.getName(retElementarType);
 						String packageName = importTypes.get(name);
 						if (null == packageName || packageName.isEmpty()) {
-							name = retElementarType.getClassName();
+							if (! aType.getPackageName().equals(TypeUtils.getPackage(retElementarType))) {
+								name = retElementarType.getClassName();
+							}
 						}
 						nodes.add(newLink(name));
 						if (isArray) {
