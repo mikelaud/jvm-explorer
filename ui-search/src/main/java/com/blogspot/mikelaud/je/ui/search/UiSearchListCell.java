@@ -47,7 +47,7 @@ public class UiSearchListCell extends ListCell<DomainType> {
 		else {
 			VIEW.setImage(MODEL.getImage(aType.getDeprecated(), aType.getAccess(), aType.getTypeType()));
 			TypeInheritance inheritance = aType.getInheritance();
-			if (TypeInheritance.Abstract == inheritance && TypeType.Interface == aType.getTypeType()) {
+			if (TypeType.Class != aType.getTypeType()) {
 				inheritance = TypeInheritance.No;
 			}
 			VIEW2.setImage(MODEL.getImage(aType.getStatic(), inheritance));

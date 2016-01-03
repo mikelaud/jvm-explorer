@@ -44,10 +44,6 @@ import javafx.scene.text.TextFlow;
 
 public class UiCodeImpl implements UiCode {
 
-	enum Ads {
-		
-	}
-	
 	private final MvcController CONTROLLER;
 	private final MvcModel MODEL;
 	private final UiCodeConst CONST;
