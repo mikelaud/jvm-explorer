@@ -46,7 +46,11 @@ public class UiSearchListCell extends ListCell<DomainType> {
 		}
 		else {
 			VIEW.setImage(MODEL.getImage(aType.getDeprecated(), aType.getAccess(), aType.getTypeType()));
-			VIEW2.setImage(MODEL.getImage(aType.getStatic(), aType.getInheritance()));
+			TypeInheritance inheritance = aType.getInheritance();
+			if (TypeInheritance.Abstract == inheritance && TypeType.Interface == aType.getTypeType()) {
+				inheritance = TypeInheritance.No;
+			}
+			VIEW2.setImage(MODEL.getImage(aType.getStatic(), inheritance));
 			String filter = TEXT_FIELD.getText();
 			String text = aType.getName();
 			if (filter.length() >= text.length()) {
