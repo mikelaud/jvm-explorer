@@ -1,13 +1,12 @@
 package com.blogspot.mikelaud.je.ui.code;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.SortedMap;
 import java.util.SortedSet;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.objectweb.asm.Type;
@@ -181,6 +180,44 @@ public class UiCodeImpl implements UiCode {
 		return Font.font(defaultFont.getFamily(), FontWeight.BOLD, defaultFont.getSize());
 	}
 	
+	private Map<String,String> getImportTypes(DomainType aType) {
+		Map<String,String> importTypes = new HashMap<>();
+		for (DomainMethod method : aType.getMethods()) {
+			Type retType = TypeUtils.toElementarType(method.getReturnType());
+			if (!TypeUtils.isElementarTypeIsObject(method.getReturnType())) continue;
+			String name = TypeUtils.getName(retType);
+			String newPackageName = TypeUtils.getPackage(retType);
+			String oldPackageName = importTypes.get(name);
+			if (null == oldPackageName) {
+				importTypes.put(name, newPackageName);
+			}
+			else {
+				if (oldPackageName.length() > 0) {
+					if (! oldPackageName.equals(newPackageName)) {
+						importTypes.put(name, "");
+					}
+				}
+			}
+		}
+		return importTypes;
+	}
+	
+	private SortedSet<Entry<String,String>> getUiImportTypes(Map<String,String> aImportTypes) {
+		SortedSet<Entry<String,String>> uiImportTypes = new TreeSet<>((a, b) -> {
+			int cmp = a.getValue().compareTo(b.getValue());
+			if (cmp == 0) {
+				cmp = a.getKey().compareTo(b.getKey());
+			}
+			return cmp;
+		});
+		for (Entry<String,String> entry : aImportTypes.entrySet()) {
+			if (entry.getValue().isEmpty()) continue;
+			if (entry.getValue().equals("java.lang")) continue;
+			uiImportTypes.add(new AbstractMap.SimpleEntry<String,String>(entry.getKey(), entry.getValue()));
+		}
+		return uiImportTypes;
+	}
+	
 	public final void setType(DomainType aType) {
 		if (null == aType) {
 			CODE_PANE.setVisible(false);
@@ -195,29 +232,8 @@ public class UiCodeImpl implements UiCode {
 			});
 			methods.addAll(aType.getMethods());
 			//----------------------------------------------------------------
-			Map<String,String> importTypes = new HashMap<>();
-			for (DomainMethod method : methods) {
-				Type retType = TypeUtils.toElementarType(method.getReturnType());
-				if (!TypeUtils.isElementarTypeIsObject(method.getReturnType())) continue;
-				String name = TypeUtils.getName(retType);
-				String newPackageName = TypeUtils.getPackage(retType);
-				String oldPackageName = importTypes.get(name);
-				if (null == oldPackageName) {
-					importTypes.put(name, newPackageName);
-				}
-				else {
-					if (oldPackageName.length() > 0) {
-						if (! oldPackageName.equals(newPackageName)) {
-							importTypes.put(name, "");
-						}
-					}
-				}
-			}
-			SortedMap<String,String> uiImportTypes = new TreeMap<>();
-			for (Entry<String,String> entry : importTypes.entrySet()) {
-				if (entry.getValue().isEmpty()) continue;
-				uiImportTypes.put(entry.getValue(), entry.getKey());
-			}
+			Map<String,String> importTypes = getImportTypes(aType);
+			SortedSet<Entry<String,String>> uiImportTypes = getUiImportTypes(importTypes);
 			//----------------------------------------------------------------
 			List<Node> nodes = new ArrayList<>();
 			//
@@ -226,10 +242,10 @@ public class UiCodeImpl implements UiCode {
 			nodes.add(newEnd(";"));
 			nodes.add(newEnd());
 			//
-			if (importTypes.size() > 0) {
-				for (Entry<String,String> entry : uiImportTypes.entrySet()) {
+			if (uiImportTypes.size() > 0) {
+				for (Entry<String,String> entry : uiImportTypes) {
 					nodes.add(newKeyword("import"));
-					nodes.add(newLink(entry.getKey().concat(".").concat(entry.getValue())));
+					nodes.add(newLink(entry.getValue().concat(".").concat(entry.getKey())));
 					nodes.add(newEnd(";"));
 				}
 				nodes.add(newEnd());
