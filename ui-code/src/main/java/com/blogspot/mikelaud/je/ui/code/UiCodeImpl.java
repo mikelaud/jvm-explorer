@@ -100,7 +100,7 @@ public class UiCodeImpl implements UiCode {
 		return text;
 	}
 
-	private Text newCode(String aText, boolean aSpace) {
+	private Text newCode(String aText, boolean aSpace, Color aColor) {
 		if (null == aText) {
 			aText = "";
 		}
@@ -109,7 +109,12 @@ public class UiCodeImpl implements UiCode {
 		}
 		Text text = new Text(aText);
 		text.setFont(FONT_DEFAULT);
+		text.setFill(aColor);
 		return text;
+	}
+	
+	private Text newCode(String aText, boolean aSpace) {
+		return newCode(aText, aSpace, Color.BLACK);
 	}
 	
 	@SuppressWarnings("unused")
@@ -133,12 +138,12 @@ public class UiCodeImpl implements UiCode {
 		return newEnd("");
 	}
 	
-	private Hyperlink newLink(String aText, boolean aStrikethrough) {
+	private Hyperlink newLink(String aText, boolean aStrikethrough, Color aColor) {
 		final String text = (null == aText ? "" : aText); 
 		Hyperlink link = new Hyperlink(text);
 		link.setFont(FONT_DEFAULT);
 		link.setPadding(Insets.EMPTY);
-		link.setTextFill(Color.BLACK);
+		link.setTextFill(aColor);
 		if (aStrikethrough) {
 			link.getStyleClass().add("hyperlink-strikethrough");
 		}
@@ -161,10 +166,18 @@ public class UiCodeImpl implements UiCode {
 		return link;
 	}
 	
-	private Hyperlink newLink(String aText) {
-		return newLink(aText, false);
+	private Hyperlink newLink(String aText, boolean aStrikethrough) {
+		return newLink(aText, aStrikethrough, Color.BLACK);
 	}
 	
+	private Hyperlink newLink(String aText, Color aColor) {
+		return newLink(aText, false, aColor);
+	}
+
+	private Hyperlink newLink(String aText) {
+		return newLink(aText, false, Color.BLACK);
+	}
+		
 	private Text newKeyword(String aText, boolean aSpace) {
 		if (null == aText) {
 			aText = "";
@@ -323,7 +336,8 @@ public class UiCodeImpl implements UiCode {
 					}
 					//
 					nodes.add(newCode(" ", false));
-					nodes.add(newLink(method.getName() + getArguments(method)));
+					nodes.add(newLink(method.getName(), getColor(method.getAccess())));
+					nodes.add(newCode(getArguments(method), false, Color.DIMGRAY));
 					nodes.add(newEnd(";"));
 				}
 			}
@@ -332,6 +346,29 @@ public class UiCodeImpl implements UiCode {
 			CODE.getChildren().setAll(nodes);
 			CODE_PANE.setVisible(true);
 		}
+	}
+	
+	private Color getColor(MethodAccess aMethodAccess) {
+		Color color = Color.BLACK;
+		if (null != aMethodAccess) {
+			switch (aMethodAccess) {
+			case Public:
+				color = Color.DARKGREEN;
+				break;
+			case Protected:
+				color = Color.SIENNA;
+				break;
+			case Default:
+				color = Color.DARKBLUE;
+				break;
+			case Private:
+				color = Color.DARKRED;
+				break;
+			default:
+				break;
+			}
+		}
+		return color;
 	}
 	
 	private String getArguments(DomainMethod aMethod) {
