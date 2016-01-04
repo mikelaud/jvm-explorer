@@ -7,12 +7,12 @@ import java.util.Map;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.google.inject.Inject;
 
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 
 public class UiResourcesImpl implements UiResources {
 
-	@SuppressWarnings("unused")
 	private final MvcController CONTROLLER;
 	private final Map<Path, Image> IMAGES;
 	private final Image EMPTY_IMAGE;
@@ -45,6 +45,12 @@ public class UiResourcesImpl implements UiResources {
 			image = loadImage(aPath);
 		}
 		return image;
+	}
+
+	@Override
+	public final void loadCss() {
+		Scene scene = CONTROLLER.getModel().getStage().getScene();
+		scene.getStylesheets().add("je.css");
 	}
 
 }

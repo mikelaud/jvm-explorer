@@ -4,6 +4,7 @@ import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.code.UiCode;
+import com.blogspot.mikelaud.je.ui.resources.UiResources;
 import com.blogspot.mikelaud.je.ui.search.UiSearch;
 import com.google.inject.Inject;
 
@@ -19,6 +20,7 @@ public class UiProgramImpl implements UiProgram {
 	private final MvcController CONTROLLER;
 	private final MvcModel MODEL;
 	private final UiProgramConst CONST;
+	private final UiResources RESOURCES;
 	private final UiSearch SEARCH;
 	private final UiCode CODE;
 	//
@@ -30,12 +32,14 @@ public class UiProgramImpl implements UiProgram {
 	private UiProgramImpl
 	(	MvcController aController
 	,	UiProgramConst aConst
+	,	UiResources aResources
 	,	UiSearch aSearch
 	,	UiCode aCode
 	) {
 		CONTROLLER = aController;
 		MODEL = CONTROLLER.getModel();
 		CONST = aConst;
+		RESOURCES = aResources;
 		SEARCH = aSearch;
 		CODE = aCode;
 		//
@@ -53,6 +57,7 @@ public class UiProgramImpl implements UiProgram {
 
 	private void buildStage() {
 		STAGE.setScene(SCENE);
+		RESOURCES.loadCss();
 		STAGE.setTitle(CONST.getProgramTitle());
 		STAGE.getIcons().setAll(MODEL.getImage(CONST.getProgramIcon()));
 		STAGE.fullScreenExitHintProperty().setValue(CONST.getEmptyHint());

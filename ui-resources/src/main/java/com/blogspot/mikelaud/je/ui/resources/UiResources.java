@@ -7,5 +7,6 @@ import javafx.scene.image.Image;
 public interface UiResources {
 
 	Image getImage(Path aPath);
+	void loadCss();
 	
 }

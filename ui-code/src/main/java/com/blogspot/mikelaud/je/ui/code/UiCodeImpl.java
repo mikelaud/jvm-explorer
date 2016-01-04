@@ -16,6 +16,7 @@ import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.domain.types.AccFinal;
 import com.blogspot.mikelaud.je.domain.types.MethodAccess;
 import com.blogspot.mikelaud.je.domain.types.TypeAccess;
+import com.blogspot.mikelaud.je.domain.types.TypeDeprecated;
 import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
 import com.blogspot.mikelaud.je.domain.types.TypeStatic;
 import com.blogspot.mikelaud.je.domain.types.TypeType;
@@ -132,12 +133,15 @@ public class UiCodeImpl implements UiCode {
 		return newEnd("");
 	}
 	
-	private Hyperlink newLink(String aText) {
+	private Hyperlink newLink(String aText, boolean aStrikethrough) {
 		final String text = (null == aText ? "" : aText); 
 		Hyperlink link = new Hyperlink(text);
 		link.setFont(FONT_DEFAULT);
 		link.setPadding(Insets.EMPTY);
 		link.setTextFill(Color.BLACK);
+		if (aStrikethrough) {
+			link.getStyleClass().add("hyperlink-strikethrough");
+		}
 		link.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -155,6 +159,10 @@ public class UiCodeImpl implements UiCode {
 			}
 		});
 		return link;
+	}
+	
+	private Hyperlink newLink(String aText) {
+		return newLink(aText, false);
 	}
 	
 	private Text newKeyword(String aText, boolean aSpace) {
@@ -266,7 +274,8 @@ public class UiCodeImpl implements UiCode {
 				nodes.add(newKeyword(aType.getInheritance().getCode()));
 			}
 			nodes.add(newKeyword(aType.getTypeType().getCode()));
-			nodes.add(newLink(aType.getName()));
+			final boolean strikethrough = (TypeDeprecated.Yes == aType.getDeprecated());
+			nodes.add(newLink(aType.getName(), strikethrough));
 			nodes.add(newEnd(" {"));
 			//
 			if (methods.isEmpty()) {
