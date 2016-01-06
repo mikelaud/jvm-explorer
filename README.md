@@ -18,3 +18,5 @@ http://stackoverflow.com/questions/15818997/how-to-wrap-a-jmxclient-in-a-javaage
 https://blogs.oracle.com/CoreJavaTechTips/entry/the_attach_api
 
 http://afoo.me/posts/2010-11-25-jvm_attach_api_introduction_and_practice.html
+
+http://stackoverflow.com/questions/3924727/managementfactory-getplatformmbeanserver-vs-mbeanserverfactory-creatembeanserv
