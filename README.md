@@ -14,3 +14,5 @@ http://stackoverflow.com/questions/376201/debug-a-java-application-without-start
 https://docs.oracle.com/javase/tutorial/jmx/index.html
 
 http://stackoverflow.com/questions/15818997/how-to-wrap-a-jmxclient-in-a-javaagent
+
+https://blogs.oracle.com/CoreJavaTechTips/entry/the_attach_api
