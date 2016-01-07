@@ -9,6 +9,7 @@
 	<description>${project.artifactId}</description>
 
 	<modules>
+		<module>je-agent</module>
 		<module>je-utils</module>
 		<module>je-search</module>
 		<module>je-domain</module>
