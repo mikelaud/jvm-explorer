@@ -9,9 +9,14 @@ import com.blogspot.mikelaud.je.ui.search.UiSearch;
 import com.google.inject.Inject;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -50,8 +55,40 @@ public class UiProgramImpl implements UiProgram {
 		buildePane();
 	}
 	
+	private TitledPane createJvmPane() {
+		TitledPane pane = new TitledPane();
+		pane.setText("JVM");
+		pane.setContent(new Pane());
+		return pane;
+	}
+	
+	private TitledPane createTypePane() {
+		TitledPane pane = new TitledPane();
+		pane.setText("Type");
+		pane.setContent(SEARCH.getPane());
+		return pane;
+	}
+	
+	private Accordion createLeftPane() {
+		Accordion accordion = new Accordion();
+		accordion.getPanes().setAll(createJvmPane(), createTypePane());
+		accordion.setExpandedPane(accordion.getPanes().stream().reduce((a, b) -> b).orElse(null));
+		accordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
+			@Override
+			public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldPane, TitledPane newPane) {
+				if (null != oldPane) {
+					oldPane.setCollapsible(true);
+				}
+				if (null != newPane) {
+					Platform.runLater(() -> newPane.setCollapsible(false));
+				}
+			}
+		});
+		return accordion;
+	}
+	
 	private void buildePane() {
-		PANE.getItems().addAll(SEARCH.getPane(), CODE.getPane());
+		PANE.getItems().addAll(createLeftPane(), CODE.getPane());
 		buildStage();
 	}
 
