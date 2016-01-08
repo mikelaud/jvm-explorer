@@ -72,7 +72,9 @@ public class UiProgramImpl implements UiProgram {
 	private Accordion createLeftPane() {
 		Accordion accordion = new Accordion();
 		accordion.getPanes().setAll(createJvmPane(), createTypePane());
-		accordion.setExpandedPane(accordion.getPanes().stream().reduce((a, b) -> b).orElse(null));
+		TitledPane lastPane = accordion.getPanes().stream().reduce((a, b) -> b).orElse(null);
+		lastPane.setCollapsible(false);
+		accordion.setExpandedPane(lastPane);
 		accordion.expandedPaneProperty().addListener(new ChangeListener<TitledPane>() {
 			@Override
 			public void changed(ObservableValue<? extends TitledPane> observable, TitledPane oldPane, TitledPane newPane) {
