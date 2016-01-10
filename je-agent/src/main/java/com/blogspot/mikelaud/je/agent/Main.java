@@ -11,7 +11,7 @@ import com.blogspot.mikelaud.je.agent.beans.Types;
 public class Main {
 
 	private static void registerMxBean() throws Exception {
-		ObjectName beanName = new ObjectName("JvmExplorer:type=" + Types.class.getSimpleName());
+		ObjectName beanName = ObjectName.getInstance("JvmExplorer", "type", "Types");
 		System.out.println("[agent] register MXBean: \"" + beanName + "\"");
 		Types bean = new Types();
 		MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();

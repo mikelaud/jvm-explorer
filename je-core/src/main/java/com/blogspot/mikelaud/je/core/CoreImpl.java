@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import javax.management.JMX;
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+
+import com.blogspot.mikelaud.je.agent.beans.TypesMXBean;
 import com.blogspot.mikelaud.je.core.helper.Bytecode;
 import com.blogspot.mikelaud.je.domain.Domain;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
@@ -68,22 +73,35 @@ public class CoreImpl implements Core {
 		return types;
 	}
 
-	private List<DomainType> loadLocalAgent() {
-		List<DomainType> types = new ArrayList<>();
+	private String getSelfJvmPid() {
+		String jvmName = ManagementFactory.getRuntimeMXBean().getName();
+	    return jvmName.substring(0, jvmName.indexOf('@'));
+	}
+	
+	private void loadLocalAgent() {
 		try {
-			String jvmName = ManagementFactory.getRuntimeMXBean().getName();                                                   
-		    String pid = jvmName.substring(0, jvmName.indexOf('@'));                                                   
-		    VirtualMachine jvm = VirtualMachine.attach(pid);
-		    Path userHome = Paths.get(System.getProperty("user.home"));
-		    Path agentPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent/1.0.0/je-agent-1.0.0-jar-with-dependencies.jar");
-		    System.out.println("Load local agent: " + agentPath);
-		    jvm.loadAgent(agentPath.toString());
-		    jvm.detach();
+			VirtualMachine jvm = VirtualMachine.attach(getSelfJvmPid());
+			Path userHome = Paths.get(System.getProperty("user.home"));
+			Path agentPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent/1.0.0/je-agent-1.0.0-jar-with-dependencies.jar");
+			System.out.println("Load local agent: " + agentPath);
+			jvm.loadAgent(agentPath.toString());
+			jvm.detach();
 		}
 		catch (Throwable t) {
 			t.printStackTrace();
 		}
-		return types;
+	}
+	
+	private void callLocalAgentEcho() {
+		try {
+			ObjectName beanName = ObjectName.getInstance("JvmExplorer", "type", "Types");
+			MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
+			TypesMXBean bean = JMX.newMXBeanProxy(beanServer, beanName, TypesMXBean.class);
+			bean.echo();
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -94,6 +112,7 @@ public class CoreImpl implements Core {
 	@Override
 	public final void setDefaultTypes() {
 		loadLocalAgent();
+		callLocalAgentEcho();
 		DOMAIN.getTypes().addAll(getJarTypes());
 		DOMAIN.setTypesSource(Const.JAR_NAME);
 	}
