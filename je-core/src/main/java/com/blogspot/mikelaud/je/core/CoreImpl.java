@@ -1,6 +1,7 @@
 package com.blogspot.mikelaud.je.core;
 
 import java.io.FileInputStream;
+import java.lang.management.ManagementFactory;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import com.blogspot.mikelaud.je.core.helper.Bytecode;
 import com.blogspot.mikelaud.je.domain.Domain;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.google.inject.Inject;
+import com.sun.tools.attach.VirtualMachine;
 
 public class CoreImpl implements Core {
 
@@ -66,6 +68,24 @@ public class CoreImpl implements Core {
 		return types;
 	}
 
+	private List<DomainType> getSelfTypes() {
+		List<DomainType> types = new ArrayList<>();
+		try {
+			String jvmName = ManagementFactory.getRuntimeMXBean().getName();                                                   
+		    String pid = jvmName.substring(0, jvmName.indexOf('@'));                                                   
+		    VirtualMachine jvm = VirtualMachine.attach(pid);
+		    Path userHome = Paths.get(System.getProperty("user.home"));
+		    Path agentPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent/1.0.0/je-agent-1.0.0-jar-with-dependencies.jar");
+		    System.out.println("Load agent: " + agentPath);
+		    jvm.loadAgent(agentPath.toString());
+		    jvm.detach();
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
+		return types;
+	}
+	
 	@Override
 	public final Domain getDomain() {
 		return DOMAIN;
@@ -75,6 +95,7 @@ public class CoreImpl implements Core {
 	public final void setDefaultTypes() {
 		DOMAIN.getTypes().addAll(getJarTypes());
 		DOMAIN.setTypesSource(Const.JAR_NAME);
+		getSelfTypes();
 	}
 	
 }
