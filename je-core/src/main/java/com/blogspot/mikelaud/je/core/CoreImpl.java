@@ -5,6 +5,7 @@ import java.lang.management.ManagementFactory;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -54,6 +55,7 @@ public class CoreImpl implements Core {
 		return javaHome.resolve(javaJar);
 	}
 
+	@SuppressWarnings("unused")
 	private List<DomainType> getJarTypes() {
 		List<DomainType> types = new ArrayList<>();
 		try {
@@ -65,6 +67,20 @@ public class CoreImpl implements Core {
 						types.add(bytecode.read(zip));
 					}
 				}
+			}
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
+		return types;
+	}
+
+	private List<DomainType> getTypes(List<byte[]> aBytecodes) {
+		List<DomainType> types = new ArrayList<>();
+		try {
+			Bytecode bytecode = new Bytecode();
+			for (byte[] code : aBytecodes) {
+				types.add(bytecode.read(code));
 			}
 		}
 		catch (Throwable t) {
@@ -92,15 +108,18 @@ public class CoreImpl implements Core {
 		}
 	}
 	
-	private void callLocalAgentEcho() {
+	private List<DomainType> callLocalAgentEcho() {
 		try {
 			ObjectName beanName = ObjectName.getInstance("JvmExplorer", "type", "Types");
 			MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
 			TypesMXBean bean = JMX.newMXBeanProxy(beanServer, beanName, TypesMXBean.class);
 			bean.echo();
+			List<byte[]> bytecodes = bean.getBytecodes();
+			return getTypes(bytecodes);
 		}
 		catch (Throwable t) {
 			t.printStackTrace();
+			return Collections.emptyList();
 		}
 	}
 	
@@ -112,8 +131,7 @@ public class CoreImpl implements Core {
 	@Override
 	public final void setDefaultTypes() {
 		loadLocalAgent();
-		callLocalAgentEcho();
-		DOMAIN.getTypes().addAll(getJarTypes());
+		DOMAIN.getTypes().addAll(callLocalAgentEcho());
 		DOMAIN.setTypesSource(Const.JAR_NAME);
 	}
 	

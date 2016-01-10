@@ -8,21 +8,24 @@ import javax.management.ObjectName;
 
 import com.blogspot.mikelaud.je.agent.beans.Types;
 
-public class Main {
+public class Main implements Runnable {
 
-	private static void registerMxBean() throws Exception {
+	private final Instrumentation INSTRUMENTATION;
+	
+	private void registerMxBean() throws Exception {
 		ObjectName beanName = ObjectName.getInstance("JvmExplorer", "type", "Types");
 		System.out.println("[agent] register MXBean: \"" + beanName + "\"");
-		Types bean = new Types();
+		Types bean = new Types(INSTRUMENTATION);
 		MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
 		beanServer.registerMBean(bean, beanName);
 	}
 	
-	private static void printHelp() {
+	private void printHelp() {
 		System.out.println("[agent] help: jconsole => Local Process => com.blogspot.mikelaud.je.main.Main => Connect => MBeans => JvmExplorer => Types => Operations => echo");		
 	}
 	
-	public static void agentmain(String aArgs, Instrumentation aInstrumentation) {
+	@Override
+	public void run() {
 		System.out.println("[agent] main: begin.");
 		try {
 			registerMxBean();
@@ -32,6 +35,14 @@ public class Main {
 			t.printStackTrace();
 		}
 		System.out.println("[agent] main: end.");
+	}
+	
+	public Main(Instrumentation aInstrumentation) {
+		INSTRUMENTATION = aInstrumentation;
+	}
+	
+	public static void agentmain(String aArgs, Instrumentation aInstrumentation) {
+		new Main(aInstrumentation).run();
 	}
 	
 }
