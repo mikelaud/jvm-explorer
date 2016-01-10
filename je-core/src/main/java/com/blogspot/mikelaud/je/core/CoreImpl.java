@@ -68,7 +68,7 @@ public class CoreImpl implements Core {
 		return types;
 	}
 
-	private List<DomainType> getSelfTypes() {
+	private List<DomainType> loadLocalAgent() {
 		List<DomainType> types = new ArrayList<>();
 		try {
 			String jvmName = ManagementFactory.getRuntimeMXBean().getName();                                                   
@@ -76,7 +76,7 @@ public class CoreImpl implements Core {
 		    VirtualMachine jvm = VirtualMachine.attach(pid);
 		    Path userHome = Paths.get(System.getProperty("user.home"));
 		    Path agentPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent/1.0.0/je-agent-1.0.0-jar-with-dependencies.jar");
-		    System.out.println("Load agent: " + agentPath);
+		    System.out.println("Load local agent: " + agentPath);
 		    jvm.loadAgent(agentPath.toString());
 		    jvm.detach();
 		}
@@ -93,9 +93,9 @@ public class CoreImpl implements Core {
 
 	@Override
 	public final void setDefaultTypes() {
+		loadLocalAgent();
 		DOMAIN.getTypes().addAll(getJarTypes());
 		DOMAIN.setTypesSource(Const.JAR_NAME);
-		getSelfTypes();
 	}
 	
 }
