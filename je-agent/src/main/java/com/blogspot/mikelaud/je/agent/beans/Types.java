@@ -30,12 +30,9 @@ public class Types implements TypesMXBean {
 			if (clazz.getName().startsWith("java.lang.")) continue;
 			if (clazz.getName().startsWith("[")) continue;
 			if (clazz.getName().startsWith("com.blogspot.mikelaud")) {
-				if (!INSTRUMENTATION.isModifiableClass(clazz)) {
-					System.out.println("[agent] skip self class: " + clazz.getName());
-				}
+				System.out.println("[agent] retransform self class: " + clazz.getName());
 			}
 			try {
-				
 				INSTRUMENTATION.retransformClasses(clazz);
 			}
 			catch (UnmodifiableClassException e) {
