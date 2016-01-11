@@ -29,12 +29,17 @@ public class Types implements TypesMXBean {
 			if (clazz.getName().contains("$Lambda$")) continue;
 			if (clazz.getName().startsWith("java.lang.")) continue;
 			if (clazz.getName().startsWith("[")) continue;
-			//System.out.println("Class: " + clazz.getName());
+			if (clazz.getName().startsWith("com.blogspot.mikelaud")) {
+				if (!INSTRUMENTATION.isModifiableClass(clazz)) {
+					System.out.println("[agent] skip self class: " + clazz.getName());
+				}
+			}
 			try {
+				
 				INSTRUMENTATION.retransformClasses(clazz);
 			}
 			catch (UnmodifiableClassException e) {
-				System.out.println("Skip class: " + clazz.getName());
+				System.err.println("[agent] skip class: " + clazz.getName() + "; " + e);
 			}
 		}
 		return BYTECODES;

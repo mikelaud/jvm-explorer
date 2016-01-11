@@ -15,7 +15,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -104,21 +103,9 @@ public class UiSearchImpl implements UiSearch {
 		return BACKGROUND.getPane();
 	}
 
-	private Node createBottom() {
-		Label locationLabel = new Label();
-		locationLabel.textProperty().bind(CONTROLLER.getDomain().takeTypesSource());
-		locationLabel.setGraphic(new ImageView(MODEL.getImage(CONST.getPackageIcon())));
-		locationLabel.setBorder(new TextField().getBorder());
-		//
-		VBox bottom = new VBox(locationLabel);
-		bottom.setSpacing(CONST.getSpacing());
-		return bottom;
-	}
-	
 	private void buildForm() {
 		PANE.setTop(createTop());
 		PANE.setCenter(createCenter());
-		PANE.setBottom(createBottom());
 		//
 		BorderPane.setMargin(PANE.getCenter(), new Insets(CONST.getSpacing(), 0, CONST.getSpacing(), 0));
 		PANE.setPadding(new Insets(CONST.getPadding(), CONST.getPadding(), CONST.getPadding(), CONST.getPadding()));
