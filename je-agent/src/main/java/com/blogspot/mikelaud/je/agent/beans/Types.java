@@ -16,7 +16,7 @@ public class Types implements TypesMXBean {
 
 	public Types(Instrumentation aInstrumentation) {
 		INSTRUMENTATION = aInstrumentation;
-		BYTECODES = new ArrayList<>();
+		BYTECODES = new ArrayList<>(); //TODO: concurrent
 		INSTRUMENTATION.addTransformer(new Transformer());
 	}
 
@@ -63,6 +63,18 @@ public class Types implements TypesMXBean {
 			BYTECODES.add(bytecode);
 		}
 		return BYTECODES;
+	}
+
+	@Override
+	public void addLogger(String aClassName, String aMethodName) {
+		// TODO Auto-generated method stub
+		System.out.println("[agent] add logger.");
+	}
+
+	@Override
+	public void removeLogger(String aClassName, String aMethodName) {
+		// TODO Auto-generated method stub
+		System.out.println("[agent] remove logger.");
 	}
 	
 }
