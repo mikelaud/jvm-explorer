@@ -66,15 +66,15 @@ public class Types implements TypesMXBean {
 	}
 
 	@Override
-	public void addLogger(String aClassName, String aMethodName) {
+	public void addLogging(int aClassLoaderId, String aClassDesc, String aMethodDesc) {
 		// TODO Auto-generated method stub
-		System.out.println("[agent] add logger.");
+		System.out.println("[agent] add logging.");
 	}
 
 	@Override
-	public void removeLogger(String aClassName, String aMethodName) {
+	public void removeLogging(int aClassLoaderId, String aClassDesc, String aMethodDesc) {
 		// TODO Auto-generated method stub
-		System.out.println("[agent] remove logger.");
+		System.out.println("[agent] remove logging.");
 	}
 	
 }

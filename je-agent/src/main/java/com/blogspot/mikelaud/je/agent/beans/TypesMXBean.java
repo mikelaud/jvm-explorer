@@ -7,7 +7,7 @@ public interface TypesMXBean {
 	void echo();
 	List<byte[]> getBytecodes();
 	
-	void addLogger(String aClassName, String aMethodName);
-	void removeLogger(String aClassName, String aMethodName);
+	void addLogging(int aClassLoaderId, String aClassDesc, String aMethodDesc);
+	void removeLogging(int aClassLoaderId, String aClassDesc, String aMethodDesc);
 	
 }
