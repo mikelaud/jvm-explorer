@@ -56,7 +56,7 @@ public class UiCodeImpl implements UiCode {
 	private final TextFlow CODE;
 	private final Font FONT_DEFAULT;
 	private final Font FONT_KEYWORD;
-	
+
 	@Inject
 	private UiCodeImpl
 	(	MvcController aController
@@ -76,7 +76,7 @@ public class UiCodeImpl implements UiCode {
 		//
 		buildForm();
 	}
-	
+
 	private Node createCenter() {
 		CODE_PANE.setPadding(new Insets(CONST.getSpacing(), CONST.getSpacing(), CONST.getSpacing(), CONST.getSpacing()));
 		CODE_PANE.setContent(CODE);
@@ -86,13 +86,13 @@ public class UiCodeImpl implements UiCode {
 		BACKGROUND.getPane().getChildren().add(CODE_PANE);
 		return BACKGROUND.getPane();
 	}
-	
+
 	private void buildForm() {
 		PANE.setCenter(createCenter());
 		//
 		PANE.setPadding(new Insets(CONST.getPadding(), CONST.getPadding(), CONST.getPadding(), CONST.getPadding()));
 	}
-	
+
 	private Text newRem(String aText) {
 		Text text = new Text(aText);
 		text.setFont(FONT_DEFAULT);
@@ -112,34 +112,34 @@ public class UiCodeImpl implements UiCode {
 		text.setFill(aColor);
 		return text;
 	}
-	
+
 	private Text newCode(String aText, boolean aSpace) {
 		return newCode(aText, aSpace, Color.BLACK);
 	}
-	
+
 	@SuppressWarnings("unused")
 	private Text newCode(String aText) {
 		return newCode(aText, true);
 	}
-	
+
 	private Text newTab() {
 		Text text = new Text("\t");
 		text.setFont(FONT_DEFAULT);
 		return text;
 	}
-	
+
 	private Text newEnd(String aText) {
 		Text text = new Text(aText + "\n");
 		text.setFont(FONT_DEFAULT);
 		return text;
 	}
-	
+
 	private Text newEnd() {
 		return newEnd("");
 	}
-	
-	private Hyperlink newLink(String aText, boolean aStrikethrough, Color aColor) {
-		final String text = (null == aText ? "" : aText); 
+
+	private Hyperlink newLink(DomainType aType, String aText, boolean aStrikethrough, Color aColor) {
+		final String text = (null == aText ? "" : aText);
 		Hyperlink link = new Hyperlink(text);
 		link.setFont(FONT_DEFAULT);
 		link.setPadding(Insets.EMPTY);
@@ -160,24 +160,31 @@ public class UiCodeImpl implements UiCode {
 				alert.setX(nodeInScene.getX());
 				alert.setY(nodeInScene.getY());
 				link.setVisited(false);
+				if (null != aType) {
+					MODEL.getDomain().getTypesBean().addLogging(0, aType.getName(), text);
+				}
 				alert.showAndWait();
 			}
 		});
 		return link;
 	}
-	
+
 	private Hyperlink newLink(String aText, boolean aStrikethrough) {
-		return newLink(aText, aStrikethrough, Color.BLACK);
+		return newLink(null, aText, aStrikethrough, Color.BLACK);
 	}
-	
+
 	private Hyperlink newLink(String aText, Color aColor) {
-		return newLink(aText, false, aColor);
+		return newLink(null, aText, false, aColor);
+	}
+
+	private Hyperlink newLink(DomainType aType, String aText, Color aColor) {
+		return newLink(aType, aText, false, aColor);
 	}
 
 	private Hyperlink newLink(String aText) {
-		return newLink(aText, false, Color.BLACK);
+		return newLink(null, aText, false, Color.BLACK);
 	}
-		
+
 	private Text newKeyword(String aText, boolean aSpace) {
 		if (null == aText) {
 			aText = "";
@@ -190,21 +197,21 @@ public class UiCodeImpl implements UiCode {
 		text.setFill(Color.rgb(0x7f, 0, 0x55));
 		return text;
 	}
-	
+
 	private Text newKeyword(String aText) {
 		return newKeyword(aText, true);
 	}
-	
+
 	private Font createDefaultFont() {
 		Font defaultFont = new Text().getFont();
 		return Font.font("Consolas", defaultFont.getSize());
 	}
-	
+
 	private Font createKeywordFont() {
 		Font defaultFont = createDefaultFont();
 		return Font.font(defaultFont.getFamily(), FontWeight.BOLD, defaultFont.getSize());
 	}
-	
+
 	private Map<String,String> getImportTypes(DomainType aType) {
 		Map<String,String> importTypes = new HashMap<>();
 		for (DomainMethod method : aType.getMethods()) {
@@ -226,7 +233,7 @@ public class UiCodeImpl implements UiCode {
 		}
 		return importTypes;
 	}
-	
+
 	private SortedSet<Entry<String,String>> getUiImportTypes(DomainType aType, Map<String,String> aImportTypes) {
 		SortedSet<Entry<String,String>> uiImportTypes = new TreeSet<>((a, b) -> {
 			int cmp = a.getValue().compareTo(b.getValue());
@@ -238,12 +245,12 @@ public class UiCodeImpl implements UiCode {
 		for (Entry<String,String> entry : aImportTypes.entrySet()) {
 			if (entry.getValue().isEmpty()) continue;
 			if (entry.getValue().equals("java.lang")) continue;
-			if (entry.getValue().equals(aType.getPackageName())) continue; 
+			if (entry.getValue().equals(aType.getPackageName())) continue;
 			uiImportTypes.add(new AbstractMap.SimpleEntry<String,String>(entry.getKey(), entry.getValue()));
 		}
 		return uiImportTypes;
 	}
-	
+
 	public final void setType(DomainType aType) {
 		if (null == aType) {
 			CODE_PANE.setVisible(false);
@@ -336,18 +343,18 @@ public class UiCodeImpl implements UiCode {
 					}
 					//
 					nodes.add(newCode(" ", false));
-					nodes.add(newLink(method.getName(), getColor(method.getAccess())));
+					nodes.add(newLink(aType, method.getName(), getColor(method.getAccess())));
 					nodes.add(newCode(getArguments(method), false, Color.DIMGRAY));
 					nodes.add(newEnd(";"));
 				}
 			}
-			nodes.add(newEnd("}"));		
+			nodes.add(newEnd("}"));
 			//
 			CODE.getChildren().setAll(nodes);
 			CODE_PANE.setVisible(true);
 		}
 	}
-	
+
 	private Color getColor(MethodAccess aMethodAccess) {
 		Color color = Color.BLACK;
 		if (null != aMethodAccess) {
@@ -370,7 +377,7 @@ public class UiCodeImpl implements UiCode {
 		}
 		return color;
 	}
-	
+
 	private String getArguments(DomainMethod aMethod) {
 		final int count = aMethod.getArgTypes().size();
 		if (count > 0) {
@@ -389,7 +396,7 @@ public class UiCodeImpl implements UiCode {
 			return "()";
 		}
 	}
-	
+
 	@Override
 	public final Pane getPane() {
 		return PANE;

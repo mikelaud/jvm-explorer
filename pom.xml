@@ -59,7 +59,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm</artifactId>
+			<artifactId>asm-all</artifactId>
 			<version>${je.asm.version}</version>
 		</dependency>
 		<dependency>

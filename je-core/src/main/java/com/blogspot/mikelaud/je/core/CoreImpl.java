@@ -10,10 +10,6 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import javax.management.JMX;
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-
 import com.blogspot.mikelaud.je.agent.beans.TypesMXBean;
 import com.blogspot.mikelaud.je.core.helper.Bytecode;
 import com.blogspot.mikelaud.je.domain.Domain;
@@ -33,9 +29,9 @@ public class CoreImpl implements Core {
 		//
 		String CLASS_EXT = ".class";
 	}
-	
+
 	private final Domain DOMAIN;
-	
+
 	@Inject
 	private CoreImpl(Domain aDomain) {
 		DOMAIN = aDomain;
@@ -43,12 +39,12 @@ public class CoreImpl implements Core {
 
 	private Path getJavaHome() {
 		String javaHome = System.getProperty(Const.JAVA_HOME_PROPERTY);
-		if (null == javaHome) { 
+		if (null == javaHome) {
 			javaHome = Const.JAVA_HOME_EMPTY;
 		}
 		return Paths.get(javaHome);
 	}
-	
+
 	private Path getJavaJar() {
 		final Path javaJar = Paths.get(Const.JAR_DIR, Const.JAR_NAME);
 		Path javaHome = getJavaHome();
@@ -93,7 +89,7 @@ public class CoreImpl implements Core {
 		String jvmName = ManagementFactory.getRuntimeMXBean().getName();
 	    return jvmName.substring(0, jvmName.indexOf('@'));
 	}
-	
+
 	private void loadLocalAgent() {
 		try {
 			VirtualMachine jvm = VirtualMachine.attach(getSelfJvmPid());
@@ -107,12 +103,10 @@ public class CoreImpl implements Core {
 			t.printStackTrace();
 		}
 	}
-	
+
 	private List<DomainType> callLocalAgentEcho() {
 		try {
-			ObjectName beanName = ObjectName.getInstance("JvmExplorer", "type", "Types");
-			MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
-			TypesMXBean bean = JMX.newMXBeanProxy(beanServer, beanName, TypesMXBean.class);
+			TypesMXBean bean = DOMAIN.getTypesBean();
 			bean.echo();
 			List<byte[]> bytecodes = bean.getBytecodes();
 			return getTypes(bytecodes);
@@ -122,7 +116,7 @@ public class CoreImpl implements Core {
 			return Collections.emptyList();
 		}
 	}
-	
+
 	@Override
 	public final Domain getDomain() {
 		return DOMAIN;
@@ -134,5 +128,5 @@ public class CoreImpl implements Core {
 		DOMAIN.getTypes().addAll(callLocalAgentEcho());
 		DOMAIN.setTypesSource(Const.JAR_NAME);
 	}
-	
+
 }

@@ -3,9 +3,17 @@ package com.blogspot.mikelaud.je.agent.beans;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.instrument.ClassDefinition;
 import java.lang.instrument.Instrumentation;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.commons.AdviceAdapter;
 
 import com.blogspot.mikelaud.je.agent.Transformer;
 
@@ -66,10 +74,79 @@ public class Types implements TypesMXBean {
 		return BYTECODES;
 	}
 
+	class EnteringAdapter extends AdviceAdapter {
+
+		private String mClassDesc;
+		private String name;
+
+		protected EnteringAdapter(String aClassDesc, MethodVisitor mv, int acc, String name, String desc) {
+			super(Opcodes.ASM5, mv, acc, name, desc);
+			mClassDesc = aClassDesc;
+			this.name = name;
+		}
+
+		protected void onMethodEnter() {
+			mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+			mv.visitLdcInsn("[agent] LOG!!! " + mClassDesc + "." + name);
+			mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+		}
+	}
+
+	public class ReturnAdapter extends ClassVisitor {
+
+		private String mClassDesc;
+		private String mMethodDesc;
+
+		  public ReturnAdapter(ClassVisitor cv, String aClassDesc, String aMethodDesc) {
+		    super(Opcodes.ASM4, cv);
+		    mClassDesc = aClassDesc;
+		    mMethodDesc = aMethodDesc;
+		  }
+
+		  @Override
+		  public MethodVisitor visitMethod(
+		      int access,
+		      String name,
+		      String desc,
+		      String signature,
+		      String[] exceptions) {
+		    MethodVisitor mv;
+		    mv = cv.visitMethod(access, name, desc, signature, exceptions);
+		    if (name.endsWith(mMethodDesc)) {
+		    	mv = new EnteringAdapter(mClassDesc, mv, access, name, desc);
+		    }
+		    return mv;
+		  }
+	}
+
 	@Override
 	public void addLogging(int aClassLoaderId, String aClassDesc, String aMethodDesc) {
 		// TODO Auto-generated method stub
-		System.out.println("[agent] add logging.");
+		System.out.println("[agent] add logging: " + aClassDesc + "." + aMethodDesc);
+		for (Class<?> clazz : INSTRUMENTATION.getAllLoadedClasses()) {
+			if (clazz.getName().endsWith(aClassDesc)) {
+				try {
+					System.out.println("[agent] redefineClass: " + clazz.getName());
+					//INSTRUMENTATION.retransformClasses(clazz);
+					final String name = clazz.getName().replaceAll("\\.", "/") + ".class";
+					ClassLoader classLoader = clazz.getClassLoader();
+					byte[] bytecode = readBytes(classLoader.getResourceAsStream(name));
+					//
+					ClassReader cr = new ClassReader(bytecode);
+					ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS | ClassWriter.COMPUTE_FRAMES);
+					ReturnAdapter cv = new ReturnAdapter(cw, aClassDesc, aMethodDesc);
+					cr.accept(cv, ClassReader.EXPAND_FRAMES);
+					//
+					ClassDefinition cd = new ClassDefinition(clazz, cw.toByteArray());
+					INSTRUMENTATION.redefineClasses(cd);
+				}
+				catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+		}
 	}
 
 	@Override
