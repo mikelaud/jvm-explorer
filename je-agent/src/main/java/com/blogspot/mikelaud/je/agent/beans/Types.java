@@ -17,6 +17,7 @@ public class Types implements TypesMXBean {
 	public Types(Instrumentation aInstrumentation) {
 		INSTRUMENTATION = aInstrumentation;
 		BYTECODES = new ArrayList<>(); //TODO: concurrent
+		//TODO: map of WeekReference<ClassLoader>
 		INSTRUMENTATION.addTransformer(new Transformer());
 	}
 
@@ -41,7 +42,7 @@ public class Types implements TypesMXBean {
 			return new byte[0];
 		}
 	}
-	
+
 	@Override
 	public List<byte[]> getBytecodes() {
 		for (Class<?> clazz : INSTRUMENTATION.getAllLoadedClasses()) {
@@ -76,5 +77,5 @@ public class Types implements TypesMXBean {
 		// TODO Auto-generated method stub
 		System.out.println("[agent] remove logging.");
 	}
-	
+
 }
