@@ -41,17 +41,24 @@ public class DomainImpl implements Domain {
 		mTypesBean = null;
 	}
 
+	private TypesMXBean createLocalTypesBean() {
+		TypesMXBean typesBean;
+		try {
+			ObjectName beanName = ObjectName.getInstance("JvmExplorer", "type", "Types");
+			MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
+			typesBean = JMX.newMXBeanProxy(beanServer, beanName, TypesMXBean.class);
+		}
+		catch (MalformedObjectNameException e) {
+			e.printStackTrace();
+			typesBean = null;
+		}
+		return typesBean;
+	}
+
 	@Override
 	public TypesMXBean getTypesBean() {
 		if (null == mTypesBean) {
-			try {
-				ObjectName beanName = ObjectName.getInstance("JvmExplorer", "type", "Types");
-				MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
-				mTypesBean = JMX.newMXBeanProxy(beanServer, beanName, TypesMXBean.class);
-			}
-			catch (MalformedObjectNameException e) {
-				e.printStackTrace();
-			}
+			mTypesBean = createLocalTypesBean();
 		}
 		return mTypesBean;
 	}
