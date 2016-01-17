@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -104,6 +105,22 @@ public class CoreImpl implements Core {
 		}
 	}
 
+	private void startRemoteManagementAgent() {
+		try {
+			VirtualMachine jvm = VirtualMachine.attach(getSelfJvmPid());
+			Properties props = new Properties();
+			props.put("com.sun.management.jmxremote.port", "5000");
+			props.put("com.sun.management.jmxremote.authenticate", "false");
+			props.put("com.sun.management.jmxremote.ssl", "false");
+			System.out.println("Start startManagementAgent agent: " + props);
+			jvm.startManagementAgent(props);
+			jvm.detach();
+		}
+		catch (Throwable t) {
+			t.printStackTrace();
+		}
+	}
+
 	private List<DomainType> callLocalAgentEcho() {
 		try {
 			TypesMXBean bean = DOMAIN.getTypesBean();
@@ -125,6 +142,7 @@ public class CoreImpl implements Core {
 	@Override
 	public final void setDefaultTypes() {
 		loadLocalAgent();
+		startRemoteManagementAgent();
 		DOMAIN.getTypes().addAll(callLocalAgentEcho());
 		DOMAIN.setTypesSource(Const.JAR_NAME);
 	}
