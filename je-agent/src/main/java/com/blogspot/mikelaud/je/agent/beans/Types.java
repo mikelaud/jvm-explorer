@@ -52,7 +52,7 @@ public class Types implements TypesMXBean {
 	}
 
 	@Override
-	public List<byte[]> getBytecodes() {
+	public byte[][] getBytecodes() {
 		for (Class<?> clazz : INSTRUMENTATION.getAllLoadedClasses()) {
 			if (clazz.getName().contains("$Lambda$")) continue;
 			if (clazz.getName().startsWith("java.lang.")) continue;
@@ -68,10 +68,11 @@ public class Types implements TypesMXBean {
 				System.out.println("[agent] skip (no class stream): " + name);
 				continue;
 			}
+			System.out.println("[agent] get (class bytecode): " + name);
 			byte[] bytecode = readBytes(stream);
 			BYTECODES.add(bytecode);
 		}
-		return BYTECODES;
+		return BYTECODES.stream().toArray(byte[][]::new);
 	}
 
 	class EnteringAdapter extends AdviceAdapter {

@@ -5,6 +5,7 @@ import java.lang.management.ManagementFactory;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
@@ -125,8 +126,8 @@ public class CoreImpl implements Core {
 		try {
 			TypesMXBean bean = DOMAIN.getTypesBean();
 			bean.echo();
-			List<byte[]> bytecodes = bean.getBytecodes();
-			return getTypes(bytecodes);
+			byte[][] bytecodes = bean.getBytecodes();
+			return getTypes(Arrays.asList(bytecodes));
 		}
 		catch (Throwable t) {
 			t.printStackTrace();

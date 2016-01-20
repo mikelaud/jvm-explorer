@@ -1,12 +1,18 @@
 package com.blogspot.mikelaud.je.domain;
 
+import java.io.IOException;
 import java.lang.management.ManagementFactory;
+import java.net.MalformedURLException;
 import java.util.Collection;
 
 import javax.management.JMX;
 import javax.management.MBeanServer;
+import javax.management.MBeanServerConnection;
 import javax.management.MalformedObjectNameException;
 import javax.management.ObjectName;
+import javax.management.remote.JMXConnector;
+import javax.management.remote.JMXConnectorFactory;
+import javax.management.remote.JMXServiceURL;
 
 import com.blogspot.mikelaud.je.agent.beans.TypesMXBean;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
@@ -41,24 +47,48 @@ public class DomainImpl implements Domain {
 		mTypesBean = null;
 	}
 
-	private TypesMXBean createLocalTypesBean() {
-		TypesMXBean typesBean;
+	private JMXServiceURL getBeanRemoteUrl() {
 		try {
-			ObjectName beanName = ObjectName.getInstance("JvmExplorer", "type", "Types");
-			MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
-			typesBean = JMX.newMXBeanProxy(beanServer, beanName, TypesMXBean.class);
+			return new JMXServiceURL("service:jmx:rmi:///jndi/rmi://127.0.0.1:5000/jmxrmi");
+		}
+		catch (MalformedURLException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+
+	private ObjectName getBeanName() {
+		try {
+			return ObjectName.getInstance("JvmExplorer", "type", "Types");
 		}
 		catch (MalformedObjectNameException e) {
 			e.printStackTrace();
-			typesBean = null;
+			throw new RuntimeException(e);
 		}
-		return typesBean;
+	}
+
+	@SuppressWarnings("unused")
+	private TypesMXBean createLocalTypesBean() {
+		MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
+		return JMX.newMXBeanProxy(beanServer, getBeanName(), TypesMXBean.class);
+	}
+
+	private TypesMXBean createRemoteTypesBean() {
+		try {
+			JMXConnector jmxc = JMXConnectorFactory.connect(getBeanRemoteUrl(), null);
+			MBeanServerConnection mbsc = jmxc.getMBeanServerConnection();
+			return JMX.newMBeanProxy(mbsc, getBeanName(), TypesMXBean.class, true);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
 	public TypesMXBean getTypesBean() {
 		if (null == mTypesBean) {
-			mTypesBean = createLocalTypesBean();
+			mTypesBean = createRemoteTypesBean();
 		}
 		return mTypesBean;
 	}
