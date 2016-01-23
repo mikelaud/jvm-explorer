@@ -11,6 +11,7 @@
 	<modules>
 		<module>je-agent</module>
 		<module>je-utils</module>
+		<module>je-ssh</module>
 		<module>je-search</module>
 		<module>je-domain</module>
 		<module>je-core</module>
