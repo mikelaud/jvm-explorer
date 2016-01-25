@@ -16,12 +16,12 @@ public class Shell {
         connstr = JOptionPane.showInputDialog("Enter username:password@hostname", System.getProperty("user.name")+":<pass>"+"@localhost");
       }
       String user = connstr.substring(0, connstr.indexOf(':'));
-      String pass = connstr.substring(connstr.indexOf(':')+1, connstr.indexOf('@'));
+      String pass = connstr.substring(connstr.indexOf(':') + 1, connstr.indexOf('@'));
       String host = connstr.substring(connstr.indexOf('@') + 1);
       Session session = jsch.getSession(user, host, 22);
       session.setPassword(pass);
       session.setConfig("StrictHostKeyChecking", "no");
-      session.connect(); 
+      session.connect();
       Channel channel = session.openChannel("shell");
       channel.setInputStream(System.in);
       channel.setOutputStream(System.out);
@@ -30,4 +30,4 @@ public class Shell {
       System.out.println(e);
     }
   }
-} 
+}
