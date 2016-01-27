@@ -13,8 +13,10 @@ public class Shell {
 				connstr = arg[0];
 			}
 			else {
-				connstr = JOptionPane.showInputDialog("Enter username:password@hostname",
-						System.getProperty("user.name") + ":<pass>" + "@localhost");
+				connstr = JOptionPane.showInputDialog(
+					"Enter username:password@hostname",
+					System.getProperty("user.name") + ":<pass>" + "@localhost"
+				);
 			}
 			String user = connstr.substring(0, connstr.indexOf(':'));
 			String pass = connstr.substring(connstr.indexOf(':') + 1, connstr.indexOf('@'));
