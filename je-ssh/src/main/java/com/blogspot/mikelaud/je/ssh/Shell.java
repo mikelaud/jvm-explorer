@@ -25,6 +25,7 @@ public class Shell {
 			session.setPassword(pass);
 			session.setConfig("StrictHostKeyChecking", "no");
 			session.connect();
+
 			Channel channel = session.openChannel("shell");
 			channel.setInputStream(System.in);
 			channel.setOutputStream(System.out);
