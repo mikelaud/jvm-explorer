@@ -14,6 +14,7 @@ http://stackoverflow.com/questions/4817670/how-can-i-add-a-javaagent-to-a-jvm-wi
 http://stackoverflow.com/questions/22441878/attach-to-already-running-jvm
 http://stackoverflow.com/questions/376201/debug-a-java-application-without-starting-the-jvm-with-debug-arguments
 
+
 https://docs.oracle.com/javase/tutorial/jmx/index.html
 
 http://stackoverflow.com/questions/15818997/how-to-wrap-a-jmxclient-in-a-javaagent
