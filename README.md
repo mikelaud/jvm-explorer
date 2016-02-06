@@ -1,7 +1,6 @@
 # jvm-explorer
 Journey into JVM (javafx)
 
-
 ![je](https://cloud.githubusercontent.com/assets/5852219/12161165/c1f85f8c-b503-11e5-890d-0fa9ab4e888d.png)
 
 https://docs.oracle.com/javase/7/docs/jdk/api/attach/spec/com/sun/tools/attach/VirtualMachine.html
