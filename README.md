@@ -24,3 +24,9 @@ http://afoo.me/posts/2010-11-25-jvm_attach_api_introduction_and_practice.html
 
 http://stackoverflow.com/questions/3924727/managementfactory-getplatformmbeanserver-vs-mbeanserverfactory-creatembeanserv
 
+ASM:
+----
+http://chrononsystems.com/blog/java-7-design-flaw-leads-to-huge-backward-step-for-the-jvm
+https://github.com/kocherovms/metracer/blob/asm/src/main/java/com/develorium/metracer/asm/MetracerClassWriter.java
+http://stackoverflow.com/questions/30234329/asm-compute-frames-error-with-if-assignment
+
