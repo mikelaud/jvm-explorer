@@ -60,15 +60,21 @@ public class Types implements TypesMXBean {
 			final String name = clazz.getName().replaceAll("\\.", "/") + ".class";
 			ClassLoader classLoader = clazz.getClassLoader();
 			if (null == classLoader) {
-				System.out.println("[agent] skip (no class loader): " + name);
+				if (name.contains("mikelaud")) {
+					System.out.println("[agent] skip (no class loader): " + name);
+				}
 				continue;
 			}
 			InputStream stream = classLoader.getResourceAsStream(name);
 			if (null == stream) {
-				System.out.println("[agent] skip (no class stream): " + name);
+				if (name.contains("mikelaud")) {
+					System.out.println("[agent] skip (no class stream): " + name);
+				}
 				continue;
 			}
-			System.out.println("[agent] get (class bytecode): " + name);
+			if (name.contains("mikelaud")) {
+				System.out.println("[agent] get (class bytecode): " + name);
+			}
 			byte[] bytecode = readBytes(stream);
 			BYTECODES.add(bytecode);
 		}
@@ -99,7 +105,7 @@ public class Types implements TypesMXBean {
 		private String mMethodDesc;
 
 		  public ReturnAdapter(ClassVisitor cv, String aClassDesc, String aMethodDesc) {
-		    super(Opcodes.ASM4, cv);
+		    super(Opcodes.ASM5, cv);
 		    mClassDesc = aClassDesc;
 		    mMethodDesc = aMethodDesc;
 		  }
