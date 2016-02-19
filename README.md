@@ -29,3 +29,8 @@ http://chrononsystems.com/blog/java-7-design-flaw-leads-to-huge-backward-step-fo
 https://github.com/kocherovms/metracer/blob/asm/src/main/java/com/develorium/metracer/asm/MetracerClassWriter.java
 http://stackoverflow.com/questions/30234329/asm-compute-frames-error-with-if-assignment
 
+
+Signing and Verifying:
+----------------------
+https://docs.oracle.com/javase/tutorial/security/apisign/index.html
+https://docs.oracle.com/javase/tutorial/deployment/jar/signindex.html
