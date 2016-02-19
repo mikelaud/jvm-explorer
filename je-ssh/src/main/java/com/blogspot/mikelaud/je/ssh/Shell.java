@@ -1,5 +1,11 @@
 package com.blogspot.mikelaud.je.ssh;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
@@ -28,6 +34,94 @@ public class Shell {
 		return rcode;
 	}
 
+	private static int checkAck(InputStream aInputStream) throws IOException {
+		int rcode = aInputStream.read();
+		// rcode may be:
+		//		0  for success
+		//		1  for error
+		//		2  for fatal error
+		//		-1
+		StringBuffer buffer = new StringBuffer();
+		int character = rcode;
+		while (character > 0) {
+			character = aInputStream.read();
+			buffer.append((char)character);
+		}
+		if (buffer.length() > 0) {
+			System.out.print(buffer.toString());
+		}
+		return rcode;
+	}
+
+	public static int copy(Session aSession, String aDstFile, String aSrcFile) {
+		int rcode = 0;
+		try {
+			String command = "scp -p -t " + aDstFile;
+			ChannelExec channel = (ChannelExec)aSession.openChannel("exec");
+			channel.setCommand(command);
+			try (OutputStream out = channel.getOutputStream()) {
+				InputStream in = channel.getInputStream();
+				channel.connect();
+				rcode = checkAck(in);
+				if (0 != rcode) {
+					channel.disconnect();
+					return rcode;
+				}
+				//
+				File srcFile = new File(aSrcFile);
+				String dstTime = "T" + (srcFile.lastModified() / 1000) + " 0";
+				// The access time should be sent here, but it is not accessible with JavaAPI
+				dstTime += " " + (srcFile.lastModified() / 1000) + " 0" + "\n";
+				out.write(dstTime.getBytes());
+				out.flush();
+				rcode = checkAck(in);
+				if (0 != rcode) {
+					channel.disconnect();
+					return rcode;
+				}
+				//
+				// send "C0644 filesize filename", where filename should not include '/'
+				long dstSize = srcFile.length();
+				String dstIdentity = "C0644 " + dstSize + " " + aDstFile + "\n";
+				out.write(dstIdentity.getBytes());
+				out.flush();
+				rcode = checkAck(in);
+				if (0 != rcode) {
+					channel.disconnect();
+					return rcode;
+				}
+				//
+				// send a content of file
+				try (FileInputStream fis = new FileInputStream(srcFile)) {
+					byte[] buffer = new byte[1024];
+					while (true) {
+						int count = fis.read(buffer, 0, buffer.length);
+						if (count <= 0) break;
+						out.write(buffer, 0, count);
+					}
+					fis.close();
+					// send '\0'
+					buffer[0] = 0;
+					out.write(buffer, 0, 1);
+					out.flush();
+					rcode = checkAck(in);
+					if (0 != rcode) {
+						channel.disconnect();
+						return rcode;
+					}
+					//
+					out.close();
+					channel.disconnect();
+				}
+			}
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			rcode = 3;
+		}
+		return rcode;
+	}
+
 	public static void main(String[] arg) {
 		try {
 			JSch jsch = new JSch();
@@ -36,8 +130,11 @@ public class Shell {
 			session.setConfig("StrictHostKeyChecking", "no");
 			session.connect();
 			System.out.println("exit status: "+ exec(session, "ls -l"));
+			System.out.println("exit status: "+ exec(session, "pwd"));
+			System.out.println("exit status: "+ copy(session, "notepad.exe", "C:/Windows/notepad.exe"));
+			System.out.println("exit status: "+ copy(session, "notepad2.exe", "C:/Windows/notepad.exe"));
 			System.out.println("exit status: "+ exec(session, "ls"));
-		    session.disconnect();
+			session.disconnect();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
