@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
@@ -43,7 +45,7 @@ public class Shell {
 		//		-1
 		StringBuffer buffer = new StringBuffer();
 		int character = rcode;
-		while (character > 0) {
+		while (character != 0 && character != '\n') {
 			character = aInputStream.read();
 			buffer.append((char)character);
 		}
@@ -53,10 +55,11 @@ public class Shell {
 		return rcode;
 	}
 
-	public static int copy(Session aSession, String aDstFile, String aSrcFile) {
+	public static int copy(Session aSession, Path aDstFile, Path aSrcFile) {
 		int rcode = 0;
 		try {
-			String command = "scp -p -t " + aDstFile;
+			UnixPath unixFile = new UnixPath(aDstFile);
+			String command = "scp -p -t " + unixFile.getFilePath();
 			ChannelExec channel = (ChannelExec)aSession.openChannel("exec");
 			channel.setCommand(command);
 			try (OutputStream out = channel.getOutputStream()) {
@@ -68,7 +71,7 @@ public class Shell {
 					return rcode;
 				}
 				//
-				File srcFile = new File(aSrcFile);
+				File srcFile = aSrcFile.toFile();
 				String dstTime = "T" + (srcFile.lastModified() / 1000) + " 0";
 				// The access time should be sent here, but it is not accessible with JavaAPI
 				dstTime += " " + (srcFile.lastModified() / 1000) + " 0" + "\n";
@@ -82,7 +85,7 @@ public class Shell {
 				//
 				// send "C0644 filesize filename", where filename should not include '/'
 				long dstSize = srcFile.length();
-				String dstIdentity = "C0644 " + dstSize + " " + aDstFile + "\n";
+				String dstIdentity = "C0644 " + dstSize + " " + unixFile.getFileName() + "\n";
 				out.write(dstIdentity.getBytes());
 				out.flush();
 				rcode = checkAck(in);
@@ -131,8 +134,11 @@ public class Shell {
 			session.connect();
 			System.out.println("exit status: "+ exec(session, "ls -l"));
 			System.out.println("exit status: "+ exec(session, "pwd"));
-			System.out.println("exit status: "+ copy(session, "notepad.exe", "C:/Windows/notepad.exe"));
-			System.out.println("exit status: "+ copy(session, "notepad2.exe", "C:/Windows/notepad.exe"));
+			//
+			Path srcFilePath = Paths.get("C:", "Windows", "notepad.exe");
+			System.out.println("exit status: "+ copy(session, Paths.get("notepad.exe"), srcFilePath));
+			System.out.println("exit status: "+ copy(session, Paths.get("notepad2.exe"), srcFilePath));
+			//
 			System.out.println("exit status: "+ exec(session, "ls"));
 			session.disconnect();
 		}
