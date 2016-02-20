@@ -21,6 +21,10 @@ public abstract class AbstractOperation implements SshOperation {
 		POLL_INTERVAL = Duration.ofMillis(100);
 	}
 
+	protected boolean hasError(int aRcode) {
+		return (OperationStatus.EXIT_SUCCESS.getValue() != aRcode);
+	}
+
 	protected final ChannelExec newChannelExec(Session aSession) throws JSchException {
 		Objects.requireNonNull(aSession);
 		return ChannelExec.class.cast(aSession.openChannel(EXEC_CHANNEL_TYPE));

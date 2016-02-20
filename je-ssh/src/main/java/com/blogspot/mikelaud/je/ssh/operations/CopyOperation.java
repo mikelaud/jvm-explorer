@@ -20,10 +20,6 @@ public class CopyOperation extends AbstractOperation {
 	private final File FILE_SOURCE;
 	private final int COPY_BUFFER_SIZE;
 
-	private boolean hasError(int aRcode) {
-		return (OperationStatus.EXIT_SUCCESS.getValue() != aRcode);
-	}
-
 	private int checkAck(InputStream aInputStream) throws IOException {
 		int rcode = aInputStream.read();
 		// rcode may be:
