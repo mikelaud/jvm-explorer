@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.Objects;
+import java.util.function.BiConsumer;
 
 import com.blogspot.mikelaud.je.ssh.common.OperationStatus;
 import com.blogspot.mikelaud.je.ssh.common.UnixPath;
@@ -16,7 +17,8 @@ import com.jcraft.jsch.Session;
 public class CopyOperation extends AbstractOperation {
 
 	private final UnixPath FILE_DESTINATION;
-	private final Path FILE_SOURCE;
+	private final File FILE_SOURCE;
+	private final int FILE_BUFFER_SIZE;
 
 	private int checkAck(InputStream aInputStream) throws IOException {
 		int rcode = aInputStream.read();
@@ -37,78 +39,97 @@ public class CopyOperation extends AbstractOperation {
 		return rcode;
 	}
 
-	@Override
-	protected int executeOperation(Session aSession) throws Exception {
-		String command = "scp -p -t " + FILE_DESTINATION.getFilePath();
-		ChannelExec channel = newChannelExec(aSession);
-		channel.setCommand(command);
-		int rcode = OperationStatus.EXIT_SUCCESS.getValue();
-		try (OutputStream out = channel.getOutputStream()) {
-			InputStream in = channel.getInputStream();
-			channel.connect();
-			rcode = checkAck(in);
-			if (0 != rcode) {
-				channel.disconnect();
-				return rcode;
-			}
-			//
-			File srcFile = FILE_SOURCE.toFile();
-			String dstTime = "T" + (srcFile.lastModified() / 1000) + " 0";
+	private boolean hasError(int aRcode) {
+		return (OperationStatus.EXIT_SUCCESS.getValue() != aRcode);
+	}
+	
+	private int connect(ChannelExec aChannel, InputStream aIn) throws Exception {
+		aChannel.connect();
+		return checkAck(aIn);
+	}
+	
+	private int write(OutputStream aOut, InputStream aIn, BiConsumer<OutputStream, InputStream> aWriter) throws Exception {
+		aWriter.accept(aOut, aIn);
+		aOut.flush();
+		return checkAck(aIn);
+	}
+	
+	private void writeTime(OutputStream aOut, InputStream aIn) {
+		try {
 			// The access time should be sent here, but it is not accessible with JavaAPI
-			dstTime += " " + (srcFile.lastModified() / 1000) + " 0" + "\n";
-			out.write(dstTime.getBytes());
-			out.flush();
-			rcode = checkAck(in);
-			if (0 != rcode) {
-				channel.disconnect();
-				return rcode;
-			}
-			//
+			long lastModified = (FILE_SOURCE.lastModified() / 1000);
+			String dstTime = String.format("T%d 0 %d 0\n", lastModified, lastModified);
+			aOut.write(dstTime.getBytes());
+		}
+		catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	}
+	
+	private void writeIdentity(OutputStream aOut, InputStream aIn) {
+		try {
 			// send "C0644 filesize filename", where filename should not include '/'
-			long dstSize = srcFile.length();
-			String dstIdentity = "C0644 " + dstSize + " " + FILE_DESTINATION.getFileName() + "\n";
-			out.write(dstIdentity.getBytes());
-			out.flush();
-			rcode = checkAck(in);
-			if (0 != rcode) {
-				channel.disconnect();
-				return rcode;
-			}
-			//
+			long dstSize = FILE_SOURCE.length();
+			String dstIdentity = String.format("C0644 %d %s\n", dstSize, FILE_DESTINATION.getFileName());
+			aOut.write(dstIdentity.getBytes());
+		}
+		catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	}
+	
+	private void writeContent(OutputStream aOut, InputStream aIn) {
+		try {
 			// send a content of file
-			try (FileInputStream fis = new FileInputStream(srcFile)) {
-				byte[] buffer = new byte[1024];
+			try (FileInputStream fis = new FileInputStream(FILE_SOURCE)) {
+				byte[] buffer = new byte[FILE_BUFFER_SIZE];
 				while (true) {
 					int count = fis.read(buffer, 0, buffer.length);
 					if (count <= 0) break;
-					out.write(buffer, 0, count);
+					aOut.write(buffer, 0, count);
 				}
-				fis.close();
 				// send '\0'
 				buffer[0] = 0;
-				out.write(buffer, 0, 1);
-				out.flush();
-				rcode = checkAck(in);
-				if (0 != rcode) {
-					channel.disconnect();
-					return rcode;
-				}
-				//
-				out.close();
-				channel.disconnect();
+				aOut.write(buffer, 0, 1);
 			}
 		}
+		catch (Exception e) {
+	        throw new RuntimeException(e);
+	    }
+	}
+	
+	@Override
+	protected int executeOperation(Session aSession) throws Exception {
+		ChannelExec channel = newChannelExec(aSession);
+		InputStream in = channel.getInputStream();
+		String command = String.format("scp -p -t %s", FILE_DESTINATION.getFilePath());
+		channel.setCommand(command);
+		int rcode = OperationStatus.EXIT_FAILURE.getValue();
+		while (true) {
+			try (OutputStream out = channel.getOutputStream()) {
+				if (hasError(rcode = connect(channel, in))) break;
+				if (hasError(rcode = write(out, in, this::writeTime))) break;
+				if (hasError(rcode = write(out, in, this::writeIdentity))) break;
+				if (hasError(rcode = write(out, in, this::writeContent))) break;
+			}
+			break;
+		}
+		channel.disconnect();
 		return rcode;
 	}
 
 	public CopyOperation(Path aFileDestination, Path aFileSource) {
-		FILE_DESTINATION = Objects.requireNonNull(new UnixPath(aFileDestination));
-		FILE_SOURCE = Objects.requireNonNull(aFileSource);
+		Objects.requireNonNull(aFileDestination);
+		Objects.requireNonNull(aFileSource);
+		//
+		FILE_DESTINATION = new UnixPath(aFileDestination);
+		FILE_SOURCE = aFileSource.toFile();
+		FILE_BUFFER_SIZE = 1024;
 	}
 
 	@Override
 	public String toString() {
-		return "scp " + FILE_SOURCE + " user@unix:" + FILE_DESTINATION.getFilePath();
+		return String.format("scp %s user@unix:%s", FILE_SOURCE, FILE_DESTINATION.getFilePath());
 	}
 
 }

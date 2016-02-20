@@ -25,7 +25,7 @@ public class UnixPath {
 		SOURCE = Objects.requireNonNull(aFilePath);
 		HAS_ROOT = (null != aFilePath.getRoot());
 		FILE_NAME = Objects.toString(aFilePath.getFileName(), "");
-		FILE_PATH = (HAS_ROOT ? SEPARATOR : "") + replaceSeparator(aFilePath, SEPARATOR);
+		FILE_PATH = (HAS_ROOT ? SEPARATOR : "").concat(replaceSeparator(aFilePath, SEPARATOR));
 	}
 
 	public static String getSeparator() {

@@ -23,7 +23,7 @@ public abstract class AbstractOperation implements SshOperation {
 
 	protected final ChannelExec newChannelExec(Session aSession) throws JSchException {
 		Objects.requireNonNull(aSession);
-		return (ChannelExec) aSession.openChannel(EXEC_CHANNEL_TYPE);
+		return ChannelExec.class.cast(aSession.openChannel(EXEC_CHANNEL_TYPE));
 	}
 
 	protected final void waitEof(Channel aChannel) {
