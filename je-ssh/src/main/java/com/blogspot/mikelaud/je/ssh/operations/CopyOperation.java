@@ -16,8 +16,12 @@ import com.jcraft.jsch.Session;
 
 public class CopyOperation extends AbstractOperation {
 
+	private final Path INPUT_FILE_DESTINATION;
+	private final Path INPUT_FILE_SOURCE;
+	//
 	private final UnixPath FILE_DESTINATION;
 	private final File FILE_SOURCE;
+	//
 	private final int COPY_BUFFER_SIZE;
 
 	private int checkAck(InputStream aInputStream) throws IOException {
@@ -115,14 +119,23 @@ public class CopyOperation extends AbstractOperation {
 	}
 
 	public CopyOperation(Path aFileDestination, Path aFileSource) {
-		Objects.requireNonNull(aFileDestination);
-		Objects.requireNonNull(aFileSource);
+		INPUT_FILE_DESTINATION = Objects.requireNonNull(aFileDestination);
+		INPUT_FILE_SOURCE = Objects.requireNonNull(aFileSource);
 		//
 		FILE_DESTINATION = new UnixPath(aFileDestination);
 		FILE_SOURCE = aFileSource.toFile();
+		//
 		COPY_BUFFER_SIZE = 1024;
 	}
 
+	public Path getFileDestination() {
+		return INPUT_FILE_DESTINATION;
+	}
+	
+	public Path getFileSource() {
+		return INPUT_FILE_SOURCE;
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("scp %s user@unix:%s", FILE_SOURCE, FILE_DESTINATION.getFilePath());
