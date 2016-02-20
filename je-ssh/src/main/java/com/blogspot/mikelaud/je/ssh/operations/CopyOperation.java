@@ -18,7 +18,11 @@ public class CopyOperation extends AbstractOperation {
 
 	private final UnixPath FILE_DESTINATION;
 	private final File FILE_SOURCE;
-	private final int FILE_BUFFER_SIZE;
+	private final int COPY_BUFFER_SIZE;
+
+	private boolean hasError(int aRcode) {
+		return (OperationStatus.EXIT_SUCCESS.getValue() != aRcode);
+	}
 
 	private int checkAck(InputStream aInputStream) throws IOException {
 		int rcode = aInputStream.read();
@@ -37,10 +41,6 @@ public class CopyOperation extends AbstractOperation {
 			System.out.print(charactes.toString());
 		}
 		return rcode;
-	}
-
-	private boolean hasError(int aRcode) {
-		return (OperationStatus.EXIT_SUCCESS.getValue() != aRcode);
 	}
 	
 	private int connect(ChannelExec aChannel, InputStream aIn) throws Exception {
@@ -82,7 +82,7 @@ public class CopyOperation extends AbstractOperation {
 		try {
 			// send a content of file
 			try (FileInputStream fis = new FileInputStream(FILE_SOURCE)) {
-				byte[] buffer = new byte[FILE_BUFFER_SIZE];
+				byte[] buffer = new byte[COPY_BUFFER_SIZE];
 				while (true) {
 					int count = fis.read(buffer, 0, buffer.length);
 					if (count <= 0) break;
@@ -124,7 +124,7 @@ public class CopyOperation extends AbstractOperation {
 		//
 		FILE_DESTINATION = new UnixPath(aFileDestination);
 		FILE_SOURCE = aFileSource.toFile();
-		FILE_BUFFER_SIZE = 1024;
+		COPY_BUFFER_SIZE = 1024;
 	}
 
 	@Override
