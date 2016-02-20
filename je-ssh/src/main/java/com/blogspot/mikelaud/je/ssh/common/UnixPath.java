@@ -9,7 +9,6 @@ public class UnixPath {
 
 	private static final String SEPARATOR = "/";
 	//
-	private final Path SOURCE;
 	private final boolean HAS_ROOT;
 	private final String FILE_NAME;
 	private final String FILE_PATH;
@@ -22,7 +21,7 @@ public class UnixPath {
 	}
 
 	public UnixPath(Path aFilePath) {
-		SOURCE = Objects.requireNonNull(aFilePath);
+		Objects.requireNonNull(aFilePath);
 		HAS_ROOT = (null != aFilePath.getRoot());
 		FILE_NAME = Objects.toString(aFilePath.getFileName(), "");
 		FILE_PATH = (HAS_ROOT ? SEPARATOR : "").concat(replaceSeparator(aFilePath, SEPARATOR));
@@ -32,7 +31,6 @@ public class UnixPath {
 		return SEPARATOR;
 	}
 
-	public Path getSource() { return SOURCE; }
 	public boolean hasRoot() { return HAS_ROOT; }
 	public String getFileName() { return FILE_NAME; }
 	public String getFilePath() { return FILE_PATH; }
