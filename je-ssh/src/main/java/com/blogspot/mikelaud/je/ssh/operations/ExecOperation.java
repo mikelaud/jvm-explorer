@@ -11,7 +11,6 @@ public class ExecOperation extends AbstractOperation {
 
 	@Override
 	protected int executeOperation(Session aSession) throws Exception {
-		Objects.requireNonNull(aSession);
 		ChannelExec channel = newChannelExec(aSession);
 		channel.setCommand(COMMAND);
 		channel.setInputStream(null);

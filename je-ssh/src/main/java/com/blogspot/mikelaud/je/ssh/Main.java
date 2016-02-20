@@ -26,14 +26,14 @@ public class Main {
 			session.setConfig("StrictHostKeyChecking", "no");
 			session.connect();
 			//
-			System.out.println("exit status: "+ exec(session, "ls -l"));
-			System.out.println("exit status: "+ exec(session, "pwd"));
+			exec(session, "ls -l");
+			exec(session, "pwd");
 			//
 			Path srcFilePath = Paths.get("C:/Windows/notepad.exe");
-			System.out.println("exit status: "+ copy(session, Paths.get("notepad.exe"), srcFilePath));
-			System.out.println("exit status: "+ copy(session, Paths.get("notepad2.exe"), srcFilePath));
+			copy(session, Paths.get("notepad.exe"), srcFilePath);
+			copy(session, Paths.get("notepad2.exe"), srcFilePath);
 			//
-			System.out.println("exit status: "+ exec(session, "ls"));
+			exec(session, "ls");
 			session.disconnect();
 		}
 		catch (Exception e) {

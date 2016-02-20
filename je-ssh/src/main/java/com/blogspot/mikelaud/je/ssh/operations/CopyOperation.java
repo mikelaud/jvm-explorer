@@ -19,28 +19,26 @@ public class CopyOperation extends AbstractOperation {
 	private final Path FILE_SOURCE;
 
 	private int checkAck(InputStream aInputStream) throws IOException {
-		Objects.requireNonNull(aInputStream);
 		int rcode = aInputStream.read();
 		// rcode may be:
 		//		0  for success
 		//		1  for error
 		//		2  for fatal error
 		//		-1
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder charactes = new StringBuilder();
 		int character = rcode;
 		while (character != 0 && character != '\n') {
 			character = aInputStream.read();
-			buffer.append((char)character);
+			charactes.append((char)character);
 		}
-		if (buffer.length() > 0) {
-			System.out.print(buffer.toString());
+		if (charactes.length() > 0) {
+			System.out.print(charactes.toString());
 		}
 		return rcode;
 	}
 
 	@Override
 	protected int executeOperation(Session aSession) throws Exception {
-		Objects.requireNonNull(aSession);
 		String command = "scp -p -t " + FILE_DESTINATION.getFilePath();
 		ChannelExec channel = newChannelExec(aSession);
 		channel.setCommand(command);

@@ -27,7 +27,6 @@ public abstract class AbstractOperation implements SshOperation {
 	}
 
 	protected final void waitEof(Channel aChannel) {
-		Objects.requireNonNull(aChannel);
 		while (!aChannel.isEOF()) {
 			try {
 				Thread.sleep(POLL_INTERVAL.toMillis());
@@ -41,14 +40,17 @@ public abstract class AbstractOperation implements SshOperation {
 	@Override
 	public final int execute(Session aSession) {
 		Objects.requireNonNull(aSession);
+		int rcode = OperationStatus.EXIT_SUCCESS.getValue();
 		try {
-			System.out.println(toString());
-			return executeOperation(aSession);
+			System.out.println("execute: " + toString());
+			rcode = executeOperation(aSession);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			return OperationStatus.EXIT_FAILURE.getValue();
+			rcode = OperationStatus.EXIT_FAILURE.getValue();
 		}
+		System.out.println("execution exit status: " + rcode);
+		return rcode;
 	}
 
 }
