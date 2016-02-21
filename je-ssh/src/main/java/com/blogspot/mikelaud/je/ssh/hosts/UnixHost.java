@@ -8,6 +8,7 @@ import com.blogspot.mikelaud.je.ssh.operations.CopyOperation;
 import com.blogspot.mikelaud.je.ssh.operations.ExecOperation;
 import com.blogspot.mikelaud.je.ssh.operations.SshOperation;
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 public class UnixHost implements Host {
@@ -26,7 +27,7 @@ public class UnixHost implements Host {
 			return aOperation.execute(mSession);
 		}
 		else {
-			System.out.println(String.format("[%s]: no ssh session for: %s", toString(), aOperation.toString()));
+			System.out.println(String.format("[ssh]: [%s]: ERROR: No ssh session for: %s", toString(), aOperation.toString()));
 			return OperationStatus.EXIT_FAILURE.getValue();
 		}
 	}
@@ -67,7 +68,12 @@ public class UnixHost implements Host {
 			Session session = ssh.getSession(aUserName, HOST_NAME, PORT);
 			session.setPassword(aPassword);
 			session.setConfig("StrictHostKeyChecking", "no");
-			session.connect();
+			try {
+				session.connect();
+			}
+			catch (JSchException e) {
+				System.out.println(String.format("[ssh]: [%s@%s]: ERROR: %s", aUserName, toString(), e.getMessage()));
+			}
 			mSession = session.isConnected() ? session : null;
 		}
 		catch (Exception e) {
