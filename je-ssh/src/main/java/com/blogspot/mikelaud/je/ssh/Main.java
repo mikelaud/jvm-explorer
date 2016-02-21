@@ -1,43 +1,19 @@
 package com.blogspot.mikelaud.je.ssh;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.blogspot.mikelaud.je.ssh.operations.CopyOperation;
-import com.blogspot.mikelaud.je.ssh.operations.ExecOperation;
-import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.Session;
+import com.blogspot.mikelaud.je.ssh.hosts.Host;
+import com.blogspot.mikelaud.je.ssh.hosts.UnixHost;
 
 public class Main {
 
-	public static int exec(Session aSession, String aCommand) {
-		return new ExecOperation(aCommand).execute(aSession);
-	}
-
-	public static int copy(Session aSession, Path aFileDestination, Path aFileSource) {
-		return new CopyOperation(aFileDestination, aFileSource).execute(aSession);
-	}
-
 	public static void main(String[] arg) {
-		try {
-			JSch jsch = new JSch();
-			Session session = jsch.getSession("root", "192.168.10.101", 22);
-			session.setPassword("xxx");
-			session.setConfig("StrictHostKeyChecking", "no");
-			session.connect();
-			//
-			exec(session, "ls -l");
-			exec(session, "pwd");
-			//
-			Path srcFilePath = Paths.get("C:/Windows/notepad.exe");
-			copy(session, Paths.get("notepad.exe"), srcFilePath);
-			copy(session, Paths.get("notepad2.exe"), srcFilePath);
-			//
-			exec(session, "ls");
-			session.disconnect();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		Host host = new UnixHost("192.168.10.101", 22);
+		host.login("root", "xxx");
+		host.exec("ls -l");
+		host.exec("pwd");
+		host.copy(Paths.get("notepad.exe"), Paths.get("C:/Windows/notepad.exe"));
+		host.exec("ls");
+		host.logout();
 	}
 }

@@ -13,12 +13,18 @@ public abstract class AbstractOperation implements SshOperation {
 
 	private final String EXEC_CHANNEL_TYPE;
 	private final Duration POLL_INTERVAL;
+	//
+	private String mHostName;
+	private String mUserName;
 
 	protected abstract int executeOperation(Session aSession) throws Exception;
 
 	protected AbstractOperation() {
 		EXEC_CHANNEL_TYPE = "exec";
 		POLL_INTERVAL = Duration.ofMillis(100);
+		//
+		mHostName = "<unknown>";
+		mUserName = "<unknown>";
 	}
 
 	protected boolean hasError(int aRcode) {
@@ -42,18 +48,31 @@ public abstract class AbstractOperation implements SshOperation {
 	}
 
 	@Override
+	public String getHostName() {
+		return mHostName;
+	}
+
+	@Override
+	public String getUserName() {
+		return mUserName;
+	}
+
+	@Override
 	public final int execute(Session aSession) {
 		Objects.requireNonNull(aSession);
+		mHostName = Objects.requireNonNull(aSession.getHost());
+		mUserName = Objects.requireNonNull(aSession.getUserName());
+		//
 		int rcode = OperationStatus.EXIT_SUCCESS.getValue();
 		try {
-			System.out.println("execute: " + toString());
+			System.out.println(String.format("[ssh]: %s", toString()));
 			rcode = executeOperation(aSession);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			rcode = OperationStatus.EXIT_FAILURE.getValue();
 		}
-		System.out.println("execution exit status: " + rcode);
+		System.out.println(String.format("[ssh]: >>> status: %d <<<", rcode));
 		return rcode;
 	}
 

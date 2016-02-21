@@ -24,8 +24,19 @@ public class CopyOperation extends AbstractOperation {
 	//
 	private final int COPY_BUFFER_SIZE;
 
+	private int checkFileSource() {
+		if (FILE_SOURCE.exists()) {
+			return OperationStatus.EXIT_SUCCESS.getValue();
+		}
+		else {
+			System.out.println(String.format("[ssh]: ERROR: scp: %s: No such file or directory", FILE_SOURCE));
+			return OperationStatus.EXIT_FAILURE.getValue();
+		}
+	}
+
 	private int checkAck(InputStream aInputStream) throws IOException {
 		int rcode = aInputStream.read();
+		if (! hasError(rcode)) return OperationStatus.EXIT_SUCCESS.getValue();
 		// rcode may be:
 		//		0  for success
 		//		1  for error
@@ -33,27 +44,27 @@ public class CopyOperation extends AbstractOperation {
 		//		-1
 		StringBuilder charactes = new StringBuilder();
 		int character = rcode;
-		while (character != 0 && character != '\n') {
+		while (character != '\n') {
 			character = aInputStream.read();
 			charactes.append((char)character);
 		}
 		if (charactes.length() > 0) {
-			System.out.print(charactes.toString());
+			System.out.print(String.format("[ssh]: ERROR: %s", charactes.toString()));
 		}
 		return rcode;
 	}
-	
+
 	private int connect(ChannelExec aChannel, InputStream aIn) throws Exception {
 		aChannel.connect();
 		return checkAck(aIn);
 	}
-	
+
 	private int write(OutputStream aOut, InputStream aIn, BiConsumer<OutputStream, InputStream> aWriter) throws Exception {
 		aWriter.accept(aOut, aIn);
 		aOut.flush();
 		return checkAck(aIn);
 	}
-	
+
 	private void writeTime(OutputStream aOut, InputStream aIn) {
 		try {
 			// The access time should be sent here, but it is not accessible with JavaAPI
@@ -65,7 +76,7 @@ public class CopyOperation extends AbstractOperation {
 	        throw new RuntimeException(e);
 	    }
 	}
-	
+
 	private void writeIdentity(OutputStream aOut, InputStream aIn) {
 		try {
 			// send "C0644 filesize filename", where filename should not include '/'
@@ -77,7 +88,7 @@ public class CopyOperation extends AbstractOperation {
 	        throw new RuntimeException(e);
 	    }
 	}
-	
+
 	private void writeContent(OutputStream aOut, InputStream aIn) {
 		try {
 			// send a content of file
@@ -97,7 +108,7 @@ public class CopyOperation extends AbstractOperation {
 	        throw new RuntimeException(e);
 	    }
 	}
-	
+
 	@Override
 	protected int executeOperation(Session aSession) throws Exception {
 		ChannelExec channel = newChannelExec(aSession);
@@ -107,6 +118,7 @@ public class CopyOperation extends AbstractOperation {
 		int rcode = OperationStatus.EXIT_FAILURE.getValue();
 		while (true) {
 			try (OutputStream out = channel.getOutputStream()) {
+				if (hasError(rcode = checkFileSource())) break;
 				if (hasError(rcode = connect(channel, in))) break;
 				if (hasError(rcode = write(out, in, this::writeTime))) break;
 				if (hasError(rcode = write(out, in, this::writeIdentity))) break;
@@ -131,14 +143,14 @@ public class CopyOperation extends AbstractOperation {
 	public Path getFileDestination() {
 		return INPUT_FILE_DESTINATION;
 	}
-	
+
 	public Path getFileSource() {
 		return INPUT_FILE_SOURCE;
 	}
-	
+
 	@Override
 	public String toString() {
-		return String.format("scp %s user@unix:%s", FILE_SOURCE, FILE_DESTINATION.getFilePath());
+		return String.format("scp %s %s@%s:%s", FILE_SOURCE, getUserName(), getHostName(), FILE_DESTINATION.getFilePath());
 	}
 
 }
