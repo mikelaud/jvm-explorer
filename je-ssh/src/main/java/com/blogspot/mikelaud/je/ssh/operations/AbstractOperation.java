@@ -67,12 +67,14 @@ public abstract class AbstractOperation implements SshOperation {
 		try {
 			System.out.println(String.format("[ssh]: %s", toString()));
 			rcode = executeOperation(aSession);
+			if (hasError(rcode)) {
+				System.out.println(String.format("[ssh]: ERROR: exit status: %d", rcode));
+			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 			rcode = OperationStatus.EXIT_FAILURE.getValue();
 		}
-		System.out.println(String.format("[ssh]: >>> status: %d <<<", rcode));
 		return rcode;
 	}
 

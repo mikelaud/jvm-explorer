@@ -27,7 +27,7 @@ public class UnixHost implements Host {
 			return aOperation.execute(mSession);
 		}
 		else {
-			System.out.println(String.format("[ssh]: [%s]: ERROR: No ssh session for: %s", toString(), aOperation.toString()));
+			System.out.println(String.format("[ssh]: ERROR: No ssh session for: %s", aOperation.toString()));
 			return OperationStatus.EXIT_FAILURE.getValue();
 		}
 	}
@@ -69,10 +69,11 @@ public class UnixHost implements Host {
 			session.setPassword(aPassword);
 			session.setConfig("StrictHostKeyChecking", "no");
 			try {
+				System.out.println(String.format("[ssh]: ssh %s@%s:%d", aUserName, HOST_NAME, PORT));
 				session.connect();
 			}
 			catch (JSchException e) {
-				System.out.println(String.format("[ssh]: [%s@%s]: ERROR: %s", aUserName, toString(), e.getMessage()));
+				System.out.println(String.format("[ssh]: ERROR: %s", e.getMessage()));
 			}
 			mSession = session.isConnected() ? session : null;
 		}
@@ -86,6 +87,7 @@ public class UnixHost implements Host {
 	public void logout() {
 		if (hasSession()) {
 			if (mSession.isConnected()) {
+				System.out.println(String.format("[ssh]: logout"));
 				mSession.disconnect();
 			}
 			mSession = null;
