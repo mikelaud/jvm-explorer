@@ -2,13 +2,13 @@ package com.blogspot.mikelaud.je.ssh.common;
 
 import java.util.Objects;
 
-public class ScpFileIdentity {
+public class FileIdentity {
 
 	private final String PERMISSIONS;
 	private final long SIZE;
 	private final String NAME;
 
-	public ScpFileIdentity(String aPermissions, long aSize, String aName) {
+	public FileIdentity(String aPermissions, long aSize, String aName) {
 		PERMISSIONS = Objects.requireNonNull(aPermissions);
 		SIZE = aSize;
 		NAME = Objects.requireNonNull(aName);

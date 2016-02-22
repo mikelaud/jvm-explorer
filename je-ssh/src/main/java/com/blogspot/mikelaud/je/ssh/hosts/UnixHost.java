@@ -3,6 +3,7 @@ package com.blogspot.mikelaud.je.ssh.hosts;
 import java.nio.file.Path;
 import java.util.Objects;
 
+import com.blogspot.mikelaud.je.ssh.common.Endpoint;
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
 import com.blogspot.mikelaud.je.ssh.operations.CopyFromLocalOperation;
 import com.blogspot.mikelaud.je.ssh.operations.CopyToLocalOperation;
@@ -14,9 +15,7 @@ import com.jcraft.jsch.Session;
 
 public class UnixHost implements Host {
 
-	private final String HOST_NAME;
-	private final int PORT;
-	//
+	private final Endpoint ENDPOINT;
 	private Session mSession;
 
 	private boolean hasSession() {
@@ -29,25 +28,19 @@ public class UnixHost implements Host {
 		}
 		else {
 			System.out.println(String.format("[ssh]: ERROR: No ssh session for: %s", aOperation.toString()));
-			return ExitStatus.EXCEPTION.getValue();
+			return ExitStatus.ABORT.get();
 		}
 	}
 
 	public UnixHost(String aHostName, int aPort) {
-		HOST_NAME = Objects.requireNonNull(aHostName);
-		PORT = aPort;
-		//
+		Objects.requireNonNull(aHostName);
+		ENDPOINT = new Endpoint(aHostName, aPort);
 		mSession = null;
 	}
 
 	@Override
-	public String getHostName() {
-		return HOST_NAME;
-	}
-
-	@Override
-	public int getPort() {
-		return PORT;
+	public Endpoint getEndpoint() {
+		return ENDPOINT;
 	}
 
 	@Override
@@ -61,11 +54,11 @@ public class UnixHost implements Host {
 		Objects.requireNonNull(aPassword);
 		try {
 			JSch ssh = new JSch();
-			Session session = ssh.getSession(aUserName, HOST_NAME, PORT);
+			Session session = ssh.getSession(aUserName, ENDPOINT.getHost(), ENDPOINT.getPort());
 			session.setPassword(aPassword);
 			session.setConfig("StrictHostKeyChecking", "no");
 			try {
-				System.out.println(String.format("[ssh]: ssh %s@%s:%d", aUserName, HOST_NAME, PORT));
+				System.out.println(String.format("[ssh]: ssh %s@%s", aUserName, ENDPOINT.toString()));
 				session.connect();
 			}
 			catch (JSchException e) {
@@ -101,18 +94,18 @@ public class UnixHost implements Host {
 	}
 
 	@Override
-	public int copyFromLocal(Path aFileDestination, Path aFileSource) {
-		return execute(new CopyFromLocalOperation(aFileDestination, aFileSource));
+	public int copyFromLocal(Path aFileLocal, Path aFileRemote) {
+		return execute(new CopyFromLocalOperation(aFileLocal, aFileRemote));
 	}
 
 	@Override
-	public int copyToLocal(Path aFileDestination, Path aFileSource) {
-		return execute(new CopyToLocalOperation(aFileDestination, aFileSource));
+	public int copyToLocal(Path aFileRemote, Path aFileLocal) {
+		return execute(new CopyToLocalOperation(aFileRemote, aFileLocal));
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s:%d", HOST_NAME, PORT);
+		return ENDPOINT.toString();
 	}
 
 }

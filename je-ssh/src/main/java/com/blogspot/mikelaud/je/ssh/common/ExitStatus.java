@@ -2,24 +2,33 @@ package com.blogspot.mikelaud.je.ssh.common;
 
 public enum ExitStatus {
 
-	NO_DATA(-1),
 	SUCCESS(0),
+	NO_DATA(-1),
 	ERROR(1),
 	FATAL_ERROR(2),
-	EXCEPTION(666);
+	ABORT(666);
 
-	private final int VALUE;
+	private final int STATUS;
 
-	private ExitStatus(int aValue) {
-		VALUE = aValue;
+	private ExitStatus(int aStatus) {
+		STATUS = aStatus;
 	}
 
-	public int getValue() {
-		return VALUE;
+	public int get() {
+		return STATUS;
 	}
 
-	public boolean is(int aExitStatus) {
-		return (VALUE == aExitStatus);
+	public boolean is(int aStatus) {
+		return (STATUS == aStatus);
+	}
+
+	public boolean isNot(int aStatus) {
+		return ! is(aStatus);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s(%d)", name(), get());
 	}
 
 }

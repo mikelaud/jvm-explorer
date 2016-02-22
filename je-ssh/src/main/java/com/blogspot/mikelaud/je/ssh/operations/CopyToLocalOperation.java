@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.util.Objects;
 
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
-import com.blogspot.mikelaud.je.ssh.common.ScpFileIdentity;
+import com.blogspot.mikelaud.je.ssh.common.FileIdentity;
 import com.blogspot.mikelaud.je.ssh.common.UnixConst;
 import com.blogspot.mikelaud.je.ssh.common.UnixPath;
 import com.jcraft.jsch.ChannelExec;
@@ -26,43 +26,11 @@ public class CopyToLocalOperation extends AbstractOperation {
 	private final int COPY_BUFFER_SIZE;
 	private final byte[] COPY_BUFFER;
 
-	private String readString(InputStream aIn, char aTerminator) throws IOException {
-		final int END = (int) aTerminator;
-		StringBuilder charactes = new StringBuilder();
-		int character;
-		while (true) {
-			character = aIn.read();
-			if (ExitStatus.NO_DATA.is(character) || END == character) break;
-			charactes.append((char)character);
-		}
-		return charactes.toString();
-	}
-
-	private long readLong(InputStream aIn, char aTerminator) throws IOException {
-		return Long.parseLong(readString(aIn, aTerminator));
-	}
-
-	private int checkAck(InputStream aIn) throws IOException {
-		int status = aIn.read();
-		// returnCode may be:
-		// -1: NO_DATA
-		//  0: SUCCESS
-		//  1: ERROR
-		//  2: FATAL_ERROR
-		if (ExitStatus.ERROR.is(status) || ExitStatus.FATAL_ERROR.is(status)) {
-			String errorMessage = readString(aIn, UnixConst.NEW_LINE);
-			if (! errorMessage.isEmpty()) {
-				System.out.print(String.format("[ssh]: ERROR: %s", errorMessage));
-			}
-		}
-		return status;
-	}
-
-	private ScpFileIdentity readIdentity(InputStream aIn) throws IOException {
+	private FileIdentity readIdentity(InputStream aIn) throws IOException {
 		String permissions = readString(aIn, ' '); // read file permissions '0644 '
 		long size = readLong(aIn, ' '); // read file size
 		String name = readString(aIn, UnixConst.NEW_LINE); // read file name
-		return new ScpFileIdentity(permissions, size, name);
+		return new FileIdentity(permissions, size, name);
 	}
 
 	private void writeZero(OutputStream aOut) {
@@ -81,7 +49,7 @@ public class CopyToLocalOperation extends AbstractOperation {
 		ChannelExec channel = newChannelExec(aSession);
 		String command = String.format("scp -f %s", FILE_SOURCE.getFilePath()); // exec 'scp -f rfile' remotely
 		channel.setCommand(command);
-		int status = ExitStatus.EXCEPTION.getValue();
+		int status = ExitStatus.ABORT.get();
 		try (OutputStream out = channel.getOutputStream(); InputStream in = channel.getInputStream()) { // get I/O streams for remote scp
 			while (true) {
 				channel.connect();
@@ -89,7 +57,7 @@ public class CopyToLocalOperation extends AbstractOperation {
 				status = checkAck(in);
 				if ('C' != status) break;
 				//
-				ScpFileIdentity srcIdentity = readIdentity(in);
+				FileIdentity srcIdentity = readIdentity(in);
 				writeZero(out);
 				//
 				try (FileOutputStream dstStream = new FileOutputStream(FILE_DESTINATION)) {

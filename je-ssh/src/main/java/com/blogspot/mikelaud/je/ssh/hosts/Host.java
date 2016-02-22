@@ -2,10 +2,11 @@ package com.blogspot.mikelaud.je.ssh.hosts;
 
 import java.nio.file.Path;
 
+import com.blogspot.mikelaud.je.ssh.common.Endpoint;
+
 public interface Host {
 
-	String getHostName();
-	int getPort();
+	Endpoint getEndpoint();
 	String getUserName();
 	//
 	boolean login(String aUserName, String aPassword);
@@ -14,7 +15,7 @@ public interface Host {
 	boolean isOnline();
 	//
 	int exec(String aCommand);
-	int copyFromLocal(Path aFileDestination, Path aFileSource);
-	int copyToLocal(Path aFileDestination, Path aFileSource);
+	int copyFromLocal(Path aFileLocal, Path aFileRemote);
+	int copyToLocal(Path aFileRemote, Path aFileLocal);
 
 }

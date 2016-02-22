@@ -2,7 +2,6 @@ package com.blogspot.mikelaud.je.ssh.operations;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
@@ -26,32 +25,12 @@ public class CopyFromLocalOperation extends AbstractOperation {
 
 	private int checkFileSource() {
 		if (FILE_SOURCE.exists()) {
-			return ExitStatus.SUCCESS.getValue();
+			return ExitStatus.SUCCESS.get();
 		}
 		else {
 			System.out.println(String.format("[ssh]: ERROR: scp: %s: No such file or directory", FILE_SOURCE));
-			return ExitStatus.EXCEPTION.getValue();
+			return ExitStatus.ABORT.get();
 		}
-	}
-
-	private int checkAck(InputStream aInputStream) throws IOException {
-		int rcode = aInputStream.read();
-		if (! hasError(rcode)) return ExitStatus.SUCCESS.getValue();
-		// rcode may be:
-		//		0  for success
-		//		1  for error
-		//		2  for fatal error
-		//		-1
-		StringBuilder charactes = new StringBuilder();
-		int character = rcode;
-		while (character != '\n') {
-			character = aInputStream.read();
-			charactes.append((char)character);
-		}
-		if (charactes.length() > 0) {
-			System.out.print(String.format("[ssh]: ERROR: %s", charactes.toString()));
-		}
-		return rcode;
 	}
 
 	private int connect(ChannelExec aChannel, InputStream aIn) throws Exception {
@@ -115,7 +94,7 @@ public class CopyFromLocalOperation extends AbstractOperation {
 		InputStream in = channel.getInputStream();
 		String command = String.format("scp -p -t %s", FILE_DESTINATION.getFilePath());
 		channel.setCommand(command);
-		int rcode = ExitStatus.EXCEPTION.getValue();
+		int rcode = ExitStatus.ABORT.get();
 		while (true) {
 			try (OutputStream out = channel.getOutputStream()) {
 				if (hasError(rcode = checkFileSource())) break;

@@ -9,7 +9,7 @@ public class Main {
 
 	public static void main(String[] arg) {
 		Host host = new UnixHost("192.168.10.101", 22);
-		host.login("root", "xxx");
+		host.login("root", "1q2w3e");
 		host.exec("ls -l");
 		host.exec("pwd");
 		host.copyFromLocal(Paths.get("/root/notepad.exe"), Paths.get("C:/Windows/notepad.exe"));
