@@ -9,12 +9,12 @@ import java.nio.file.Path;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
-import com.blogspot.mikelaud.je.ssh.common.OperationStatus;
+import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
 import com.blogspot.mikelaud.je.ssh.common.UnixPath;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.Session;
 
-public class CopyOperation extends AbstractOperation {
+public class CopyFromLocalOperation extends AbstractOperation {
 
 	private final Path INPUT_FILE_DESTINATION;
 	private final Path INPUT_FILE_SOURCE;
@@ -26,17 +26,17 @@ public class CopyOperation extends AbstractOperation {
 
 	private int checkFileSource() {
 		if (FILE_SOURCE.exists()) {
-			return OperationStatus.EXIT_SUCCESS.getValue();
+			return ExitStatus.SUCCESS.getValue();
 		}
 		else {
 			System.out.println(String.format("[ssh]: ERROR: scp: %s: No such file or directory", FILE_SOURCE));
-			return OperationStatus.EXIT_FAILURE.getValue();
+			return ExitStatus.EXCEPTION.getValue();
 		}
 	}
 
 	private int checkAck(InputStream aInputStream) throws IOException {
 		int rcode = aInputStream.read();
-		if (! hasError(rcode)) return OperationStatus.EXIT_SUCCESS.getValue();
+		if (! hasError(rcode)) return ExitStatus.SUCCESS.getValue();
 		// rcode may be:
 		//		0  for success
 		//		1  for error
@@ -115,7 +115,7 @@ public class CopyOperation extends AbstractOperation {
 		InputStream in = channel.getInputStream();
 		String command = String.format("scp -p -t %s", FILE_DESTINATION.getFilePath());
 		channel.setCommand(command);
-		int rcode = OperationStatus.EXIT_FAILURE.getValue();
+		int rcode = ExitStatus.EXCEPTION.getValue();
 		while (true) {
 			try (OutputStream out = channel.getOutputStream()) {
 				if (hasError(rcode = checkFileSource())) break;
@@ -130,7 +130,7 @@ public class CopyOperation extends AbstractOperation {
 		return rcode;
 	}
 
-	public CopyOperation(Path aFileDestination, Path aFileSource) {
+	public CopyFromLocalOperation(Path aFileDestination, Path aFileSource) {
 		INPUT_FILE_DESTINATION = Objects.requireNonNull(aFileDestination);
 		INPUT_FILE_SOURCE = Objects.requireNonNull(aFileSource);
 		//

@@ -3,7 +3,7 @@ package com.blogspot.mikelaud.je.ssh.operations;
 import java.time.Duration;
 import java.util.Objects;
 
-import com.blogspot.mikelaud.je.ssh.common.OperationStatus;
+import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
@@ -27,8 +27,8 @@ public abstract class AbstractOperation implements SshOperation {
 		mUserName = "<unknown>";
 	}
 
-	protected boolean hasError(int aRcode) {
-		return (OperationStatus.EXIT_SUCCESS.getValue() != aRcode);
+	protected boolean hasError(int aStatus) {
+		return ! ExitStatus.SUCCESS.is(aStatus);
 	}
 
 	protected final ChannelExec newChannelExec(Session aSession) throws JSchException {
@@ -63,19 +63,19 @@ public abstract class AbstractOperation implements SshOperation {
 		mHostName = Objects.requireNonNull(aSession.getHost());
 		mUserName = Objects.requireNonNull(aSession.getUserName());
 		//
-		int rcode = OperationStatus.EXIT_SUCCESS.getValue();
+		int status = ExitStatus.SUCCESS.getValue();
 		try {
 			System.out.println(String.format("[ssh]: %s", toString()));
-			rcode = executeOperation(aSession);
-			if (hasError(rcode)) {
-				System.out.println(String.format("[ssh]: ERROR: exit status: %d", rcode));
+			status = executeOperation(aSession);
+			if (hasError(status)) {
+				System.out.println(String.format("[ssh]: ERROR: exit status: %d", status));
 			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			rcode = OperationStatus.EXIT_FAILURE.getValue();
+			status = ExitStatus.EXCEPTION.getValue();
 		}
-		return rcode;
+		return status;
 	}
 
 }

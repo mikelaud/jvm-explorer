@@ -7,8 +7,6 @@ import java.util.stream.StreamSupport;
 
 public class UnixPath {
 
-	private static final String SEPARATOR = "/";
-	//
 	private final boolean HAS_ROOT;
 	private final String FILE_NAME;
 	private final String FILE_PATH;
@@ -24,11 +22,7 @@ public class UnixPath {
 		Objects.requireNonNull(aFilePath);
 		HAS_ROOT = (null != aFilePath.getRoot());
 		FILE_NAME = Objects.toString(aFilePath.getFileName(), "");
-		FILE_PATH = (HAS_ROOT ? SEPARATOR : "").concat(replaceSeparator(aFilePath, SEPARATOR));
-	}
-
-	public static String getSeparator() {
-		return SEPARATOR;
+		FILE_PATH = (HAS_ROOT ? UnixConst.SEPARATOR : "").concat(replaceSeparator(aFilePath, UnixConst.SEPARATOR));
 	}
 
 	public boolean hasRoot() { return HAS_ROOT; }

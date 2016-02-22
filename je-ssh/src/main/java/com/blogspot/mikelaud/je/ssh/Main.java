@@ -12,8 +12,10 @@ public class Main {
 		host.login("root", "xxx");
 		host.exec("ls -l");
 		host.exec("pwd");
-		host.copy(Paths.get("notepad.exe"), Paths.get("C:/Windows/notepad.exe"));
+		host.copyFromLocal(Paths.get("/root/notepad.exe"), Paths.get("C:/Windows/notepad.exe"));
+		host.copyFromLocal(Paths.get("/root/notepad2.exe"), Paths.get("C:/Windows/notepad.exe"));
 		host.exec("ls");
+		host.copyToLocal(Paths.get("C:/Users/Mykhailo/notepad2.exe"), Paths.get("/root/notepad2.exe"));
 		host.logout();
 	}
 }

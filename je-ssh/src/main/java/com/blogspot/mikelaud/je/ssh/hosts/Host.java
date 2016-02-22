@@ -8,12 +8,13 @@ public interface Host {
 	int getPort();
 	String getUserName();
 	//
-	boolean isOnline();
-	//
 	boolean login(String aUserName, String aPassword);
 	void logout();
 	//
+	boolean isOnline();
+	//
 	int exec(String aCommand);
-	int copy(Path aFileDestination, Path aFileSource);
+	int copyFromLocal(Path aFileDestination, Path aFileSource);
+	int copyToLocal(Path aFileDestination, Path aFileSource);
 
 }

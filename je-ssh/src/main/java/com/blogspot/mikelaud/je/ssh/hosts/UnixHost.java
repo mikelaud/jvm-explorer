@@ -3,8 +3,9 @@ package com.blogspot.mikelaud.je.ssh.hosts;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import com.blogspot.mikelaud.je.ssh.common.OperationStatus;
-import com.blogspot.mikelaud.je.ssh.operations.CopyOperation;
+import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
+import com.blogspot.mikelaud.je.ssh.operations.CopyFromLocalOperation;
+import com.blogspot.mikelaud.je.ssh.operations.CopyToLocalOperation;
 import com.blogspot.mikelaud.je.ssh.operations.ExecOperation;
 import com.blogspot.mikelaud.je.ssh.operations.SshOperation;
 import com.jcraft.jsch.JSch;
@@ -28,7 +29,7 @@ public class UnixHost implements Host {
 		}
 		else {
 			System.out.println(String.format("[ssh]: ERROR: No ssh session for: %s", aOperation.toString()));
-			return OperationStatus.EXIT_FAILURE.getValue();
+			return ExitStatus.EXCEPTION.getValue();
 		}
 	}
 
@@ -52,11 +53,6 @@ public class UnixHost implements Host {
 	@Override
 	public String getUserName() {
 		return (hasSession() ? mSession.getUserName() : "");
-	}
-
-	@Override
-	public boolean isOnline() {
-		return (hasSession() ? mSession.isConnected() : false);
 	}
 
 	@Override
@@ -95,13 +91,23 @@ public class UnixHost implements Host {
 	}
 
 	@Override
+	public boolean isOnline() {
+		return (hasSession() ? mSession.isConnected() : false);
+	}
+
+	@Override
 	public int exec(String aCommand) {
 		return execute(new ExecOperation(aCommand));
 	}
 
 	@Override
-	public int copy(Path aFileDestination, Path aFileSource) {
-		return execute(new CopyOperation(aFileDestination, aFileSource));
+	public int copyFromLocal(Path aFileDestination, Path aFileSource) {
+		return execute(new CopyFromLocalOperation(aFileDestination, aFileSource));
+	}
+
+	@Override
+	public int copyToLocal(Path aFileDestination, Path aFileSource) {
+		return execute(new CopyToLocalOperation(aFileDestination, aFileSource));
 	}
 
 	@Override
