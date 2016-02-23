@@ -2,6 +2,10 @@ package com.blogspot.mikelaud.je.ssh.common;
 
 public class Logger {
 
+	public static void out(String aMessage) {
+		System.out.print(aMessage);
+	}
+
 	public static void info(String aMessage) {
 		System.out.println("[ssh]: ".concat(aMessage));
 	}
