@@ -3,8 +3,12 @@ package com.blogspot.mikelaud.je.ssh.operations;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.util.Formatter;
 import java.util.Objects;
+import java.util.stream.IntStream;
 
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
 import com.blogspot.mikelaud.je.ssh.common.Logger;
@@ -34,12 +38,16 @@ public abstract class AbstractOperation implements Operation {
 		mUserName = "<unknown>";
 	}
 
-	protected boolean hasError(int aStatus) {
-		return ExitStatus.SUCCESS.isNot(aStatus);
-	}
-
 	protected final ChannelExec newChannelExec(Session aSession) throws JSchException {
 		return ChannelExec.class.cast(aSession.openChannel(EXEC_CHANNEL_TYPE));
+	}
+
+	protected final MessageDigest newMessageDigest() throws NoSuchAlgorithmException {
+		return MessageDigest.getInstance("SHA-256");
+	}
+
+	protected boolean hasError(int aStatus) {
+		return ExitStatus.SUCCESS.isNot(aStatus);
 	}
 
 	protected final void waitEof(Channel aChannel) {
@@ -90,6 +98,16 @@ public abstract class AbstractOperation implements Operation {
 		}
 		return status;
 	}
+
+	protected String digestToHex(MessageDigest aMessageDigest) {
+		byte[] bytes = aMessageDigest.digest();
+		String hex = IntStream.range(0, bytes.length).collect(StringBuilder::new,
+				(sb, i)->new Formatter(sb).format("%02x", bytes[i] & 0xff),
+				StringBuilder::append).toString();
+		Logger.info(String.format("digest(%s): %s", aMessageDigest.getAlgorithm(), hex));
+		return hex;
+	}
+
 	@Override
 	public String getHostName() {
 		return mHostName;

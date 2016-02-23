@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.security.DigestOutputStream;
 import java.util.Objects;
 
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
@@ -24,6 +25,7 @@ public class CopyToLocalOperation extends AbstractOperation {
 	private final File FILE_LOCAL;
 	//
 	private final int COPY_BUFFER_SIZE;
+	private String mDigest;
 
 	private File resolveLocalFile(FileIdentity aFileIdentity) {
 		File localFile = FILE_LOCAL;
@@ -56,8 +58,9 @@ public class CopyToLocalOperation extends AbstractOperation {
 				FileIdentity remoteIdentity = readIdentity(in);
 				writeZero(out);
 				//
+				mDigest = "";
 				File localFile = resolveLocalFile(remoteIdentity);
-				try (FileOutputStream localStream = new FileOutputStream(localFile)) {
+				try (DigestOutputStream fos = new DigestOutputStream(new FileOutputStream(localFile), newMessageDigest())) {
 					long toReadTotal = remoteIdentity.getSize();
 					int toReadCount = 0;
 					int readCount = 0;
@@ -69,9 +72,10 @@ public class CopyToLocalOperation extends AbstractOperation {
 						readCount = in.read(buffer, 0, toReadCount);
 						if (readCount < 0) break; // error
 						//
-						localStream.write(buffer, 0, readCount);
+						fos.write(buffer, 0, readCount);
 						toReadTotal -= readCount;
 					}
+					mDigest = digestToHex(fos.getMessageDigest());
 				}
 				status = checkAck(in);
 				if (hasError(status)) break;
@@ -94,6 +98,7 @@ public class CopyToLocalOperation extends AbstractOperation {
 		FILE_LOCAL = INPUT_FILE_LOCAL.toFile();
 		//
 		COPY_BUFFER_SIZE = 1024;
+		mDigest = "";
 	}
 
 	public Path getFileRemote() {
@@ -102,6 +107,10 @@ public class CopyToLocalOperation extends AbstractOperation {
 
 	public Path getFileLocal() {
 		return INPUT_FILE_LOCAL;
+	}
+
+	public String getDigest() {
+		return mDigest;
 	}
 
 	@Override

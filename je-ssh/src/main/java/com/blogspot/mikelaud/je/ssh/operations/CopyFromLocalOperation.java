@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.security.DigestInputStream;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
@@ -23,6 +24,8 @@ public class CopyFromLocalOperation extends AbstractOperation {
 	private final UnixPath FILE_REMOTE;
 	//
 	private final int COPY_BUFFER_SIZE;
+	//
+	private String mDigest;
 
 	private int checkFile(File aFile) {
 		if (aFile.exists()) {
@@ -71,8 +74,8 @@ public class CopyFromLocalOperation extends AbstractOperation {
 
 	private void writeContent(OutputStream aOut, InputStream aIn) {
 		try {
-			// send a content of file
-			try (FileInputStream fis = new FileInputStream(FILE_LOCAL)) {
+			mDigest = "";
+			try (DigestInputStream fis = new DigestInputStream(new FileInputStream(FILE_LOCAL), newMessageDigest())) {
 				byte[] buffer = new byte[COPY_BUFFER_SIZE];
 				while (true) {
 					int readCount = fis.read(buffer, 0, buffer.length);
@@ -80,6 +83,7 @@ public class CopyFromLocalOperation extends AbstractOperation {
 					aOut.write(buffer, 0, readCount);
 				}
 				writeZero(aOut);
+				mDigest = digestToHex(fis.getMessageDigest());
 			}
 		}
 		catch (Exception e) {
@@ -93,19 +97,19 @@ public class CopyFromLocalOperation extends AbstractOperation {
 		InputStream in = channel.getInputStream();
 		String command = String.format("scp -p -t %s", FILE_REMOTE.getFilePath());
 		channel.setCommand(command);
-		int rcode = ExitStatus.ABORT.get();
+		int status = ExitStatus.ABORT.get();
 		while (true) {
 			try (OutputStream out = channel.getOutputStream()) {
-				if (hasError(rcode = checkFile(FILE_LOCAL))) break;
-				if (hasError(rcode = connect(channel, in))) break;
-				if (hasError(rcode = write(out, in, this::writeTime))) break;
-				if (hasError(rcode = write(out, in, this::writeIdentity))) break;
-				if (hasError(rcode = write(out, in, this::writeContent))) break;
+				if (hasError(status = checkFile(FILE_LOCAL))) break;
+				if (hasError(status = connect(channel, in))) break;
+				if (hasError(status = write(out, in, this::writeTime))) break;
+				if (hasError(status = write(out, in, this::writeIdentity))) break;
+				if (hasError(status = write(out, in, this::writeContent))) break;
 			}
 			break;
 		}
 		channel.disconnect();
-		return rcode;
+		return status;
 	}
 
 	public CopyFromLocalOperation(Path aFileLocal, Path aFileRemote) {
@@ -116,6 +120,7 @@ public class CopyFromLocalOperation extends AbstractOperation {
 		FILE_LOCAL = aFileLocal.toFile();
 		//
 		COPY_BUFFER_SIZE = 1024;
+		mDigest = "";
 	}
 
 	public Path getFileLocal() {
@@ -124,6 +129,10 @@ public class CopyFromLocalOperation extends AbstractOperation {
 
 	public Path getFileRemote() {
 		return INPUT_FILE_REMOTE;
+	}
+
+	public String getDigest() {
+		return mDigest;
 	}
 
 	@Override
