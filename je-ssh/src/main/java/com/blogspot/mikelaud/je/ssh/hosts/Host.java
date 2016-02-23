@@ -2,8 +2,8 @@ package com.blogspot.mikelaud.je.ssh.hosts;
 
 import java.nio.file.Path;
 
-import com.blogspot.mikelaud.je.ssh.common.Endpoint;
-import com.blogspot.mikelaud.je.ssh.common.Status;
+import com.blogspot.mikelaud.je.ssh.domain.Endpoint;
+import com.blogspot.mikelaud.je.ssh.domain.Status;
 
 public interface Host {
 

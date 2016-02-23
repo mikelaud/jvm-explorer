@@ -9,9 +9,9 @@ import java.nio.file.Path;
 import java.util.Objects;
 
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
-import com.blogspot.mikelaud.je.ssh.common.FileIdentity;
 import com.blogspot.mikelaud.je.ssh.common.UnixConst;
 import com.blogspot.mikelaud.je.ssh.common.UnixPath;
+import com.blogspot.mikelaud.je.ssh.domain.FileIdentity;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.Session;
 

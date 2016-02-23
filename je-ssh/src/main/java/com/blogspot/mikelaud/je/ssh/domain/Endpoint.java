@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.ssh.common;
+package com.blogspot.mikelaud.je.ssh.domain;
 
 import java.util.Objects;
 

@@ -3,10 +3,10 @@ package com.blogspot.mikelaud.je.ssh.hosts;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import com.blogspot.mikelaud.je.ssh.common.Endpoint;
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
 import com.blogspot.mikelaud.je.ssh.common.Logger;
-import com.blogspot.mikelaud.je.ssh.common.Status;
+import com.blogspot.mikelaud.je.ssh.domain.Endpoint;
+import com.blogspot.mikelaud.je.ssh.domain.Status;
 import com.blogspot.mikelaud.je.ssh.operations.CopyFromLocalOperation;
 import com.blogspot.mikelaud.je.ssh.operations.CopyToLocalOperation;
 import com.blogspot.mikelaud.je.ssh.operations.ExecOperation;
@@ -76,9 +76,9 @@ public class UnixHost implements Host {
 
 	@Override
 	public void logout() {
+		Logger.info("logout");
 		if (hasSession()) {
 			if (mSession.isConnected()) {
-				Logger.info("logout");
 				mSession.disconnect();
 			}
 			mSession = null;
