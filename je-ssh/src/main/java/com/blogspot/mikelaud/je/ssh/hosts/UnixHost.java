@@ -5,10 +5,11 @@ import java.util.Objects;
 
 import com.blogspot.mikelaud.je.ssh.common.Endpoint;
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
+import com.blogspot.mikelaud.je.ssh.common.Logger;
 import com.blogspot.mikelaud.je.ssh.operations.CopyFromLocalOperation;
 import com.blogspot.mikelaud.je.ssh.operations.CopyToLocalOperation;
 import com.blogspot.mikelaud.je.ssh.operations.ExecOperation;
-import com.blogspot.mikelaud.je.ssh.operations.SshOperation;
+import com.blogspot.mikelaud.je.ssh.operations.Operation;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -22,12 +23,12 @@ public class UnixHost implements Host {
 		return (null != mSession);
 	}
 
-	private int execute(SshOperation aOperation) {
+	private int execute(Operation aOperation) {
 		if (hasSession()) {
 			return aOperation.execute(mSession);
 		}
 		else {
-			System.out.println(String.format("[ssh]: ERROR: No ssh session for: %s", aOperation.toString()));
+			Logger.error(String.format("No ssh session for: %s", aOperation));
 			return ExitStatus.ABORT.get();
 		}
 	}
@@ -58,16 +59,16 @@ public class UnixHost implements Host {
 			session.setPassword(aPassword);
 			session.setConfig("StrictHostKeyChecking", "no");
 			try {
-				System.out.println(String.format("[ssh]: ssh %s@%s", aUserName, ENDPOINT.toString()));
+				Logger.info(String.format("ssh %s@%s", aUserName, ENDPOINT));
 				session.connect();
 			}
 			catch (JSchException e) {
-				System.out.println(String.format("[ssh]: ERROR: %s", e.getMessage()));
+				Logger.error(e.getMessage());
 			}
 			mSession = session.isConnected() ? session : null;
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e);
 		}
 		return isOnline();
 	}
@@ -76,7 +77,7 @@ public class UnixHost implements Host {
 	public void logout() {
 		if (hasSession()) {
 			if (mSession.isConnected()) {
-				System.out.println(String.format("[ssh]: logout"));
+				Logger.info("logout");
 				mSession.disconnect();
 			}
 			mSession = null;

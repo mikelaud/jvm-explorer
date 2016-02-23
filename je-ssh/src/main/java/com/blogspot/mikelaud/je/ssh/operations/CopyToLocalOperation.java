@@ -17,37 +17,33 @@ import com.jcraft.jsch.Session;
 
 public class CopyToLocalOperation extends AbstractOperation {
 
-	private final Path INPUT_FILE_DESTINATION;
-	private final Path INPUT_FILE_SOURCE;
+	private final Path INPUT_FILE_REMOTE;
+	private final Path INPUT_FILE_LOCAL;
 	//
-	private final File FILE_DESTINATION;
-	private final UnixPath FILE_SOURCE;
+	private final UnixPath FILE_REMOTE;
+	private final File FILE_LOCAL;
 	//
 	private final int COPY_BUFFER_SIZE;
-	private final byte[] COPY_BUFFER;
 
-	private FileIdentity readIdentity(InputStream aIn) throws IOException {
-		String permissions = readString(aIn, ' '); // read file permissions '0644 '
-		long size = readLong(aIn, ' '); // read file size
-		String name = readString(aIn, UnixConst.NEW_LINE); // read file name
-		return new FileIdentity(permissions, size, name);
+	private File resolveLocalFile(FileIdentity aFileIdentity) {
+		File localFile = FILE_LOCAL;
+		if (FILE_LOCAL.isDirectory()) {
+			localFile = INPUT_FILE_LOCAL.resolve(aFileIdentity.getName()).toFile();
+		}
+		return localFile;
 	}
 
-	private void writeZero(OutputStream aOut) {
-		try { // send '\0'
-			COPY_BUFFER[0] = 0;
-			aOut.write(COPY_BUFFER, 0, 1);
-			aOut.flush();
-		}
-		catch (Exception e) {
-	        throw new RuntimeException(e);
-	    }
+	private FileIdentity readIdentity(InputStream aIn) throws IOException {
+		String permissions = readString(aIn, ' '); // file permissions '0644 '
+		long size = readLong(aIn, ' '); // file size
+		String name = readString(aIn, UnixConst.NEW_LINE); // file name
+		return new FileIdentity(permissions, size, name);
 	}
 
 	@Override
 	protected int executeOperation(Session aSession) throws Exception {
 		ChannelExec channel = newChannelExec(aSession);
-		String command = String.format("scp -f %s", FILE_SOURCE.getFilePath()); // exec 'scp -f rfile' remotely
+		String command = String.format("scp -f %s", FILE_REMOTE.getFilePath());
 		channel.setCommand(command);
 		int status = ExitStatus.ABORT.get();
 		try (OutputStream out = channel.getOutputStream(); InputStream in = channel.getInputStream()) { // get I/O streams for remote scp
@@ -57,21 +53,23 @@ public class CopyToLocalOperation extends AbstractOperation {
 				status = checkAck(in);
 				if ('C' != status) break;
 				//
-				FileIdentity srcIdentity = readIdentity(in);
+				FileIdentity remoteIdentity = readIdentity(in);
 				writeZero(out);
 				//
-				try (FileOutputStream dstStream = new FileOutputStream(FILE_DESTINATION)) {
-					long toReadTotal = srcIdentity.getSize();
+				File localFile = resolveLocalFile(remoteIdentity);
+				try (FileOutputStream localStream = new FileOutputStream(localFile)) {
+					long toReadTotal = remoteIdentity.getSize();
 					int toReadCount = 0;
 					int readCount = 0;
+					byte[] buffer = new byte[COPY_BUFFER_SIZE];
 					while (true) {
 						toReadCount = COPY_BUFFER_SIZE <= toReadTotal ? COPY_BUFFER_SIZE : (int) toReadTotal;
 						if (toReadCount <= 0) break;
 						//
-						readCount = in.read(COPY_BUFFER, 0, toReadCount);
+						readCount = in.read(buffer, 0, toReadCount);
 						if (readCount < 0) break; // error
 						//
-						dstStream.write(COPY_BUFFER, 0, readCount);
+						localStream.write(buffer, 0, readCount);
 						toReadTotal -= readCount;
 					}
 				}
@@ -88,28 +86,27 @@ public class CopyToLocalOperation extends AbstractOperation {
 		return status;
 	}
 
-	public CopyToLocalOperation(Path aFileDestination, Path aFileSource) {
-		INPUT_FILE_DESTINATION = Objects.requireNonNull(aFileDestination);
-		INPUT_FILE_SOURCE = Objects.requireNonNull(aFileSource);
+	public CopyToLocalOperation(Path aFileRemote, Path aFileLocal) {
+		INPUT_FILE_REMOTE = Objects.requireNonNull(aFileRemote);
+		INPUT_FILE_LOCAL = Objects.requireNonNull(aFileLocal);
 		//
-		FILE_DESTINATION = aFileDestination.toFile();
-		FILE_SOURCE = new UnixPath(aFileSource);
+		FILE_REMOTE = new UnixPath(INPUT_FILE_REMOTE);
+		FILE_LOCAL = INPUT_FILE_LOCAL.toFile();
 		//
 		COPY_BUFFER_SIZE = 1024;
-		COPY_BUFFER = new byte[COPY_BUFFER_SIZE];
 	}
 
-	public Path getFileDestination() {
-		return INPUT_FILE_DESTINATION;
+	public Path getFileRemote() {
+		return INPUT_FILE_REMOTE;
 	}
 
-	public Path getFileSource() {
-		return INPUT_FILE_SOURCE;
+	public Path getFileLocal() {
+		return INPUT_FILE_LOCAL;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("scp %s@%s:%s %s", getUserName(), getHostName(), FILE_SOURCE.getFilePath(), FILE_DESTINATION);
+		return String.format("scp %s@%s:%s %s", getUserName(), getHostName(), FILE_REMOTE.getFilePath(), FILE_LOCAL);
 	}
 
 }

@@ -2,20 +2,23 @@ package com.blogspot.mikelaud.je.ssh.operations;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.time.Duration;
 import java.util.Objects;
 
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
+import com.blogspot.mikelaud.je.ssh.common.Logger;
 import com.blogspot.mikelaud.je.ssh.common.UnixConst;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
-public abstract class AbstractOperation implements SshOperation {
+public abstract class AbstractOperation implements Operation {
 
 	private final String EXEC_CHANNEL_TYPE;
 	private final Duration POLL_INTERVAL;
+	private final byte[] ZERO_BUFFER;
 	//
 	private String mHostName;
 	private String mUserName;
@@ -25,6 +28,7 @@ public abstract class AbstractOperation implements SshOperation {
 	protected AbstractOperation() {
 		EXEC_CHANNEL_TYPE = "exec";
 		POLL_INTERVAL = Duration.ofMillis(100);
+		ZERO_BUFFER = new byte[1];
 		//
 		mHostName = "<unknown>";
 		mUserName = "<unknown>";
@@ -35,7 +39,6 @@ public abstract class AbstractOperation implements SshOperation {
 	}
 
 	protected final ChannelExec newChannelExec(Session aSession) throws JSchException {
-		Objects.requireNonNull(aSession);
 		return ChannelExec.class.cast(aSession.openChannel(EXEC_CHANNEL_TYPE));
 	}
 
@@ -45,9 +48,15 @@ public abstract class AbstractOperation implements SshOperation {
 				Thread.sleep(POLL_INTERVAL.toMillis());
 			}
 			catch (InterruptedException e) {
-				e.printStackTrace();
+				Logger.error(e);
 			}
 		}
+	}
+
+	protected void writeZero(OutputStream aOut) throws IOException {
+		ZERO_BUFFER[0] = 0;
+		aOut.write(ZERO_BUFFER, 0, 1); // send '\0'
+		aOut.flush();
 	}
 
 	protected String readString(InputStream aIn, char aTerminator) throws IOException {
@@ -76,7 +85,7 @@ public abstract class AbstractOperation implements SshOperation {
 		if (ExitStatus.ERROR.is(status) || ExitStatus.FATAL_ERROR.is(status)) {
 			String errorMessage = readString(aIn, UnixConst.NEW_LINE);
 			if (! errorMessage.isEmpty()) {
-				System.out.print(String.format("[ssh]: ERROR: %s", errorMessage));
+				Logger.error(String.format(errorMessage));
 			}
 		}
 		return status;
@@ -97,16 +106,21 @@ public abstract class AbstractOperation implements SshOperation {
 		mHostName = Objects.requireNonNull(aSession.getHost());
 		mUserName = Objects.requireNonNull(aSession.getUserName());
 		//
-		int status = ExitStatus.SUCCESS.get();
+		int status = ExitStatus.ABORT.get();
 		try {
-			System.out.println(String.format("[ssh]: %s", toString()));
-			status = executeOperation(aSession);
+			Logger.info(toString());
+			try {
+				status = executeOperation(aSession);
+			}
+			catch (JSchException e) {
+				Logger.error(e.getMessage());
+			}
 			if (hasError(status)) {
-				System.out.println(String.format("[ssh]: ERROR: exit status: %d", status));
+				Logger.error(String.format("exit status: %d", status));
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e);
 			status = ExitStatus.ABORT.get();
 		}
 		return status;
