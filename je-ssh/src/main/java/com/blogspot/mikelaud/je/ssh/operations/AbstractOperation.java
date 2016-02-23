@@ -6,9 +6,7 @@ import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
-import java.util.Formatter;
 import java.util.Objects;
-import java.util.stream.IntStream;
 
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
 import com.blogspot.mikelaud.je.ssh.common.Logger;
@@ -23,6 +21,7 @@ public abstract class AbstractOperation implements Operation {
 	private final String EXEC_CHANNEL_TYPE;
 	private final Duration POLL_INTERVAL;
 	private final byte[] ZERO_BUFFER;
+	private final int COPY_BUFFER_SIZE;
 	//
 	private String mHostName;
 	private String mUserName;
@@ -33,9 +32,10 @@ public abstract class AbstractOperation implements Operation {
 		EXEC_CHANNEL_TYPE = "exec";
 		POLL_INTERVAL = Duration.ofMillis(100);
 		ZERO_BUFFER = new byte[1];
+		COPY_BUFFER_SIZE = 1024;
 		//
-		mHostName = "<unknown>";
-		mUserName = "<unknown>";
+		mHostName = "";
+		mUserName = "";
 	}
 
 	protected final ChannelExec newChannelExec(Session aSession) throws JSchException {
@@ -44,6 +44,10 @@ public abstract class AbstractOperation implements Operation {
 
 	protected final MessageDigest newMessageDigest() throws NoSuchAlgorithmException {
 		return MessageDigest.getInstance("SHA-256");
+	}
+
+	protected final byte[] newCopyBuffer() {
+		return new byte[COPY_BUFFER_SIZE];
 	}
 
 	protected boolean hasError(int aStatus) {
@@ -97,15 +101,6 @@ public abstract class AbstractOperation implements Operation {
 			}
 		}
 		return status;
-	}
-
-	protected String digestToHex(MessageDigest aMessageDigest) {
-		byte[] bytes = aMessageDigest.digest();
-		String hex = IntStream.range(0, bytes.length).collect(StringBuilder::new,
-				(sb, i)->new Formatter(sb).format("%02x", bytes[i] & 0xff),
-				StringBuilder::append).toString();
-		Logger.info(String.format("digest(%s): %s", aMessageDigest.getAlgorithm(), hex));
-		return hex;
 	}
 
 	@Override

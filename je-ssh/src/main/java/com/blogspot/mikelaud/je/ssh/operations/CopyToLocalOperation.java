@@ -10,8 +10,10 @@ import java.security.DigestOutputStream;
 import java.util.Objects;
 
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
+import com.blogspot.mikelaud.je.ssh.common.Logger;
 import com.blogspot.mikelaud.je.ssh.common.UnixConst;
 import com.blogspot.mikelaud.je.ssh.common.UnixPath;
+import com.blogspot.mikelaud.je.ssh.domain.Digest;
 import com.blogspot.mikelaud.je.ssh.domain.FileIdentity;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.Session;
@@ -24,8 +26,7 @@ public class CopyToLocalOperation extends AbstractOperation {
 	private final UnixPath FILE_REMOTE;
 	private final File FILE_LOCAL;
 	//
-	private final int COPY_BUFFER_SIZE;
-	private String mDigest;
+	private Digest mDigest;
 
 	private File resolveLocalFile(FileIdentity aFileIdentity) {
 		File localFile = FILE_LOCAL;
@@ -58,15 +59,16 @@ public class CopyToLocalOperation extends AbstractOperation {
 				FileIdentity remoteIdentity = readIdentity(in);
 				writeZero(out);
 				//
-				mDigest = "";
+				mDigest = new Digest();
 				File localFile = resolveLocalFile(remoteIdentity);
 				try (DigestOutputStream fos = new DigestOutputStream(new FileOutputStream(localFile), newMessageDigest())) {
 					long toReadTotal = remoteIdentity.getSize();
 					int toReadCount = 0;
 					int readCount = 0;
-					byte[] buffer = new byte[COPY_BUFFER_SIZE];
+					byte[] buffer = newCopyBuffer();
+					final int bufferSize = buffer.length;
 					while (true) {
-						toReadCount = COPY_BUFFER_SIZE <= toReadTotal ? COPY_BUFFER_SIZE : (int) toReadTotal;
+						toReadCount = bufferSize <= toReadTotal ? bufferSize : (int) toReadTotal;
 						if (toReadCount <= 0) break;
 						//
 						readCount = in.read(buffer, 0, toReadCount);
@@ -75,7 +77,8 @@ public class CopyToLocalOperation extends AbstractOperation {
 						fos.write(buffer, 0, readCount);
 						toReadTotal -= readCount;
 					}
-					mDigest = digestToHex(fos.getMessageDigest());
+					mDigest = new Digest(fos.getMessageDigest());
+					Logger.info(mDigest.toString());
 				}
 				status = checkAck(in);
 				if (hasError(status)) break;
@@ -97,8 +100,7 @@ public class CopyToLocalOperation extends AbstractOperation {
 		FILE_REMOTE = new UnixPath(INPUT_FILE_REMOTE);
 		FILE_LOCAL = INPUT_FILE_LOCAL.toFile();
 		//
-		COPY_BUFFER_SIZE = 1024;
-		mDigest = "";
+		mDigest = new Digest();
 	}
 
 	public Path getFileRemote() {
@@ -109,7 +111,7 @@ public class CopyToLocalOperation extends AbstractOperation {
 		return INPUT_FILE_LOCAL;
 	}
 
-	public String getDigest() {
+	public Digest getDigest() {
 		return mDigest;
 	}
 

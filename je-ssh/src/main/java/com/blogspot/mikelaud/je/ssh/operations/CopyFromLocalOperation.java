@@ -12,6 +12,7 @@ import java.util.function.BiConsumer;
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
 import com.blogspot.mikelaud.je.ssh.common.Logger;
 import com.blogspot.mikelaud.je.ssh.common.UnixPath;
+import com.blogspot.mikelaud.je.ssh.domain.Digest;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.Session;
 
@@ -23,9 +24,7 @@ public class CopyFromLocalOperation extends AbstractOperation {
 	private final File FILE_LOCAL;
 	private final UnixPath FILE_REMOTE;
 	//
-	private final int COPY_BUFFER_SIZE;
-	//
-	private String mDigest;
+	private Digest mDigest;
 
 	private int checkFile(File aFile) {
 		if (aFile.exists()) {
@@ -74,16 +73,17 @@ public class CopyFromLocalOperation extends AbstractOperation {
 
 	private void writeContent(OutputStream aOut, InputStream aIn) {
 		try {
-			mDigest = "";
+			mDigest = new Digest();
 			try (DigestInputStream fis = new DigestInputStream(new FileInputStream(FILE_LOCAL), newMessageDigest())) {
-				byte[] buffer = new byte[COPY_BUFFER_SIZE];
+				byte[] buffer = newCopyBuffer();
 				while (true) {
 					int readCount = fis.read(buffer, 0, buffer.length);
 					if (readCount <= 0) break;
 					aOut.write(buffer, 0, readCount);
 				}
 				writeZero(aOut);
-				mDigest = digestToHex(fis.getMessageDigest());
+				mDigest = new Digest(fis.getMessageDigest());
+				Logger.info(mDigest.toString());
 			}
 		}
 		catch (Exception e) {
@@ -119,8 +119,7 @@ public class CopyFromLocalOperation extends AbstractOperation {
 		FILE_REMOTE = new UnixPath(aFileRemote);
 		FILE_LOCAL = aFileLocal.toFile();
 		//
-		COPY_BUFFER_SIZE = 1024;
-		mDigest = "";
+		mDigest = new Digest();
 	}
 
 	public Path getFileLocal() {
@@ -131,7 +130,7 @@ public class CopyFromLocalOperation extends AbstractOperation {
 		return INPUT_FILE_REMOTE;
 	}
 
-	public String getDigest() {
+	public Digest getDigest() {
 		return mDigest;
 	}
 
