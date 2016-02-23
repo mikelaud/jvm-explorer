@@ -6,6 +6,7 @@ import java.util.Objects;
 import com.blogspot.mikelaud.je.ssh.common.Endpoint;
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
 import com.blogspot.mikelaud.je.ssh.common.Logger;
+import com.blogspot.mikelaud.je.ssh.common.Status;
 import com.blogspot.mikelaud.je.ssh.operations.CopyFromLocalOperation;
 import com.blogspot.mikelaud.je.ssh.operations.CopyToLocalOperation;
 import com.blogspot.mikelaud.je.ssh.operations.ExecOperation;
@@ -90,8 +91,10 @@ public class UnixHost implements Host {
 	}
 
 	@Override
-	public int exec(String aCommand) {
-		return execute(new ExecOperation(aCommand));
+	public Status exec(String aCommand) {
+		ExecOperation exec = new ExecOperation(aCommand);
+		int code = execute(exec);
+		return new Status(code, exec.getMessage());
 	}
 
 	@Override
