@@ -35,7 +35,7 @@ public class Digest {
 
 	@Override
 	public String toString() {
-		return String.format("digest(%s): %s", ALGORITHM, BYTES);
+		return String.format("%s: %s", ALGORITHM, BYTES);
 	}
 
 }

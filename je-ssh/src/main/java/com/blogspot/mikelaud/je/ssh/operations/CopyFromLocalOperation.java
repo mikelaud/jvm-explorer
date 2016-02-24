@@ -83,7 +83,6 @@ public class CopyFromLocalOperation extends AbstractOperation {
 				}
 				writeZero(aOut);
 				mDigest = new Digest(fis.getMessageDigest());
-				Logger.info(mDigest.toString());
 			}
 		}
 		catch (Exception e) {

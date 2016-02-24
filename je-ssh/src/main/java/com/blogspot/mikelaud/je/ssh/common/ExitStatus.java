@@ -6,6 +6,7 @@ public enum ExitStatus {
 	NO_DATA(-1),
 	ERROR(1),
 	FATAL_ERROR(2),
+	WRONG_DIGEST(600),
 	ABORT(666);
 
 	private final int STATUS;

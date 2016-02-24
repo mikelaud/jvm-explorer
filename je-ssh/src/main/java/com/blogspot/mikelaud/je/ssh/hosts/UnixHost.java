@@ -9,6 +9,7 @@ import com.blogspot.mikelaud.je.ssh.domain.Endpoint;
 import com.blogspot.mikelaud.je.ssh.domain.Status;
 import com.blogspot.mikelaud.je.ssh.operations.CopyFromLocalOperation;
 import com.blogspot.mikelaud.je.ssh.operations.CopyToLocalOperation;
+import com.blogspot.mikelaud.je.ssh.operations.CopyToVoidOperation;
 import com.blogspot.mikelaud.je.ssh.operations.ExecOperation;
 import com.blogspot.mikelaud.je.ssh.operations.Operation;
 import com.jcraft.jsch.JSch;
@@ -99,7 +100,24 @@ public class UnixHost implements Host {
 
 	@Override
 	public int copyFromLocal(Path aFileLocal, Path aFileRemote) {
-		return execute(new CopyFromLocalOperation(aFileLocal, aFileRemote));
+		int status = ExitStatus.ABORT.get();
+		while (true) {
+			CopyFromLocalOperation copyFrom = new CopyFromLocalOperation(aFileLocal, aFileRemote);
+			status = execute(copyFrom);
+			if (ExitStatus.SUCCESS.isNot(status)) break;
+			//
+			CopyToVoidOperation copyTo = new CopyToVoidOperation(aFileRemote, aFileLocal);
+			status = execute(copyTo);
+			if (ExitStatus.SUCCESS.isNot(status)) break;
+			//
+			if (! copyFrom.getDigest().getBytes().equals(copyTo.getDigest().getBytes())) {
+				Logger.error("src digest is different: " + copyFrom.getDigest());
+				Logger.error("dst digest is different: " + copyTo.getDigest());
+				status = ExitStatus.WRONG_DIGEST.get();
+			}
+			break;
+		}
+		return status;
 	}
 
 	@Override
