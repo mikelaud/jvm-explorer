@@ -29,6 +29,8 @@
 		<je.java.version>1.8</je.java.version>
 		<je.asm.version>5.0.4</je.asm.version>
 		<je.junit.version>4.12</je.junit.version>
+		<je.slf4j.version>1.7.16</je.slf4j.version>
+		<je.logback.version>1.1.5</je.logback.version>
 		<je.jsr305.version>3.0.0</je.jsr305.version>
 		<je.guice.version>4.0</je.guice.version>
 		<je.guice-assistedinject.version>${je.guice.version}</je.guice-assistedinject.version>
@@ -52,6 +54,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-all</artifactId>
+			<version>${je.asm.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>com.sun</groupId>
 			<artifactId>tools</artifactId>
 			<version>1.6.0</version>
@@ -59,15 +66,20 @@
 			<systemPath>${java.home}/../lib/tools.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-all</artifactId>
-			<version>${je.asm.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${je.junit.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${je.slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${je.logback.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.findbugs</groupId>
