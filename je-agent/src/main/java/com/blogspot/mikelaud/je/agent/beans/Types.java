@@ -21,17 +21,19 @@ public class Types implements TypesMXBean {
 
 	private final Instrumentation INSTRUMENTATION;
 	private final List<byte[]> BYTECODES;
+	private final String ID;
 
-	public Types(Instrumentation aInstrumentation) {
+	public Types(Instrumentation aInstrumentation, String aId) {
 		INSTRUMENTATION = aInstrumentation;
 		BYTECODES = new ArrayList<>(); //TODO: concurrent
 		//TODO: map of WeekReference<ClassLoader>
 		INSTRUMENTATION.addTransformer(new Transformer());
+		ID = aId;
 	}
 
 	@Override
 	public void echo() {
-		System.out.println("[agent] echo.");
+		System.out.println("[agent] echo from: " + ID);
 	}
 
 	private byte[] readBytes(InputStream aInputStream) {
