@@ -2,6 +2,7 @@ package com.blogspot.mikelaud.je.agent;
 
 import java.lang.instrument.Instrumentation;
 import java.lang.management.ManagementFactory;
+import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
 
@@ -16,7 +17,7 @@ public class Main implements Runnable {
 		System.out.println(">>>>>>>>> Init Main.");
 	}
 
-	private Instrumentation INSTRUMENTATION;
+	private final Instrumentation INSTRUMENTATION;
 
 	private void registerMxBean() throws Exception {
 		String id = "id_" + System.currentTimeMillis();
@@ -44,14 +45,10 @@ public class Main implements Runnable {
 		System.out.println("[agent] main: end.");
 	}
 
-	public Main() {
-		INSTRUMENTATION = null;
-	}
-
-	public void set(Instrumentation aInstrumentation) {
+	public Main(Instrumentation aInstrumentation) {
 		INSTRUMENTATION = aInstrumentation;
 	}
-	
+
 	public static void agentmain(String aArgs, Instrumentation aInstrumentation) {
 		try {
 			System.out.println("[agent] >>> load begin");
@@ -63,10 +60,11 @@ public class Main implements Runnable {
 			//
 			System.out.println("[agent] classloader: " + Thread.currentThread().getContextClassLoader());
 			//Main m = new Main(aInstrumentation);
-			Main m = (Main)newClassLoader.loadClass("com.blogspot.mikelaud.je.agent.Main").newInstance();
-			m.set(aInstrumentation);
-			m.run();
-			System.out.println("[agent] <<< load end: " + m);
+			Class<?> clazz = newClassLoader.loadClass("com.blogspot.mikelaud.je.agent.Main");
+			Constructor<?> constructor = clazz.getConstructor(Instrumentation.class);
+			Runnable instance = Runnable.class.cast(constructor.newInstance(aInstrumentation));
+			instance.run();
+			System.out.println("[agent] <<< load end: " + instance);
 		}
 		catch (Exception e) {
 			e.printStackTrace();
