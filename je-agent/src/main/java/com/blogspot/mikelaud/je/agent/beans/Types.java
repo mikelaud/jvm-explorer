@@ -19,6 +19,10 @@ import com.blogspot.mikelaud.je.agent.Transformer;
 
 public class Types implements TypesMXBean {
 
+	static {
+		System.out.println(">>>>>>>>> Init Types.");
+	}
+	
 	private final Instrumentation INSTRUMENTATION;
 	private final List<byte[]> BYTECODES;
 	private final String ID;

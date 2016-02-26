@@ -92,13 +92,13 @@ public class CoreImpl implements Core {
 	    return jvmName.substring(0, jvmName.indexOf('@'));
 	}
 
-	private void loadLocalAgent() {
+	private void loadLocalAgent(String aId) {
 		try {
 			VirtualMachine jvm = VirtualMachine.attach(getSelfJvmPid());
 			Path userHome = Paths.get(System.getProperty("user.home"));
-			Path agentPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent/1.0.0/je-agent-1.0.0-jar-with-dependencies.jar");
+			Path agentPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent/1.0.0/je-agent-1.0.0-jar-with-dependencies" + aId + ".jar");
 			System.out.println("Load local agent: " + agentPath);
-			jvm.loadAgent(agentPath.toString());
+			jvm.loadAgent(agentPath.toString(), agentPath.toUri().toURL().toString());
 			jvm.detach();
 		}
 		catch (Throwable t) {
@@ -142,8 +142,8 @@ public class CoreImpl implements Core {
 
 	@Override
 	public final void setDefaultTypes() {
-		loadLocalAgent();
-		loadLocalAgent();
+		loadLocalAgent("-1");
+		loadLocalAgent("-2");
 		//startRemoteManagementAgent();
 		//DOMAIN.getTypes().addAll(callLocalAgentEcho());
 		DOMAIN.setTypesSource(Const.JAR_NAME);
