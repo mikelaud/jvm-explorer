@@ -142,8 +142,8 @@ public class CoreImpl implements Core {
 
 	@Override
 	public final void setDefaultTypes() {
-		loadLocalAgent("-1");
-		loadLocalAgent("-2");
+		loadLocalAgent("");
+		loadLocalAgent("");
 		//startRemoteManagementAgent();
 		//DOMAIN.getTypes().addAll(callLocalAgentEcho());
 		DOMAIN.setTypesSource(Const.JAR_NAME);

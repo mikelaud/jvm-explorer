@@ -8,7 +8,7 @@
 		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>je-agent</artifactId>
+	<artifactId>je-agent-body</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
 
@@ -27,13 +27,6 @@
 							<descriptorRefs>
 								<descriptorRef>jar-with-dependencies</descriptorRef>
 							</descriptorRefs>
-							<archive>
-								<manifestEntries>
-									<Agent-Class>com.blogspot.mikelaud.je.agent.Main</Agent-Class>
-									<Can-Redefine-Classes>true</Can-Redefine-Classes>
-									<Can-Retransform-Classes>true</Can-Retransform-Classes>
-								</manifestEntries>
-							</archive>
 						</configuration>
 					</execution>
 				</executions>

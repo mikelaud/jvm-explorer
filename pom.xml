@@ -23,6 +23,8 @@
 		<module>ui-program</module>
 		<module>mvc-impl</module>
 		<module>main</module>
+		<module>je-agent-head</module>
+		<module>je-agent-body</module>
 	</modules>
 
 	<properties>
