@@ -9,6 +9,11 @@
 	<description>${project.artifactId}</description>
 
 	<modules>
+		<module>je-agent-bios</module>
+		<module>je-agent-head</module>
+		<module>je-agent-body</module>
+		<module>je-agent-loader</module>
+		<module>je-agent-connector</module>
 		<module>je-agent</module>
 		<module>je-utils</module>
 		<module>je-ssh</module>
@@ -23,9 +28,6 @@
 		<module>ui-program</module>
 		<module>mvc-impl</module>
 		<module>main</module>
-		<module>je-agent-head</module>
-		<module>je-agent-body</module>
-		<module>je-agent-bios</module>
 	</modules>
 
 	<properties>
