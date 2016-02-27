@@ -1,8 +1,14 @@
 package com.blogspot.mikelaud.je.agent.body;
 
 import java.lang.instrument.Instrumentation;
+import java.lang.management.ManagementFactory;
 import java.net.URL;
 import java.util.Objects;
+
+import javax.management.MBeanServer;
+import javax.management.ObjectName;
+
+import com.blogspot.mikelaud.je.agent.beans.Types;
 
 public class Main implements Runnable {
 
@@ -24,8 +30,22 @@ public class Main implements Runnable {
 		}
 	}
 
-	private void exec() {
-		// void
+	private void registerMxBean() throws Exception {
+		String id = "id_" + System.currentTimeMillis();
+		ObjectName beanName = ObjectName.getInstance("JvmExplorer", id, "Agent");
+		log("Register MXBean: \"" + beanName + "\"");
+		Types bean = new Types(INSTRUMENTATION, id);
+		MBeanServer beanServer = ManagementFactory.getPlatformMBeanServer();
+		beanServer.registerMBean(bean, beanName);
+	}
+
+	private void printHelp() {
+		log("Help: jconsole => Local Process => com.blogspot.mikelaud.je.main.Main => Connect => MBeans => JvmExplorer => Types => Operations => echo");
+	}
+
+	private void exec() throws Exception {
+		registerMxBean();
+		printHelp();
 	}
 
 	public Main(URL aJarLocation, Instrumentation aInstrumentation) {

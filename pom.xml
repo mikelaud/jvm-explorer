@@ -14,7 +14,6 @@
 		<module>je-agent-body</module>
 		<module>je-agent-loader</module>
 		<module>je-agent-connector</module>
-		<module>je-agent</module>
 		<module>je-utils</module>
 		<module>je-ssh</module>
 		<module>je-search</module>

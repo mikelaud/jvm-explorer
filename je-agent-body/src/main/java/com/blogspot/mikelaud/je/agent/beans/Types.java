@@ -15,14 +15,14 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.AdviceAdapter;
 
-import com.blogspot.mikelaud.je.agent.Transformer;
+import com.blogspot.mikelaud.je.agent.body.Transformer;
 
 public class Types implements TypesMXBean {
 
 	static {
 		System.out.println(">>>>>>>>> Init Types.");
 	}
-	
+
 	private final Instrumentation INSTRUMENTATION;
 	private final List<byte[]> BYTECODES;
 	private final String ID;
