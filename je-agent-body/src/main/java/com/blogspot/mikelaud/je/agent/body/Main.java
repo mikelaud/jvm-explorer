@@ -10,7 +10,7 @@ public class Main implements Runnable {
 	private final Instrumentation INSTRUMENTATION;
 
 	static {
-		log("Load agent main: " + Main.class + "@" + Main.class.getClassLoader());
+		log("Load body main: " + Main.class + "@" + Main.class.getClassLoader());
 	}
 
 	private static void log(String aMessage) {

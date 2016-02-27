@@ -25,6 +25,7 @@
 		<module>main</module>
 		<module>je-agent-head</module>
 		<module>je-agent-body</module>
+		<module>je-agent-bios</module>
 	</modules>
 
 	<properties>

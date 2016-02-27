@@ -8,7 +8,7 @@ import java.net.URLClassLoader;
 public class Main {
 
 	static {
-		log("Load agent main: " + Main.class + "@" + Main.class.getClassLoader());
+		log("Load head main: " + Main.class + "@" + Main.class.getClassLoader());
 	}
 
 	private static void log(String aMessage) {
