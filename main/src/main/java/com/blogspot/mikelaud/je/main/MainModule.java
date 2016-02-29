@@ -1,5 +1,6 @@
 package com.blogspot.mikelaud.je.main;
 
+import com.blogspot.mikelaud.je.agent.bios.AgentBiosModule;
 import com.blogspot.mikelaud.je.core.CoreModule;
 import com.blogspot.mikelaud.je.domain.DomainModule;
 import com.blogspot.mikelaud.je.mvc.impl.MvcModule;
@@ -15,6 +16,7 @@ public class MainModule extends AbstractModule {
 	@Override
 	protected final void configure() {
 		//
+		install(new AgentBiosModule());
 		install(new DomainModule());
 		install(new CoreModule());
 		//

@@ -20,6 +20,11 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
+			<artifactId>je-agent-bios</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
 			<artifactId>je-ssh</artifactId>
 			<version>${project.version}</version>
 		</dependency>

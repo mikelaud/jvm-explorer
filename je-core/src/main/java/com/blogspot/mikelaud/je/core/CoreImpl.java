@@ -1,7 +1,6 @@
 package com.blogspot.mikelaud.je.core;
 
 import java.io.FileInputStream;
-import java.lang.management.ManagementFactory;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -13,6 +12,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import com.blogspot.mikelaud.je.agent.beans.TypesMXBean;
+import com.blogspot.mikelaud.je.agent.bios.AgentBiosFactory;
+import com.blogspot.mikelaud.je.agent.bios.common.AgentBios;
 import com.blogspot.mikelaud.je.core.helper.Bytecode;
 import com.blogspot.mikelaud.je.domain.Domain;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
@@ -33,10 +34,12 @@ public class CoreImpl implements Core {
 	}
 
 	private final Domain DOMAIN;
+	private final AgentBios AGENT_BIOS;
 
 	@Inject
-	private CoreImpl(Domain aDomain) {
+	private CoreImpl(Domain aDomain, AgentBiosFactory aAgentBiosFactory) {
 		DOMAIN = aDomain;
+		AGENT_BIOS = aAgentBiosFactory.newAgentBios();
 	}
 
 	private Path getJavaHome() {
@@ -87,29 +90,16 @@ public class CoreImpl implements Core {
 		return types;
 	}
 
-	private String getSelfJvmPid() {
-		String jvmName = ManagementFactory.getRuntimeMXBean().getName();
-	    return jvmName.substring(0, jvmName.indexOf('@'));
-	}
-
 	private void loadLocalAgent(String aId) {
-		try {
-			VirtualMachine jvm = VirtualMachine.attach(getSelfJvmPid());
-			Path userHome = Paths.get(System.getProperty("user.home"));
-			Path agentHeadPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent-head/1.0.0/je-agent-head-1.0.0-jar-with-dependencies.jar");
-			Path agentBodyPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent-body/1.0.0/je-agent-body-1.0.0-jar-with-dependencies.jar");
-			System.out.println("Load agent head: " + agentHeadPath);
-			jvm.loadAgent(agentHeadPath.toString(), agentBodyPath.toUri().toURL().toString());
-			jvm.detach();
-		}
-		catch (Throwable t) {
-			t.printStackTrace();
-		}
+		Path userHome = Paths.get(System.getProperty("user.home"));
+		Path agentHeadPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent-head/1.0.0/je-agent-head-1.0.0-jar-with-dependencies.jar");
+		Path agentBodyPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent-body/1.0.0/je-agent-body-1.0.0-jar-with-dependencies.jar");
+		AGENT_BIOS.loadAgent(agentHeadPath, agentBodyPath);
 	}
 
 	private void startRemoteManagementAgent() {
 		try {
-			VirtualMachine jvm = VirtualMachine.attach(getSelfJvmPid());
+			VirtualMachine jvm = VirtualMachine.attach(AGENT_BIOS.getJvmId());
 			Properties props = new Properties();
 			props.put("com.sun.management.jmxremote.port", "5000");
 			props.put("com.sun.management.jmxremote.authenticate", "false");

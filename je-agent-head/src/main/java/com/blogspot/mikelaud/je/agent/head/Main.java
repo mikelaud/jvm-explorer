@@ -4,6 +4,7 @@ import java.lang.instrument.Instrumentation;
 import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.Paths;
 
 public class Main {
 
@@ -23,7 +24,7 @@ public class Main {
 	}
 
 	private static void loadAgentBody(String aArgs, Instrumentation aInstrumentation) throws Exception {
-		URL jarLocation = new URL(aArgs);
+		URL jarLocation = Paths.get(aArgs).toUri().toURL();
 		ClassLoader classLoader = URLClassLoader.newInstance(new URL[] { jarLocation }, null);
 		Thread.currentThread().setContextClassLoader(classLoader);
 		//
