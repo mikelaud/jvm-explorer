@@ -16,4 +16,10 @@ public class AgentLoaderImpl implements AgentLoader {
 		return false;
 	}
 
+	@Override
+	public RemoteCommand loadAgent(Path aAgentHeadJar, Path aAgentBodyJar, String aJvmId, String aHost) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
