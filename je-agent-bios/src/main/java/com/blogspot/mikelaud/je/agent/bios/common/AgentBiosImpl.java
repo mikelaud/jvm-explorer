@@ -2,7 +2,9 @@ package com.blogspot.mikelaud.je.agent.bios.common;
 
 import java.lang.management.ManagementFactory;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.blogspot.mikelaud.je.agent.bios.domain.AgentIdentity;
@@ -52,17 +54,44 @@ public class AgentBiosImpl implements AgentBios {
 
 	@Override
 	public boolean loadAgent(Path aAgentHeadJar, Path aAgentBodyJar) {
-		return loadAgent(aAgentHeadJar, aAgentBodyJar, getJvmId());
+		Objects.requireNonNull(aAgentHeadJar);
+		Objects.requireNonNull(aAgentBodyJar);
+		//
+		return loadAgentById(getJvmId(), aAgentHeadJar, aAgentBodyJar);
 	}
 
 	@Override
-	public boolean loadAgent(Path aAgentHeadJar, Path aAgentBodyJar, String aJvmId) {
+	public boolean loadAgentById(String aJvmId, Path aAgentHeadJar, Path aAgentBodyJar) {
+		Objects.requireNonNull(aJvmId);
 		Objects.requireNonNull(aAgentHeadJar);
 		Objects.requireNonNull(aAgentBodyJar);
-		Objects.requireNonNull(aJvmId);
 		//
+		Logger.log("Load agent by id: " + aJvmId);
 		AgentIdentity agentIdentity = new AgentIdentity(aJvmId, aAgentHeadJar, aAgentBodyJar);
 		return loadAgent(agentIdentity);
+	}
+
+	@Override
+	public boolean loadAgentByName(String aJvmName, Path aAgentHeadJar, Path aAgentBodyJar) {
+		Objects.requireNonNull(aJvmName);
+		Objects.requireNonNull(aAgentHeadJar);
+		Objects.requireNonNull(aAgentBodyJar);
+		//
+		Logger.log("Load agent by name: " + aJvmName);
+		List<JvmIdentity> found = getJvmList().filter(jvm -> aJvmName.equals(jvm.getName())).collect(Collectors.toList());
+		int jvmCount = found.size();
+		switch (jvmCount) {
+			case 1:
+				String jvmId = found.get(0).getId();
+				return loadAgentById(jvmId, aAgentHeadJar, aAgentBodyJar);
+			case 0:
+				Logger.log(String.format("loadAgentByName(%s) fail: not found", aJvmName));
+				break;
+			default:
+				Logger.log(String.format("loadAgentByName(%s) fail: count = %d", aJvmName, jvmCount));
+				break;
+		}
+		return false;
 	}
 
 }

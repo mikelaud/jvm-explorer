@@ -14,7 +14,7 @@ public class AgentLoaderImpl implements AgentLoader {
 	//
 	private final Path AGENT_HEAD_JAR;
 	private final Path AGENT_BODY_JAR;
-	
+
 	@Inject
 	private AgentLoaderImpl
 	(	AgentBios aAgentBios
@@ -28,15 +28,15 @@ public class AgentLoaderImpl implements AgentLoader {
 		AGENT_HEAD_JAR = Objects.requireNonNull(aAgentHeadJar);
 		AGENT_BODY_JAR = Objects.requireNonNull(aAgentBodyJar);
 	}
-	
+
 	@Override
 	public boolean loadAgent() {
 		return AGENT_BIOS.loadAgent(AGENT_HEAD_JAR, AGENT_BODY_JAR);
 	}
 
 	@Override
-	public boolean loadAgent(String aJvmId) {
-		return AGENT_BIOS.loadAgent(AGENT_HEAD_JAR, AGENT_BODY_JAR, aJvmId);
+	public boolean loadAgentById(String aJvmId) {
+		return AGENT_BIOS.loadAgentById(aJvmId, AGENT_HEAD_JAR, AGENT_BODY_JAR);
 	}
 
 	@Override

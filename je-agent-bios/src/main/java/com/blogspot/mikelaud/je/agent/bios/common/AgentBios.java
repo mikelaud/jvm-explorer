@@ -11,6 +11,7 @@ public interface AgentBios {
 	Stream<JvmIdentity> getJvmList();
 	//
 	boolean loadAgent(Path aAgentHeadJar, Path aAgentBodyJar);
-	boolean loadAgent(Path aAgentHeadJar, Path aAgentBodyJar, String aJvmId);
+	boolean loadAgentById(String aJvmId, Path aAgentHeadJar, Path aAgentBodyJar);
+	boolean loadAgentByName(String aJvmName, Path aAgentHeadJar, Path aAgentBodyJar);
 
 }
