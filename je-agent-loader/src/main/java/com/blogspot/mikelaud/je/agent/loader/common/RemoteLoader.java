@@ -1,6 +1,6 @@
 package com.blogspot.mikelaud.je.agent.loader.common;
 
-public interface RemoteCommand {
+public interface RemoteLoader {
 
 	void execute(String aUserName, String aPassword);
 
