@@ -2,9 +2,8 @@ package com.blogspot.mikelaud.je.agent.bios.common;
 
 import java.lang.management.ManagementFactory;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.blogspot.mikelaud.je.agent.bios.domain.AgentIdentity;
 import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
@@ -47,8 +46,8 @@ public class AgentBiosImpl implements AgentBios {
 	}
 
 	@Override
-	public List<JvmIdentity> getJvmList() {
-		return VirtualMachine.list().stream().map(JvmIdentity::new).collect(Collectors.toList());
+	public Stream<JvmIdentity> getJvmList() {
+		return VirtualMachine.list().stream().map(JvmIdentity::new);
 	}
 
 	@Override

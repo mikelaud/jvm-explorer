@@ -22,7 +22,7 @@ public class Program {
 	}
 
 	private void printJvmList() {
-		mAgentBios.getJvmList().stream().forEach(jvm -> Logger.out(jvm.toString()));
+		mAgentBios.getJvmList().forEach(jvm -> Logger.out(jvm.toString()));
 	}
 
 	private boolean loadAgent(String aAgentHeadJar, String aAgentBodyJar, String aJvmId) {
