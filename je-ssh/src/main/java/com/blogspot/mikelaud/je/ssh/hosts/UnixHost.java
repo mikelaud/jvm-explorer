@@ -12,6 +12,8 @@ import com.blogspot.mikelaud.je.ssh.operations.CopyToVoidOperation;
 import com.blogspot.mikelaud.je.ssh.operations.CopyToLocalOperation;
 import com.blogspot.mikelaud.je.ssh.operations.ExecOperation;
 import com.blogspot.mikelaud.je.ssh.operations.Operation;
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -35,9 +37,9 @@ public class UnixHost implements Host {
 		}
 	}
 
-	public UnixHost(String aHostName, int aPort) {
-		Objects.requireNonNull(aHostName);
-		ENDPOINT = new Endpoint(aHostName, aPort);
+	@Inject
+	private UnixHost(@Assisted String aHostName, @Assisted int aPort) {
+		ENDPOINT = new Endpoint(Objects.requireNonNull(aHostName), aPort);
 		mSession = null;
 	}
 

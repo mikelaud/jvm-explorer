@@ -3,12 +3,16 @@ package com.blogspot.mikelaud.je.ssh;
 import java.nio.file.Paths;
 
 import com.blogspot.mikelaud.je.ssh.hosts.Host;
-import com.blogspot.mikelaud.je.ssh.hosts.UnixHost;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 public class Main {
 
 	public static void main(String[] arg) {
-		Host host = new UnixHost("192.168.10.101", 22);
+		Injector injector = Guice.createInjector(new SshModule());
+		SshFactory sshFactory = injector.getInstance(SshFactory.class);
+		//
+		Host host = sshFactory.newHost("192.168.10.101", 22);
 		host.login("root", "xxx");
 		host.exec("ls -l");
 		host.exec("pwd");
