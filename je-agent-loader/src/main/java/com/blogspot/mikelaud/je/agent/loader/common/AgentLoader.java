@@ -1,10 +1,18 @@
 package com.blogspot.mikelaud.je.agent.loader.common;
 
+import java.nio.file.Path;
+import java.util.stream.Stream;
+
+import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
+
 public interface AgentLoader {
 
-	boolean loadAgent();
-	boolean loadAgentById(String aJvmId);
+	Path getHeadJar();
+	Path getBodyJar();
 	//
-	RemoteLoader newRemoteLoader(String aHost, String aUserName, String aPassword);
+	Stream<JvmIdentity> getJvmList();
+	//
+	boolean loadAgentById(String aJvmId);
+	boolean loadAgentByName(String aJvmName);
 
 }

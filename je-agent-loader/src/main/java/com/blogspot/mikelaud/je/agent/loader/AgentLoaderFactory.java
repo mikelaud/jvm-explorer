@@ -6,6 +6,7 @@ import com.blogspot.mikelaud.je.agent.loader.common.AgentLoader;
 
 public interface AgentLoaderFactory {
 
-	AgentLoader newAgentLoader(Path aAgentHeadJar, Path aAgentBodyJar);
+	AgentLoader newLocalLoader(Path aAgentHeadJar, Path aAgentBodyJar);
+	AgentLoader newRemoteLoader(Path aAgentHeadJar, Path aAgentBodyJar);
 
 }
