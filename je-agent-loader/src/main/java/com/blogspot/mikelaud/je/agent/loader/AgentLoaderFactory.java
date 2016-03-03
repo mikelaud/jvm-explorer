@@ -16,7 +16,7 @@ public interface AgentLoaderFactory {
 	RemoteAgentLoader newRemoteLoader
 	(	@Assisted("AgentHeadJar") Path aAgentHeadJar
 	,	@Assisted("AgentBodyJar") Path aAgentBodyJar
-	,	@Assisted("Host") String aHost
+	,	@Assisted("HostName") String aHostName
 	);
 
 }
