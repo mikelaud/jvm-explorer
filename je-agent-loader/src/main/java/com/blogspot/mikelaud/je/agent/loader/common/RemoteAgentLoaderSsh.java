@@ -5,24 +5,17 @@ import java.util.stream.Stream;
 
 import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
-public class RemoteAgentLoaderSsh implements RemoteAgentLoader {
+public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgentLoader {
 
 	@Inject
-	private RemoteAgentLoaderSsh() {
-		
-	}
-
-	@Override
-	public Path getHeadJar() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Path getBodyJar() {
-		// TODO Auto-generated method stub
-		return null;
+	private RemoteAgentLoaderSsh
+	(	@Assisted("AgentHeadJar") Path aAgentHeadJar
+	,	@Assisted("AgentBodyJar") Path aAgentBodyJar
+	,	@Assisted("Host") String aHost
+	) {
+		super(aAgentHeadJar, aAgentBodyJar);
 	}
 
 	@Override
@@ -64,7 +57,7 @@ public class RemoteAgentLoaderSsh implements RemoteAgentLoader {
 	@Override
 	public void logout() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

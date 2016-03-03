@@ -2,11 +2,21 @@ package com.blogspot.mikelaud.je.agent.loader;
 
 import java.nio.file.Path;
 
-import com.blogspot.mikelaud.je.agent.loader.common.AgentLoader;
+import com.blogspot.mikelaud.je.agent.loader.common.LocalAgentLoader;
+import com.blogspot.mikelaud.je.agent.loader.common.RemoteAgentLoader;
+import com.google.inject.assistedinject.Assisted;
 
 public interface AgentLoaderFactory {
 
-	AgentLoader newLocalAgentLoader(Path aAgentHeadJar, Path aAgentBodyJar);
-	AgentLoader newRemoteAgentLoader(Path aAgentHeadJar, Path aAgentBodyJar, String aHost);
+	LocalAgentLoader newLocalLoader
+	(	@Assisted("AgentHeadJar") Path aAgentHeadJar
+	,	@Assisted("AgentBodyJar") Path aAgentBodyJar
+	);
+
+	RemoteAgentLoader newRemoteLoader
+	(	@Assisted("AgentHeadJar") Path aAgentHeadJar
+	,	@Assisted("AgentBodyJar") Path aAgentBodyJar
+	,	@Assisted("Host") String aHost
+	);
 
 }
