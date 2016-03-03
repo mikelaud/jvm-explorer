@@ -13,7 +13,7 @@ import com.google.inject.assistedinject.Assisted;
 
 public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgentLoader {
 
-	private final Host HOST;
+	private final Host SSH;
 
 	@Inject
 	private RemoteAgentLoaderSsh
@@ -23,27 +23,27 @@ public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgent
 	,	@Assisted("HostName") String aHostName
 	) {
 		super(aAgentHeadJar, aAgentBodyJar);
-		HOST = aSshFactory.newHost(aHostName, SshConst.DEFAULT_PORT);
+		SSH = aSshFactory.newHost(aHostName, SshConst.DEFAULT_PORT);
 	}
 
-	@Override public String getHostName() { return HOST.getEndpoint().getHost(); }
-	@Override public String getUserName() { return HOST.getUserName(); }
+	@Override public String getHostName() { return SSH.getEndpoint().getHost(); }
+	@Override public String getUserName() { return SSH.getUserName(); }
 
 	@Override
 	public boolean login(String aUserName, String aPassword) {
 		Objects.requireNonNull(aUserName);
 		Objects.requireNonNull(aPassword);
-		return HOST.login(aUserName, aPassword);
+		return SSH.login(aUserName, aPassword);
 	}
 
 	@Override
 	public void logout() {
-		HOST.logout();
+		SSH.logout();
 	}
 
 	@Override
 	public boolean isOnline() {
-		return HOST.isOnline();
+		return SSH.isOnline();
 	}
 
 	@Override

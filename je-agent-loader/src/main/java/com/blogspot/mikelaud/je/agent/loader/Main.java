@@ -26,11 +26,13 @@ public class Main {
 		localLoader.loadAgent();
 		//
 		RemoteAgentLoader remoteLoader = factory.newRemoteLoader(agentHeadJar, agentBodyJar, "192.168.10.101");
+		remoteLoader.login("root", "1q2w3e");
 		remoteLoader.getJvmList().forEach(System.out::println);
 		//
 		try (Scanner scanner = new Scanner(System.in)) {
 			System.out.println("Press \"ENTER\" to continue...");
 			scanner.nextLine();
+			remoteLoader.logout();
 		}
 	}
 
