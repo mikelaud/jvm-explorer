@@ -13,6 +13,7 @@ import com.google.inject.assistedinject.Assisted;
 
 public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgentLoader {
 
+	private final Path AGENT_BIOS_JAR;
 	private final Host SSH;
 
 	@Inject
@@ -20,11 +21,15 @@ public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgent
 	(	SshFactory aSshFactory
 	,	@Assisted("AgentHeadJar") Path aAgentHeadJar
 	,	@Assisted("AgentBodyJar") Path aAgentBodyJar
+	,	@Assisted("AgentBiosJar") Path aAgentBiosJar
 	,	@Assisted("HostName") String aHostName
 	) {
 		super(aAgentHeadJar, aAgentBodyJar);
+		AGENT_BIOS_JAR = aAgentBiosJar;
 		SSH = aSshFactory.newHost(aHostName, SshConst.DEFAULT_PORT);
 	}
+
+	public Path getBiosJar() { return AGENT_BIOS_JAR; }
 
 	@Override public String getHostName() { return SSH.getEndpoint().getHost(); }
 	@Override public String getUserName() { return SSH.getUserName(); }
@@ -33,7 +38,11 @@ public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgent
 	public boolean login(String aUserName, String aPassword) {
 		Objects.requireNonNull(aUserName);
 		Objects.requireNonNull(aPassword);
-		return SSH.login(aUserName, aPassword);
+		boolean status = SSH.login(aUserName, aPassword);
+		status &= (0 == SSH.copyFromLocal(getHeadJar(), getHeadJar().getFileName()));
+		status &= (0 == SSH.copyFromLocal(getBodyJar(), getBodyJar().getFileName()));
+		status &= (0 == SSH.copyFromLocal(getBiosJar(), getBiosJar().getFileName()));
+		return status;
 	}
 
 	@Override
