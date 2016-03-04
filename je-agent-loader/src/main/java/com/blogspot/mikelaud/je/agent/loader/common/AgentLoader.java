@@ -10,6 +10,7 @@ public interface AgentLoader {
 	Path getHeadJar();
 	Path getBodyJar();
 	//
+	String getJavaHome();
 	Stream<JvmIdentity> getJvmList();
 	//
 	boolean loadAgentById(String aJvmId);

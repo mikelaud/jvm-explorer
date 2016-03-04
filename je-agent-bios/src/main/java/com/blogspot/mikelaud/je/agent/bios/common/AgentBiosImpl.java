@@ -83,7 +83,7 @@ public class AgentBiosImpl implements AgentBios {
 		Objects.requireNonNull(aAgentBodyJar);
 		//
 		Logger.log("Load agent by name: " + aJvmName);
-		List<JvmIdentity> found = getJvmList().filter(jvm -> aJvmName.equals(jvm.getName())).collect(Collectors.toList());
+		List<JvmIdentity> found = getJvmList().filter(jvm -> jvm.getName().startsWith(aJvmName)).collect(Collectors.toList());
 		int jvmCount = found.size();
 		switch (jvmCount) {
 			case 1:

@@ -25,6 +25,7 @@ public class LocalAgentLoaderImpl extends AgentLoaderImpl implements LocalAgentL
 	}
 
 	@Override public String getJvmId() { return AGENT_BIOS.getJvmId(); }
+	@Override public String getJavaHome() { return AGENT_BIOS.getJavaHome(); }
 	@Override public Stream<JvmIdentity> getJvmList() { return AGENT_BIOS.getJvmList(); }
 	@Override public boolean loadAgent() { return AGENT_BIOS.loadAgent(getHeadJar(), getBodyJar()); }
 
