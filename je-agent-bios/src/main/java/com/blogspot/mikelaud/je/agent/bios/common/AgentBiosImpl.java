@@ -41,6 +41,11 @@ public class AgentBiosImpl implements AgentBios {
 	}
 
 	@Override
+	public String getJavaHome() {
+		return System.getProperty("java.home");
+	}
+
+	@Override
 	public String getJvmId() {
 		String name = ManagementFactory.getRuntimeMXBean().getName();
 		int splitIndex = name.indexOf('@');

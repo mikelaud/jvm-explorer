@@ -20,7 +20,7 @@
 		</dependency>
 				<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>je-agent</artifactId>
+			<artifactId>je-agent-body</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

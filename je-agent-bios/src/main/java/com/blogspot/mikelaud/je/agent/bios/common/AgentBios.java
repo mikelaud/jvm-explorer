@@ -7,6 +7,7 @@ import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
 
 public interface AgentBios {
 
+	String getJavaHome();
 	String getJvmId();
 	Stream<JvmIdentity> getJvmList();
 	//
