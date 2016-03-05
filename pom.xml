@@ -9,24 +9,8 @@
 	<description>${project.artifactId}</description>
 
 	<modules>
-		<module>je-agent-bios</module>
-		<module>je-agent-head</module>
-		<module>je-agent-body</module>
-		<module>je-agent-loader</module>
-		<module>je-agent-connector</module>
-		<module>je-utils</module>
-		<module>je-ssh</module>
-		<module>je-search</module>
-		<module>je-domain</module>
-		<module>je-core</module>
-		<module>mvc</module>
-		<module>ui-resources</module>
-		<module>ui-background</module>
-		<module>ui-search</module>
-		<module>ui-code</module>
-		<module>ui-program</module>
-		<module>mvc-impl</module>
-		<module>main</module>
+		<module>client</module>
+		<module>server</module>
 	</modules>
 
 	<properties>
@@ -41,65 +25,5 @@
 		<!---->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
-	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<artifactId>maven-compiler-plugin</artifactId>
-					<configuration>
-						<source>${je.java.version}</source>
-						<target>${je.java.version}</target>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
-	</build>
-
-	<dependencies>
-		<dependency>
-			<groupId>org.ow2.asm</groupId>
-			<artifactId>asm-all</artifactId>
-			<version>${je.asm.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.sun</groupId>
-			<artifactId>tools</artifactId>
-			<version>1.6.0</version>
-			<scope>system</scope>
-			<systemPath>${java.home}/../lib/tools.jar</systemPath>
-		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${je.junit.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>${je.slf4j.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>${je.logback.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.code.findbugs</groupId>
-			<artifactId>jsr305</artifactId>
-			<version>${je.jsr305.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<version>${je.guice.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.inject.extensions</groupId>
-			<artifactId>guice-assistedinject</artifactId>
-			<version>${je.guice-assistedinject.version}</version>
-		</dependency>
-	</dependencies>
 
 </project>
