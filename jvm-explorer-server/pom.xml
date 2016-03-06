@@ -14,9 +14,10 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>je-agent-common</module>
-		<module>je-agent-head</module>
-		<module>jvm-explorer-server-attach</module>
+		<module>server-agent-api</module>
+		<module>server-agent-common</module>
+		<module>server-agent-head</module>
+		<module>jvm-explorer-server-tools</module>
 	</modules>
 
 	<build>

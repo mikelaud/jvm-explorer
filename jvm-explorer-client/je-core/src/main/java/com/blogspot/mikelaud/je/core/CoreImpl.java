@@ -11,7 +11,7 @@ import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import com.blogspot.mikelaud.je.agent.beans.TypesMXBean;
+import com.blogspot.mikelaud.je.agent.api.TypesMXBean;
 import com.blogspot.mikelaud.je.agent.loader.AgentLoaderFactory;
 import com.blogspot.mikelaud.je.agent.loader.common.LocalAgentLoader;
 import com.blogspot.mikelaud.je.core.helper.Bytecode;
@@ -92,8 +92,8 @@ public class CoreImpl implements Core {
 
 	private void loadLocalAgent(String aId) {
 		Path userHome = Paths.get(System.getProperty("user.home"));
-		Path agentHeadPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent-head/1.0.0/je-agent-head-1.0.0-jar-with-dependencies.jar");
-		Path agentBodyPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent-body/1.0.0/je-agent-body-1.0.0-jar-with-dependencies.jar");
+		Path agentHeadPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/server-agent-head/1.0.0/server-agent-head-1.0.0-jar-with-dependencies.jar");
+		Path agentBodyPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/server-agent-body/1.0.0/server-agent-body-1.0.0-jar-with-dependencies.jar");
 		LocalAgentLoader localAgentLoader = AGENT_LOADER_FACTORY.newLocalLoader(agentHeadPath, agentBodyPath);
 		localAgentLoader.loadAgent();
 	}

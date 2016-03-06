@@ -13,9 +13,9 @@ public class Main {
 
 	public static void main(String[] args) {
 		Path userHome = Paths.get(System.getProperty("user.home"));
-		Path agentBiosJar = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent-bios/1.0.0/je-agent-bios-1.0.0-jar-with-dependencies.jar");
-		Path agentHeadJar = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent-head/1.0.0/je-agent-head-1.0.0-jar-with-dependencies.jar");
-		Path agentBodyJar = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/je-agent-body/1.0.0/je-agent-body-1.0.0-jar-with-dependencies.jar");
+		Path agentBiosJar = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/server-agent-bios/1.0.0/server-agent-bios-1.0.0-jar-with-dependencies.jar");
+		Path agentHeadJar = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/server-agent-head/1.0.0/server-agent-head-1.0.0-jar-with-dependencies.jar");
+		Path agentBodyJar = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/server-agent-body/1.0.0/server-agent-body-1.0.0-jar-with-dependencies.jar");
 		//
 		Injector injector = Guice.createInjector(new SshModule(), new AgentLoaderModule());
 		AgentLoaderFactory factory = injector.getInstance(AgentLoaderFactory.class);
@@ -27,7 +27,7 @@ public class Main {
 		*/
 		//
 		RemoteAgentLoader remoteLoader = factory.newRemoteLoader(agentHeadJar, agentBodyJar, agentBiosJar, "192.168.10.101");
-		remoteLoader.login("root", "xxx");
+		remoteLoader.login("root", "1q2w3e");
 		remoteLoader.getJvmList().forEach(System.out::println);
 		remoteLoader.loadAgentByName("com.blogspot.mikelaud.je.agent.bios.Main");
 		remoteLoader.loadAgentByName("com.blogspot.mikelaud.je.agent.bios.Main");

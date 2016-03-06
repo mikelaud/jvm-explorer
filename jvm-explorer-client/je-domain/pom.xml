@@ -15,12 +15,12 @@
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>je-utils</artifactId>
+			<artifactId>server-agent-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>je-agent-body</artifactId>
+			<artifactId>je-utils</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

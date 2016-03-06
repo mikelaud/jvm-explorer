@@ -2,7 +2,7 @@ package com.blogspot.mikelaud.je.domain;
 
 import java.util.Collection;
 
-import com.blogspot.mikelaud.je.agent.beans.TypesMXBean;
+import com.blogspot.mikelaud.je.agent.api.TypesMXBean;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 
 import javafx.beans.property.StringProperty;
