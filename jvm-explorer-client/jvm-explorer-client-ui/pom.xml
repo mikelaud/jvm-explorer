@@ -8,16 +8,19 @@
 		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>ui-search</artifactId>
+	<artifactId>jvm-explorer-client-ui</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
+	<packaging>pom</packaging>
 
-	<dependencies>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>ui-background</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-	</dependencies>
+	<modules>
+		<module>mvc</module>
+		<module>ui-resources</module>
+		<module>ui-background</module>
+		<module>ui-search</module>
+		<module>ui-code</module>
+		<module>ui-program</module>
+		<module>mvc-impl</module>
+	</modules>
 
 </project>

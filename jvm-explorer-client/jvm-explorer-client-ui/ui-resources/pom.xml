@@ -4,18 +4,18 @@
 
 	<parent>
 		<groupId>com.blogspot.mikelaud.je</groupId>
-		<artifactId>jvm-explorer-client</artifactId>
+		<artifactId>jvm-explorer-client-ui</artifactId>
 		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>ui-background</artifactId>
+	<artifactId>ui-resources</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>ui-resources</artifactId>
+			<artifactId>mvc</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

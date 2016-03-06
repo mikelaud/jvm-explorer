@@ -4,7 +4,7 @@
 
 	<parent>
 		<groupId>com.blogspot.mikelaud.je</groupId>
-		<artifactId>jvm-explorer-client</artifactId>
+		<artifactId>jvm-explorer-client-ui</artifactId>
 		<version>1.0.0</version>
 	</parent>
 
