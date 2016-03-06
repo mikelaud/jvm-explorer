@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.blogspot.mikelaud.je</groupId>
+		<artifactId>jvm-explorer</artifactId>
+		<version>1.0.0</version>
+	</parent>
+
+	<artifactId>jvm-explorer-client</artifactId>
+	<name>${project.artifactId}</name>
+	<description>${project.artifactId}</description>
+	<packaging>pom</packaging>
+
+	<modules>
+		<module>je-agent-loader</module>
+		<module>je-agent-connector</module>
+		<module>je-utils</module>
+		<module>je-ssh</module>
+		<module>je-search</module>
+		<module>je-domain</module>
+		<module>je-core</module>
+		<module>mvc</module>
+		<module>ui-resources</module>
+		<module>ui-background</module>
+		<module>ui-search</module>
+		<module>ui-code</module>
+		<module>ui-program</module>
+		<module>mvc-impl</module>
+		<module>main</module>
+	</modules>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>${je.java.client.version}</source>
+						<target>${je.java.client.version}</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.code.findbugs</groupId>
+			<artifactId>jsr305</artifactId>
+			<version>${je.jsr305.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject</groupId>
+			<artifactId>guice</artifactId>
+			<version>${je.guice.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-assistedinject</artifactId>
+			<version>${je.guice-assistedinject.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.asm</groupId>
+			<artifactId>asm-all</artifactId>
+			<version>${je.asm.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${je.slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>${je.logback.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${je.junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+</project>

@@ -9,12 +9,13 @@
 	<description>${project.artifactId}</description>
 
 	<modules>
-		<module>client</module>
-		<module>server</module>
+		<module>jvm-explorer-server</module>
+		<module>jvm-explorer-client</module>
 	</modules>
 
 	<properties>
-		<je.java.version>1.8</je.java.version>
+		<je.java.client.version>1.8</je.java.client.version>
+		<je.java.server.version>1.6</je.java.server.version>
 		<je.asm.version>5.0.4</je.asm.version>
 		<je.junit.version>4.12</je.junit.version>
 		<je.slf4j.version>1.7.16</je.slf4j.version>
