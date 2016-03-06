@@ -8,7 +8,7 @@
 		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>je-domain</artifactId>
+	<artifactId>client-domain</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
 
@@ -20,7 +20,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>je-utils</artifactId>
+			<artifactId>client-utils</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

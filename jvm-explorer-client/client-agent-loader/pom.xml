@@ -8,20 +8,20 @@
 		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>je-ssh</artifactId>
+	<artifactId>client-agent-loader</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>je-utils</artifactId>
+			<artifactId>server-agent-bios</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.jcraft</groupId>
-			<artifactId>jsch</artifactId>
-			<version>0.1.53</version>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>client-ssh</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 

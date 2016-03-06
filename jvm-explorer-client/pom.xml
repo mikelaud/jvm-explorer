@@ -14,13 +14,13 @@
 	<packaging>pom</packaging>
 
 	<modules>
-		<module>je-agent-loader</module>
-		<module>je-agent-connector</module>
-		<module>je-utils</module>
-		<module>je-ssh</module>
-		<module>je-search</module>
-		<module>je-domain</module>
-		<module>je-core</module>
+		<module>client-agent-loader</module>
+		<module>client-agent-connector</module>
+		<module>client-utils</module>
+		<module>client-ssh</module>
+		<module>client-search</module>
+		<module>client-domain</module>
+		<module>client-core</module>
 		<module>jvm-explorer-client-ui</module>
 		<module>main</module>
 	</modules>

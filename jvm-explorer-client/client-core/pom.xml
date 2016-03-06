@@ -8,24 +8,24 @@
 		<version>1.0.0</version>
 	</parent>
 
-	<artifactId>je-core</artifactId>
+	<artifactId>client-core</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>je-domain</artifactId>
+			<artifactId>client-domain</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>je-agent-loader</artifactId>
+			<artifactId>client-agent-loader</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>je-ssh</artifactId>
+			<artifactId>client-ssh</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
