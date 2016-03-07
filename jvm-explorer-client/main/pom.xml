@@ -24,48 +24,6 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>copy</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy</goal>
-						</goals>
-						<configuration>
-							<artifactItems>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>server-agent-head</artifactId>
-									<version>${project.version}</version>
-									<type>jar</type>
-									<classifier>jar-with-dependencies</classifier>
-								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>server-agent-bios</artifactId>
-									<version>${project.version}</version>
-									<type>jar</type>
-									<classifier>jar-with-dependencies</classifier>
-								</artifactItem>
-								<artifactItem>
-									<groupId>${project.groupId}</groupId>
-									<artifactId>server-agent-body</artifactId>
-									<version>${project.version}</version>
-									<type>jar</type>
-									<classifier>jar-with-dependencies</classifier>
-								</artifactItem>
-							</artifactItems>
-							<outputDirectory>${project.build.directory}/classes/META-INF/resources</outputDirectory>
-							<overWriteReleases>false</overWriteReleases>
-							<overWriteSnapshots>false</overWriteSnapshots>
-							<overWriteIfNewer>true</overWriteIfNewer>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<executions>
 					<execution>

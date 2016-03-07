@@ -37,7 +37,7 @@ public class AgentSourceImpl implements AgentSource {
 			return FILE_SOURCE_FACTORY.newFileSourceJar(PROGRAM_JAR_PATH, fileLocation);
 		}
 		else {
-			return FILE_SOURCE_FACTORY.newFileSource(Paths.get(fileLocation));
+			return FILE_SOURCE_FACTORY.newFileSource(PROGRAM_JAR_PATH.resolve(fileLocation));
 		}
 	}
 
