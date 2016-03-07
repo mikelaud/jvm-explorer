@@ -5,6 +5,8 @@ import java.nio.file.Paths;
 import java.util.Scanner;
 
 import com.blogspot.mikelaud.je.agent.loader.common.RemoteAgentLoader;
+import com.blogspot.mikelaud.je.agent.loader.source.FileSource;
+import com.blogspot.mikelaud.je.agent.loader.source.FileSourceFactory;
 import com.blogspot.mikelaud.je.ssh.SshModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -19,6 +21,10 @@ public class Main {
 		//
 		Injector injector = Guice.createInjector(new SshModule(), new AgentLoaderModule());
 		AgentLoaderFactory factory = injector.getInstance(AgentLoaderFactory.class);
+		FileSourceFactory fsf = injector.getInstance(FileSourceFactory.class);
+		FileSource fs = fsf.newFileSourceJar(Paths.get("main-1.0.0-jar-with-dependencies.jar"), "META-INF/resources/server-agent-head-1.0.0-jar-with-dependencies.jar");
+		System.out.println("fs: " + fs);
+		System.out.println("c: " + fs.takeContent());
 		//
 		/*
 		LocalAgentLoader localLoader = factory.newLocalLoader(agentHeadJar, agentBodyJar);
@@ -26,16 +32,18 @@ public class Main {
 		localLoader.loadAgent();
 		*/
 		//
+		/*
 		RemoteAgentLoader remoteLoader = factory.newRemoteLoader(agentHeadJar, agentBodyJar, agentBiosJar, "192.168.10.101");
 		remoteLoader.login("root", "1q2w3e");
 		remoteLoader.getJvmList().forEach(System.out::println);
 		remoteLoader.loadAgentByName("com.blogspot.mikelaud.je.agent.bios.Main");
 		remoteLoader.loadAgentByName("com.blogspot.mikelaud.je.agent.bios.Main");
+		*/
 		//
 		try (Scanner scanner = new Scanner(System.in)) {
 			System.out.println("Press \"ENTER\" to continue...");
 			scanner.nextLine();
-			remoteLoader.logout();
+			//remoteLoader.logout();
 		}
 	}
 

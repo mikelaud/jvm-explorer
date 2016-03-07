@@ -1,6 +1,10 @@
 package com.blogspot.mikelaud.je.main;
 
+import com.blogspot.mikelaud.je.agent.loader.AgentLoaderModule;
+import com.blogspot.mikelaud.je.agent.loader.common.AgentSource;
+import com.blogspot.mikelaud.je.agent.loader.source.FileSource;
 import com.blogspot.mikelaud.je.mvc.MvcController;
+import com.blogspot.mikelaud.je.ssh.SshModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -19,7 +23,19 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
-		Application.launch(args);
+		try {
+			Injector injector = Guice.createInjector(new AgentLoaderModule(), new SshModule());
+			AgentSource as = injector.getInstance(AgentSource.class);
+			FileSource fs = as.getBios();
+			System.out.println("agent source: " + as);
+			System.out.println("bios source : " + fs);
+			System.out.println("bios content: " + fs.takeContent());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		//Application.launch(args);
 	}
 
 }
