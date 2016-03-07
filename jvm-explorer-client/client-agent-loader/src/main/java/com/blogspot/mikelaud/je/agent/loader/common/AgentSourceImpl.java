@@ -12,13 +12,14 @@ import com.google.inject.Inject;
 public class AgentSourceImpl implements AgentSource {
 
 	private final FileSourceFactory FILE_SOURCE_FACTORY;
-	//
+	private final String AGENT_JAR_PATTERN;
 	private final Path PROGRAM_JAR_PATH;
 	private final boolean HAS_PROGRAM_JAR;
 
 	@Inject
 	private AgentSourceImpl(FileSourceFactory aFileSourceFactory) {
 		FILE_SOURCE_FACTORY = Objects.requireNonNull(aFileSourceFactory);
+		AGENT_JAR_PATTERN = "META-INF/resources/server-agent-%s-1.0.0-jar-with-dependencies.jar";
 		try {
 			CodeSource codeSource = getClass().getProtectionDomain().getCodeSource();
 			PROGRAM_JAR_PATH = Objects.requireNonNull(Paths.get(codeSource.getLocation().toURI()));
@@ -32,12 +33,12 @@ public class AgentSourceImpl implements AgentSource {
 	@Override
 	public FileSource get(AgentSourceType aSourceType) {
 		String name = aSourceType.toString().toLowerCase();
-		String fileLocation = String.format("META-INF/resources/server-agent-%s-1.0.0-jar-with-dependencies.jar", name);
+		String agentJarLocation = String.format(AGENT_JAR_PATTERN, name);
 		if (HAS_PROGRAM_JAR) {
-			return FILE_SOURCE_FACTORY.newFileSourceJar(PROGRAM_JAR_PATH, fileLocation);
+			return FILE_SOURCE_FACTORY.newFileSourceJar(PROGRAM_JAR_PATH, agentJarLocation);
 		}
 		else {
-			return FILE_SOURCE_FACTORY.newFileSource(PROGRAM_JAR_PATH.resolve(fileLocation));
+			return FILE_SOURCE_FACTORY.newFileSource(PROGRAM_JAR_PATH.resolve(agentJarLocation));
 		}
 	}
 
