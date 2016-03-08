@@ -1,69 +1,32 @@
 package com.blogspot.mikelaud.je.agent.loader.common;
 
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.stream.Stream;
 
 import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
 import com.blogspot.mikelaud.je.common.file_source.FileSource;
-import com.blogspot.mikelaud.je.common.file_source.FileSourceFactory;
 import com.blogspot.mikelaud.je.ssh.SshFactory;
 import com.blogspot.mikelaud.je.ssh.common.SshConst;
 import com.blogspot.mikelaud.je.ssh.domain.Status;
 import com.blogspot.mikelaud.je.ssh.hosts.Host;
+import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
-import com.google.inject.assistedinject.AssistedInject;
 
 public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgentLoader {
 
 	private final FileSource AGENT_BIOS_JAR;
 	private final Host SSH;
 
-	@AssistedInject
-	private RemoteAgentLoaderSsh
-	(	SshFactory aSshFactory
-	,	@Assisted("AgentHeadJar") FileSource aAgentHeadJar
-	,	@Assisted("AgentBodyJar") FileSource aAgentBodyJar
-	,	@Assisted("AgentBiosJar") FileSource aAgentBiosJar
-	,	@Assisted("HostName") String aHostName
-	) {
-		super(aAgentHeadJar, aAgentBodyJar);
-		AGENT_BIOS_JAR = aAgentBiosJar;
-		SSH = aSshFactory.newHost(aHostName, SshConst.DEFAULT_PORT);
-	}
-
-	@AssistedInject
-	private RemoteAgentLoaderSsh
-	(	FileSourceFactory aFileSourceFactory
-	,	SshFactory aSshFactory
-	,	@Assisted("AgentHeadJar") Path aAgentHeadJar
-	,	@Assisted("AgentBodyJar") Path aAgentBodyJar
-	,	@Assisted("AgentBiosJar") Path aAgentBiosJar
-	,	@Assisted("HostName") String aHostName
-	) {
-		this
-		(	aSshFactory
-		,	aFileSourceFactory.newFileSource(aAgentHeadJar)
-		,	aFileSourceFactory.newFileSource(aAgentBodyJar)
-		,	aFileSourceFactory.newFileSource(aAgentBiosJar)
-		,	aHostName
-		);
-	}
-
-	@AssistedInject
+	@Inject
 	private RemoteAgentLoaderSsh
 	(	SshFactory aSshFactory
 	,	AgentSource aAgentSource
 	,	@Assisted String aHostName
 	) {
-		this
-		(	aSshFactory
-		,	aAgentSource.getHead()
-		,	aAgentSource.getBody()
-		,	aAgentSource.getBios()
-		,	aHostName
-		);
+		super(aAgentSource.getHead(), aAgentSource.getBody());
+		AGENT_BIOS_JAR = aAgentSource.getBios();
+		SSH = aSshFactory.newHost(aHostName, SshConst.DEFAULT_PORT);
 	}
 
 	private String getToolsJar() {
