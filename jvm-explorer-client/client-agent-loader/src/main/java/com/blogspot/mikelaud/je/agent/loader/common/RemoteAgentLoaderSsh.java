@@ -35,14 +35,14 @@ public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgent
 
 	@Override
 	public void close() {
-		SSH.logout();
+		SSH.close();
 	}
 
 	@Override
 	public boolean open(String aUserName, String aPassword) {
 		Objects.requireNonNull(aUserName);
 		Objects.requireNonNull(aPassword);
-		boolean status = SSH.login(aUserName, aPassword);
+		boolean status = SSH.open(aUserName, aPassword);
 		status &= (0 == SSH.copyFromLocal(getHead(), Paths.get(getHead().getFileName())));
 		status &= (0 == SSH.copyFromLocal(getBody(), Paths.get(getBody().getFileName())));
 		status &= (0 == SSH.copyFromLocal(getBios(), Paths.get(getBios().getFileName())));

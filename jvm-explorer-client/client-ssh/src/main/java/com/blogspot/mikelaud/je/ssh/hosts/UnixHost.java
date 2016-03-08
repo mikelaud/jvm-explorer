@@ -63,7 +63,18 @@ public class UnixHost implements Host {
 	}
 
 	@Override
-	public boolean login(String aUserName, String aPassword) {
+	public void close() {
+		Logger.info("close");
+		if (hasSession()) {
+			if (mSession.isConnected()) {
+				mSession.disconnect();
+			}
+			mSession = null;
+		}
+	}
+
+	@Override
+	public boolean open(String aUserName, String aPassword) {
 		Objects.requireNonNull(aUserName);
 		Objects.requireNonNull(aPassword);
 		try {
@@ -84,17 +95,6 @@ public class UnixHost implements Host {
 			Logger.error(e);
 		}
 		return isOnline();
-	}
-
-	@Override
-	public void logout() {
-		Logger.info("logout");
-		if (hasSession()) {
-			if (mSession.isConnected()) {
-				mSession.disconnect();
-			}
-			mSession = null;
-		}
 	}
 
 	@Override

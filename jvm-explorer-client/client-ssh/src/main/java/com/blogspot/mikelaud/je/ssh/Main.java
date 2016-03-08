@@ -13,13 +13,13 @@ public class Main {
 		SshFactory sshFactory = injector.getInstance(SshFactory.class);
 		//
 		Host host = sshFactory.newHost("192.168.10.101", 22);
-		host.login("root", "xxx");
+		host.open("root", "xxx");
 		host.exec("ls -l");
 		host.exec("pwd");
 		host.copyFromLocal(Paths.get("C:/Windows/notepad.exe"), Paths.get("/root/notepad.exe"));
 		host.copyFromLocal(Paths.get("C:/Windows/notepad.exe"), Paths.get("/root/notepad2.exe"));
 		host.exec("ls");
 		host.copyToLocal(Paths.get("/root/notepad2.exe"), Paths.get("C:/Users/Mykhailo/notepad2.exe"));
-		host.logout();
+		host.close();
 	}
 }
