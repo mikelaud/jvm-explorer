@@ -1,8 +1,8 @@
-package com.blogspot.mikelaud.je.agent.loader.source;
+package com.blogspot.mikelaud.je.common.file_source;
 
 import java.net.URL;
 
-import com.blogspot.mikelaud.je.agent.loader.source.content.FileContent;
+import com.blogspot.mikelaud.je.common.file_source.content.FileContent;
 
 public interface FileSource {
 

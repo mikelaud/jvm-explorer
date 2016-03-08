@@ -2,6 +2,7 @@ package com.blogspot.mikelaud.je.core.helper;
 
 import org.objectweb.asm.Opcodes;
 
+import com.blogspot.mikelaud.je.common.utils.StringUtils;
 import com.blogspot.mikelaud.je.domain.types.AccFinal;
 import com.blogspot.mikelaud.je.domain.types.MethodAccess;
 import com.blogspot.mikelaud.je.domain.types.TypeAccess;
@@ -9,7 +10,6 @@ import com.blogspot.mikelaud.je.domain.types.TypeDeprecated;
 import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
 import com.blogspot.mikelaud.je.domain.types.TypeStatic;
 import com.blogspot.mikelaud.je.domain.types.TypeType;
-import com.blogspot.mikelaud.je.utils.StringUtils;
 
 public interface BytecodeHelper {
 

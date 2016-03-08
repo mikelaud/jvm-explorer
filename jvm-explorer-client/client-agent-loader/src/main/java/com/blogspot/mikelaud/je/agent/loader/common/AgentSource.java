@@ -1,6 +1,6 @@
 package com.blogspot.mikelaud.je.agent.loader.common;
 
-import com.blogspot.mikelaud.je.agent.loader.source.FileSource;
+import com.blogspot.mikelaud.je.common.file_source.FileSource;
 
 public interface AgentSource {
 

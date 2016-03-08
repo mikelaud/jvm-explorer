@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.utils;
+package com.blogspot.mikelaud.je.common.utils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

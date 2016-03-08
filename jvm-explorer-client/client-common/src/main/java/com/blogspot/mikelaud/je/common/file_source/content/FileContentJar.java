@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.agent.loader.source.content;
+package com.blogspot.mikelaud.je.common.file_source.content;
 
 import java.util.jar.Manifest;
 

@@ -8,6 +8,7 @@ import com.google.inject.assistedinject.Assisted;
 
 public interface AgentLoaderFactory {
 
+	LocalAgentLoader newLocalLoader();
 	LocalAgentLoader newLocalLoader
 	(	@Assisted("AgentHeadJar") Path aAgentHeadJar
 	,	@Assisted("AgentBodyJar") Path aAgentBodyJar

@@ -11,6 +11,7 @@ import java.util.TreeSet;
 
 import org.objectweb.asm.Type;
 
+import com.blogspot.mikelaud.je.common.utils.TypeUtils;
 import com.blogspot.mikelaud.je.domain.pojo.DomainMethod;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.domain.types.AccFinal;
@@ -23,7 +24,6 @@ import com.blogspot.mikelaud.je.domain.types.TypeType;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
-import com.blogspot.mikelaud.je.utils.TypeUtils;
 import com.google.inject.Inject;
 
 import javafx.event.ActionEvent;

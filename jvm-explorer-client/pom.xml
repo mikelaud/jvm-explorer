@@ -14,9 +14,9 @@
 	<packaging>pom</packaging>
 
 	<modules>
+		<module>client-common</module>
 		<module>client-agent-loader</module>
 		<module>client-agent-connector</module>
-		<module>client-utils</module>
 		<module>client-ssh</module>
 		<module>client-search</module>
 		<module>client-domain</module>

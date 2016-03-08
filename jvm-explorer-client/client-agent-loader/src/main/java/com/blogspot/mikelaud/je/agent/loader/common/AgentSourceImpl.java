@@ -5,8 +5,8 @@ import java.nio.file.Paths;
 import java.security.CodeSource;
 import java.util.Objects;
 
-import com.blogspot.mikelaud.je.agent.loader.source.FileSource;
-import com.blogspot.mikelaud.je.agent.loader.source.FileSourceFactory;
+import com.blogspot.mikelaud.je.common.file_source.FileSource;
+import com.blogspot.mikelaud.je.common.file_source.FileSourceFactory;
 import com.google.inject.Inject;
 
 public class AgentSourceImpl implements AgentSource {

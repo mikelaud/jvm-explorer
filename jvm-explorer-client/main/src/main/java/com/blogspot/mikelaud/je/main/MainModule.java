@@ -1,6 +1,7 @@
 package com.blogspot.mikelaud.je.main;
 
 import com.blogspot.mikelaud.je.agent.loader.AgentLoaderModule;
+import com.blogspot.mikelaud.je.common.CommonModule;
 import com.blogspot.mikelaud.je.core.CoreModule;
 import com.blogspot.mikelaud.je.domain.DomainModule;
 import com.blogspot.mikelaud.je.mvc.impl.MvcModule;
@@ -17,10 +18,11 @@ public class MainModule extends AbstractModule {
 	@Override
 	protected final void configure() {
 		//
+		install(new CommonModule());
+		install(new SshModule());
 		install(new AgentLoaderModule());
 		install(new DomainModule());
 		install(new CoreModule());
-		install(new SshModule());
 		//
 		install(new UiResourcesModule());
 		install(new UiBackgroundModule());

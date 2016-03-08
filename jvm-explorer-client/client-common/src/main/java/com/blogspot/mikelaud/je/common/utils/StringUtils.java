@@ -1,4 +1,4 @@
-package com.blogspot.mikelaud.je.utils;
+package com.blogspot.mikelaud.je.common.utils;
 
 public interface StringUtils {
 

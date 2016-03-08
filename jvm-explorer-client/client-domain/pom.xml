@@ -20,7 +20,7 @@
 		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>client-utils</artifactId>
+			<artifactId>client-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 	</dependencies>

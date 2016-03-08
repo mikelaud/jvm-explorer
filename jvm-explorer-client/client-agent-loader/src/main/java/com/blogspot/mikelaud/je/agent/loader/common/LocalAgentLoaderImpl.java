@@ -7,21 +7,26 @@ import java.util.stream.Stream;
 import com.blogspot.mikelaud.je.agent.bios.AgentBiosFactory;
 import com.blogspot.mikelaud.je.agent.bios.common.AgentBios;
 import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
-import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
 
 public class LocalAgentLoaderImpl extends AgentLoaderImpl implements LocalAgentLoader {
 
 	private final AgentBios AGENT_BIOS;
 
-	@Inject
+	@AssistedInject
+	private LocalAgentLoaderImpl() {
+		super(null, null);
+		AGENT_BIOS = AgentBiosFactory.newAgentBios();
+	}
+
+	@AssistedInject
 	private LocalAgentLoaderImpl
 	(	@Assisted("AgentHeadJar") Path aAgentHeadJar
 	,	@Assisted("AgentBodyJar") Path aAgentBodyJar
 	) {
 		super(aAgentHeadJar, aAgentBodyJar);
 		AGENT_BIOS = AgentBiosFactory.newAgentBios();
-
 	}
 
 	@Override public String getJvmId() { return AGENT_BIOS.getJvmId(); }

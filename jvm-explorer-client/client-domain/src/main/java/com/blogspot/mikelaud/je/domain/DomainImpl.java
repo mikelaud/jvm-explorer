@@ -15,8 +15,8 @@ import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
 import com.blogspot.mikelaud.je.agent.api.TypesMXBean;
+import com.blogspot.mikelaud.je.common.utils.StringUtils;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
-import com.blogspot.mikelaud.je.utils.StringUtils;
 import com.google.inject.Inject;
 
 import javafx.beans.property.SimpleStringProperty;

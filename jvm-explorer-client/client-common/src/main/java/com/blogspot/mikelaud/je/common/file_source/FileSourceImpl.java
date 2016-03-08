@@ -1,12 +1,12 @@
-package com.blogspot.mikelaud.je.agent.loader.source;
+package com.blogspot.mikelaud.je.common.file_source;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.Objects;
 
-import com.blogspot.mikelaud.je.agent.loader.source.content.FileContent;
-import com.blogspot.mikelaud.je.agent.loader.source.content.FileContentFactory;
+import com.blogspot.mikelaud.je.common.file_source.content.FileContent;
+import com.blogspot.mikelaud.je.common.file_source.content.FileContentFactory;
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
 
