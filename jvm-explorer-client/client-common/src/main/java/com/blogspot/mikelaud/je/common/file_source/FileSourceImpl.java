@@ -1,5 +1,6 @@
 package com.blogspot.mikelaud.je.common.file_source;
 
+import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Path;
@@ -44,13 +45,19 @@ public class FileSourceImpl implements FileSource {
 	@Override public URL getFileUrl() { return FILE_URL; }
 
 	@Override
+	public boolean exists() {
+		File file = FILE_PATH.toFile();
+		return file.exists() && (! file.isDirectory());
+	}
+
+	@Override
 	public FileContent takeContent() {
 		return FILE_CONTENT_FACTORY.newFileContent(FILE_PATH);
 	}
 
 	@Override
 	public String toString() {
-		return FILE_URL.toString();
+		return FILE_PATH.toString();
 	}
 
 }

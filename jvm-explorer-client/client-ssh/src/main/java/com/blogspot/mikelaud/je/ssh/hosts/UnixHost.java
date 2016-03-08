@@ -3,6 +3,8 @@ package com.blogspot.mikelaud.je.ssh.hosts;
 import java.nio.file.Path;
 import java.util.Objects;
 
+import com.blogspot.mikelaud.je.common.file_source.FileSource;
+import com.blogspot.mikelaud.je.common.file_source.FileSourceFactory;
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
 import com.blogspot.mikelaud.je.ssh.common.Logger;
 import com.blogspot.mikelaud.je.ssh.domain.Endpoint;
@@ -20,7 +22,9 @@ import com.jcraft.jsch.Session;
 
 public class UnixHost implements Host {
 
+	private final FileSourceFactory FILE_SOURCE_FACTORY;
 	private final Endpoint ENDPOINT;
+	//
 	private Session mSession;
 
 	private boolean hasSession() {
@@ -38,7 +42,12 @@ public class UnixHost implements Host {
 	}
 
 	@Inject
-	private UnixHost(@Assisted String aHostName, @Assisted int aPort) {
+	private UnixHost
+	(	FileSourceFactory aFileSourceFactory
+	,	@Assisted String aHostName
+	,	@Assisted int aPort
+	) {
+		FILE_SOURCE_FACTORY = Objects.requireNonNull(aFileSourceFactory);
 		ENDPOINT = new Endpoint(Objects.requireNonNull(aHostName), aPort);
 		mSession = null;
 	}
@@ -101,7 +110,18 @@ public class UnixHost implements Host {
 	}
 
 	@Override
+	public int copyToLocal(Path aFileRemote, Path aFileLocal) {
+		return execute(new CopyToLocalOperation(aFileRemote, aFileLocal));
+	}
+
+	@Override
 	public int copyFromLocal(Path aFileLocal, Path aFileRemote) {
+		FileSource fileSource = FILE_SOURCE_FACTORY.newFileSource(aFileLocal);
+		return copyFromLocal(fileSource, aFileRemote);
+	}
+
+	@Override
+	public int copyFromLocal(FileSource aFileLocal, Path aFileRemote) {
 		int status = ExitStatus.ABORT.get();
 		while (true) {
 			CopyFromLocalOperation copyFrom = new CopyFromLocalOperation(aFileLocal, aFileRemote);
@@ -120,11 +140,6 @@ public class UnixHost implements Host {
 			break;
 		}
 		return status;
-	}
-
-	@Override
-	public int copyToLocal(Path aFileRemote, Path aFileLocal) {
-		return execute(new CopyToLocalOperation(aFileRemote, aFileLocal));
 	}
 
 	@Override

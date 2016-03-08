@@ -2,6 +2,7 @@ package com.blogspot.mikelaud.je.ssh.hosts;
 
 import java.nio.file.Path;
 
+import com.blogspot.mikelaud.je.common.file_source.FileSource;
 import com.blogspot.mikelaud.je.ssh.domain.Endpoint;
 import com.blogspot.mikelaud.je.ssh.domain.Status;
 
@@ -16,7 +17,8 @@ public interface Host {
 	boolean isOnline();
 	//
 	Status exec(String aCommand);
-	int copyFromLocal(Path aFileLocal, Path aFileRemote);
 	int copyToLocal(Path aFileRemote, Path aFileLocal);
+	int copyFromLocal(Path aFileLocal, Path aFileRemote);
+	int copyFromLocal(FileSource aFileLocal, Path aFileRemote);
 
 }

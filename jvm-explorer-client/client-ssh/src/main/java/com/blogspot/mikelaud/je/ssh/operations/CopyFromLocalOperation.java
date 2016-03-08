@@ -1,14 +1,15 @@
 package com.blogspot.mikelaud.je.ssh.operations;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.DigestInputStream;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
+import com.blogspot.mikelaud.je.common.file_source.FileSource;
+import com.blogspot.mikelaud.je.common.file_source.content.FileContent;
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
 import com.blogspot.mikelaud.je.ssh.common.Logger;
 import com.blogspot.mikelaud.je.ssh.common.UnixPath;
@@ -18,20 +19,20 @@ import com.jcraft.jsch.Session;
 
 public class CopyFromLocalOperation extends AbstractOperation {
 
-	private final Path INPUT_FILE_LOCAL;
+	private final FileSource INPUT_FILE_LOCAL;
 	private final Path INPUT_FILE_REMOTE;
 	//
-	private final File FILE_LOCAL;
+	private final FileContent FILE_LOCAL_CONTENT;
 	private final UnixPath FILE_REMOTE;
 	//
 	private Digest mDigest;
 
-	private int checkFile(File aFile) {
-		if (aFile.exists()) {
+	private int checkFile(FileSource aFileSource) {
+		if (aFileSource.exists()) {
 			return ExitStatus.SUCCESS.get();
 		}
 		else {
-			Logger.error(String.format("scp: %s: No such file or directory", FILE_LOCAL));
+			Logger.error(String.format("scp: %s: No such file or directory", INPUT_FILE_LOCAL));
 			return ExitStatus.ERROR.get();
 		}
 	}
@@ -50,7 +51,7 @@ public class CopyFromLocalOperation extends AbstractOperation {
 	private void writeTime(OutputStream aOut, InputStream aIn) {
 		try {
 			// The access time should be sent here, but it is not accessible with JavaAPI
-			long lastModified = (FILE_LOCAL.lastModified() / 1000);
+			long lastModified = (FILE_LOCAL_CONTENT.getLastModifiedTime() / 1000);
 			String time = String.format("T%d 0 %d 0\n", lastModified, lastModified);
 			aOut.write(time.getBytes());
 		}
@@ -62,7 +63,7 @@ public class CopyFromLocalOperation extends AbstractOperation {
 	private void writeIdentity(OutputStream aOut, InputStream aIn) {
 		try {
 			// send "C0644 filesize filename", where filename should not include '/'
-			long size = FILE_LOCAL.length();
+			long size = FILE_LOCAL_CONTENT.getSize();
 			String identity = String.format("C0644 %d %s\n", size, FILE_REMOTE.getFileName());
 			aOut.write(identity.getBytes());
 		}
@@ -74,7 +75,7 @@ public class CopyFromLocalOperation extends AbstractOperation {
 	private void writeContent(OutputStream aOut, InputStream aIn) {
 		try {
 			mDigest = new Digest();
-			try (DigestInputStream fis = new DigestInputStream(new FileInputStream(FILE_LOCAL), newMessageDigest())) {
+			try (DigestInputStream fis = new DigestInputStream(FILE_LOCAL_CONTENT.takeStream(), newMessageDigest())) {
 				byte[] buffer = newCopyBuffer();
 				while (true) {
 					int readCount = fis.read(buffer, 0, buffer.length);
@@ -99,7 +100,7 @@ public class CopyFromLocalOperation extends AbstractOperation {
 		int status = ExitStatus.ABORT.get();
 		while (true) {
 			try (OutputStream out = channel.getOutputStream()) {
-				if (hasError(status = checkFile(FILE_LOCAL))) break;
+				if (hasError(status = checkFile(INPUT_FILE_LOCAL))) break;
 				if (hasError(status = connect(channel, in))) break;
 				if (hasError(status = write(out, in, this::writeTime))) break;
 				if (hasError(status = write(out, in, this::writeIdentity))) break;
@@ -111,18 +112,18 @@ public class CopyFromLocalOperation extends AbstractOperation {
 		return status;
 	}
 
-	public CopyFromLocalOperation(Path aFileLocal, Path aFileRemote) {
-		INPUT_FILE_LOCAL = Objects.requireNonNull(aFileLocal);
+	public CopyFromLocalOperation(FileSource aFileSource, Path aFileRemote) {
+		INPUT_FILE_LOCAL = Objects.requireNonNull(aFileSource);
 		INPUT_FILE_REMOTE = Objects.requireNonNull(aFileRemote);
 		//
+		FILE_LOCAL_CONTENT = INPUT_FILE_LOCAL.takeContent();
 		FILE_REMOTE = new UnixPath(aFileRemote);
-		FILE_LOCAL = aFileLocal.toFile();
 		//
 		mDigest = new Digest();
 	}
 
 	public Path getFileLocal() {
-		return INPUT_FILE_LOCAL;
+		return Paths.get(INPUT_FILE_LOCAL.getFilePath());
 	}
 
 	public Path getFileRemote() {
@@ -135,7 +136,7 @@ public class CopyFromLocalOperation extends AbstractOperation {
 
 	@Override
 	public String toString() {
-		return String.format("scp %s %s@%s:%s", FILE_LOCAL, getUserName(), getHostName(), FILE_REMOTE.getFilePath());
+		return String.format("scp %s %s@%s:%s", INPUT_FILE_LOCAL, getUserName(), getHostName(), FILE_REMOTE.getFilePath());
 	}
 
 }

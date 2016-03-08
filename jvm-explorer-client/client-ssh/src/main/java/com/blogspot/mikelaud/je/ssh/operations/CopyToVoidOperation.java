@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.OutputStream;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
+import com.blogspot.mikelaud.je.common.file_source.FileSource;
 import com.blogspot.mikelaud.je.ssh.common.VoidOutputStream;
 
 public class CopyToVoidOperation extends CopyToLocalOperation {
@@ -14,8 +16,8 @@ public class CopyToVoidOperation extends CopyToLocalOperation {
 		return new VoidOutputStream();
 	}
 
-	public CopyToVoidOperation(Path aFileRemote, Path aFileLocal) {
-		super(aFileRemote, aFileLocal);
+	public CopyToVoidOperation(Path aFileRemote, FileSource aFileLocal) {
+		super(aFileRemote, Paths.get("/dev/null"));
 	}
 
 	@Override

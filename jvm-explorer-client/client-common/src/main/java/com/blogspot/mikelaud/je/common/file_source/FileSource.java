@@ -10,6 +10,7 @@ public interface FileSource {
 	String getFilePath();
 	URL getFileUrl();
 	//
+	boolean exists();
 	FileContent takeContent();
 
 }
