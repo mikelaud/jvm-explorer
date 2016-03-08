@@ -1,12 +1,13 @@
 package com.blogspot.mikelaud.je.agent.loader.common;
 
-public interface RemoteAgentLoader extends AgentLoader {
+public interface RemoteAgentLoader extends AgentLoader, AutoCloseable {
 
 	String getHostName();
 	String getUserName();
 	//
-	boolean login(String aUserName, String aPassword);
-	void logout();
+	@Override
+	void close();
+	boolean open(String aUserName, String aPassword);
 	//
 	boolean isOnline();
 
