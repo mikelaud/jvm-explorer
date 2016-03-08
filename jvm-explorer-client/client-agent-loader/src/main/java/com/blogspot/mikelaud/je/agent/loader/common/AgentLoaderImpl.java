@@ -6,15 +6,16 @@ import com.blogspot.mikelaud.je.common.file_source.FileSource;
 
 public abstract class AgentLoaderImpl implements AgentLoader {
 
-	private final FileSource AGENT_HEAD_JAR;
-	private final FileSource AGENT_BODY_JAR;
+	private final AgentSource AGENT_SOURCE;
 
-	protected AgentLoaderImpl(FileSource aAgentHeadJar, FileSource aAgentBodyJar) {
-		AGENT_HEAD_JAR = Objects.requireNonNull(aAgentHeadJar);
-		AGENT_BODY_JAR = Objects.requireNonNull(aAgentBodyJar);
+	protected AgentLoaderImpl(AgentSource aAgentSource) {
+		AGENT_SOURCE = Objects.requireNonNull(aAgentSource);
 	}
 
-	@Override public FileSource getHeadJar() { return AGENT_HEAD_JAR; }
-	@Override public FileSource getBodyJar() { return AGENT_BODY_JAR; }
+	@Override public AgentSource getAgentSource() { return AGENT_SOURCE; }
+
+	@Override public FileSource getHead() { return AGENT_SOURCE.getHead(); }
+	@Override public FileSource getBody() { return AGENT_SOURCE.getBody(); }
+	@Override public FileSource getBios() { return AGENT_SOURCE.getBios(); }
 
 }

@@ -7,8 +7,11 @@ import com.blogspot.mikelaud.je.common.file_source.FileSource;
 
 public interface AgentLoader {
 
-	FileSource getHeadJar();
-	FileSource getBodyJar();
+	AgentSource getAgentSource();
+	//
+	FileSource getHead();
+	FileSource getBody();
+	FileSource getBios();
 	//
 	String getJavaHome();
 	Stream<JvmIdentity> getJvmList();

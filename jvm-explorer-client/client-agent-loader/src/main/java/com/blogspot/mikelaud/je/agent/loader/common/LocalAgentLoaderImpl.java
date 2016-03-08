@@ -14,25 +14,44 @@ public class LocalAgentLoaderImpl extends AgentLoaderImpl implements LocalAgentL
 
 	@Inject
 	private LocalAgentLoaderImpl(AgentSource aAgentSource) {
-		super(aAgentSource.getHead(), aAgentSource.getBody());
+		super(aAgentSource);
 		AGENT_BIOS = AgentBiosFactory.newAgentBios();
 	}
 
 	@Override public String getJvmId() { return AGENT_BIOS.getJvmId(); }
 	@Override public String getJavaHome() { return AGENT_BIOS.getJavaHome(); }
-	@Override public Stream<JvmIdentity> getJvmList() { return Stream.of(AGENT_BIOS.getJvmList().toArray(new JvmIdentity[0])); }
-	@Override public boolean loadAgent() { return AGENT_BIOS.loadAgent(getHeadJar().toString(), getBodyJar().toString()); }
+
+	@Override
+	public Stream<JvmIdentity> getJvmList() {
+		return Stream.of(AGENT_BIOS.getJvmList().toArray(new JvmIdentity[0]));
+	}
+
+	@Override
+	public boolean loadAgent() {
+		return AGENT_BIOS.loadAgent
+		(	getHead().getFilePath()
+		,	getBody().getFilePath()
+		);
+	}
 
 	@Override
 	public boolean loadAgentById(String aJvmId) {
 		Objects.requireNonNull(aJvmId);
-		return AGENT_BIOS.loadAgentById(aJvmId, getHeadJar().toString(), getBodyJar().toString());
+		return AGENT_BIOS.loadAgentById
+		(	aJvmId
+		,	getHead().getFilePath()
+		,	getBody().getFilePath()
+		);
 	}
 
 	@Override
 	public boolean loadAgentByName(String aJvmName) {
 		Objects.requireNonNull(aJvmName);
-		return AGENT_BIOS.loadAgentByName(aJvmName, getHeadJar().toString(), getBodyJar().toString());
+		return AGENT_BIOS.loadAgentByName
+		(	aJvmName
+		,	getHead().getFilePath()
+		,	getBody().getFilePath()
+		);
 	}
 
 }

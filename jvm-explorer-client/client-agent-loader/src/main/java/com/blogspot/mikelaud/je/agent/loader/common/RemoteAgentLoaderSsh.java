@@ -5,7 +5,6 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
-import com.blogspot.mikelaud.je.common.file_source.FileSource;
 import com.blogspot.mikelaud.je.ssh.SshFactory;
 import com.blogspot.mikelaud.je.ssh.common.SshConst;
 import com.blogspot.mikelaud.je.ssh.domain.Status;
@@ -15,7 +14,6 @@ import com.google.inject.assistedinject.Assisted;
 
 public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgentLoader {
 
-	private final FileSource AGENT_BIOS_JAR;
 	private final Host SSH;
 
 	@Inject
@@ -24,8 +22,7 @@ public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgent
 	,	AgentSource aAgentSource
 	,	@Assisted String aHostName
 	) {
-		super(aAgentSource.getHead(), aAgentSource.getBody());
-		AGENT_BIOS_JAR = aAgentSource.getBios();
+		super(aAgentSource);
 		SSH = aSshFactory.newHost(aHostName, SshConst.DEFAULT_PORT);
 	}
 
@@ -33,8 +30,6 @@ public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgent
 		return getJavaHome() + "/../lib/tools.jar";
 	}
 
-	@Override public FileSource getBiosJar() { return AGENT_BIOS_JAR; }
-	//
 	@Override public String getHostName() { return SSH.getEndpoint().getHost(); }
 	@Override public String getUserName() { return SSH.getUserName(); }
 
@@ -43,9 +38,9 @@ public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgent
 		Objects.requireNonNull(aUserName);
 		Objects.requireNonNull(aPassword);
 		boolean status = SSH.login(aUserName, aPassword);
-		status &= (0 == SSH.copyFromLocal(getHeadJar(), Paths.get(getHeadJar().getFileName())));
-		status &= (0 == SSH.copyFromLocal(getBodyJar(), Paths.get(getBodyJar().getFileName())));
-		status &= (0 == SSH.copyFromLocal(getBiosJar(), Paths.get(getBiosJar().getFileName())));
+		status &= (0 == SSH.copyFromLocal(getHead(), Paths.get(getHead().getFileName())));
+		status &= (0 == SSH.copyFromLocal(getBody(), Paths.get(getBody().getFileName())));
+		status &= (0 == SSH.copyFromLocal(getBios(), Paths.get(getBios().getFileName())));
 		return status;
 	}
 
@@ -60,7 +55,7 @@ public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgent
 	}
 
 	@Override public String getJavaHome() {
-		Status status = SSH.exec("java -jar " + getBiosJar().getFileName() + " --home");
+		Status status = SSH.exec("java -jar " + getBios().getFileName() + " --home");
 		if (0 != status.getCode()) {
 			new RuntimeException(status.toString());
 		}
@@ -70,21 +65,21 @@ public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgent
 	@Override
 	public Stream<JvmIdentity> getJvmList() { // TODO
 		String toolsJar = getToolsJar();
-		SSH.exec("java -cp " + toolsJar + ":./" + getBiosJar().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --list");
+		SSH.exec("java -cp " + toolsJar + ":./" + getBios().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --list");
 		return Stream.empty();
 	}
 
 	@Override
 	public boolean loadAgentById(String aJvmId) { // TODO
 		String toolsJar = getToolsJar();
-		SSH.exec("java -cp " + toolsJar + ":./" + getBiosJar().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --id " + aJvmId + " " + getHeadJar().getFileName() + " " + getBodyJar().getFileName());
+		SSH.exec("java -cp " + toolsJar + ":./" + getBios().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --id " + aJvmId + " " + getHead().getFileName() + " " + getBody().getFileName());
 		return true;
 	}
 
 	@Override
 	public boolean loadAgentByName(String aJvmName) { // TODO
 		String toolsJar = getToolsJar();
-		SSH.exec("java -cp " + toolsJar + ":./" + getBiosJar().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --name " + aJvmName + " " + getHeadJar().getFileName() + " " + getBodyJar().getFileName());
+		SSH.exec("java -cp " + toolsJar + ":./" + getBios().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --name " + aJvmName + " " + getHead().getFileName() + " " + getBody().getFileName());
 		return true;
 	}
 
