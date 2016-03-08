@@ -91,17 +91,14 @@ public class CoreImpl implements Core {
 	}
 
 	private void loadLocalAgent(String aId) {
-		Path userHome = Paths.get(System.getProperty("user.home"));
-		Path agentHeadPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/server-agent-head/1.0.0/server-agent-head-1.0.0-jar-with-dependencies.jar");
-		Path agentBodyPath = userHome.resolve(".m2/repository/com/blogspot/mikelaud/je/server-agent-body/1.0.0/server-agent-body-1.0.0-jar-with-dependencies.jar");
-		LocalAgentLoader localAgentLoader = AGENT_LOADER_FACTORY.newLocalLoader(agentHeadPath, agentBodyPath);
+		LocalAgentLoader localAgentLoader = AGENT_LOADER_FACTORY.newLocalLoader();
 		localAgentLoader.loadAgent();
 	}
 
 	@SuppressWarnings("unused")
 	private void startRemoteManagementAgent() {
 		try {
-			LocalAgentLoader localAgentLoader = AGENT_LOADER_FACTORY.newLocalLoader(Paths.get(""), Paths.get(""));
+			LocalAgentLoader localAgentLoader = AGENT_LOADER_FACTORY.newLocalLoader();
 			VirtualMachine jvm = VirtualMachine.attach(localAgentLoader.getJvmId());
 			Properties props = new Properties();
 			props.put("com.sun.management.jmxremote.port", "5000");
