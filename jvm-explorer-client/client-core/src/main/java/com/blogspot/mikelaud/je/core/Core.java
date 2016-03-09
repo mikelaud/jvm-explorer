@@ -6,5 +6,6 @@ public interface Core {
 
 	Domain getDomain();
 	void setDefaultTypes();
-	
+	String loadAgent(String aHost, String aName);
+
 }

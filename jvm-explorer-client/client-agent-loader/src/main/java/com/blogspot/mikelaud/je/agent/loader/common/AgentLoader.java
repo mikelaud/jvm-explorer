@@ -4,6 +4,7 @@ import java.util.stream.Stream;
 
 import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
 import com.blogspot.mikelaud.je.common.file_source.FileSource;
+import com.blogspot.mikelaud.je.ssh.domain.Status;
 
 public interface AgentLoader {
 
@@ -16,7 +17,7 @@ public interface AgentLoader {
 	String getJavaHome();
 	Stream<JvmIdentity> getJvmList();
 	//
-	boolean loadAgentById(String aJvmId);
-	boolean loadAgentByName(String aJvmName);
+	Status loadAgentById(String aJvmId);
+	Status loadAgentByName(String aJvmName);
 
 }

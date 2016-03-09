@@ -11,12 +11,17 @@ import com.google.inject.Inject;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -32,7 +37,7 @@ public class UiProgramImpl implements UiProgram {
 	private final SplitPane PANE;
 	private final Scene SCENE;
 	private final Stage STAGE;
-	
+
 	@Inject
 	private UiProgramImpl
 	(	MvcController aController
@@ -54,21 +59,48 @@ public class UiProgramImpl implements UiProgram {
 		//
 		buildePane();
 	}
-	
+
 	private TitledPane createJvmPane() {
 		TitledPane pane = new TitledPane();
 		pane.setText("JVM");
-		pane.setContent(new Pane());
+		BorderPane border = new BorderPane();
+		//
+		TextArea textArea = new TextArea();
+		border.setCenter(textArea);
+		border.setPadding(new Insets(5));
+		BorderPane hostBorder = new BorderPane();
+		//
+		BorderPane nameBorder = new BorderPane();
+		nameBorder.setLeft(new Label("Name: "));
+		TextField nameField = new TextField("com.blogspot.mikelaud.je.agent.bios.Main");
+		nameBorder.setCenter(nameField);
+		hostBorder.setTop(nameBorder);
+		//
+		TextField hostField = new TextField("192.168.10.101");
+		Button button = new Button("Load agent");
+		button.setOnAction(e -> {
+			textArea.setText("");
+			Platform.runLater(() -> {
+				String text = MODEL.getCore().loadAgent(hostField.getText(), nameField.getText());
+				textArea.setText(text);
+			});
+		});
+		hostBorder.setLeft(new Label("IP: "));
+		hostBorder.setCenter(hostField);
+		hostBorder.setRight(button);
+		//
+		border.setTop(hostBorder);
+		pane.setContent(border);
 		return pane;
 	}
-	
+
 	private TitledPane createTypePane() {
 		TitledPane pane = new TitledPane();
 		pane.setText("Type");
 		pane.setContent(SEARCH.getPane());
 		return pane;
 	}
-	
+
 	private Accordion createLeftPane() {
 		Accordion accordion = new Accordion();
 		accordion.getPanes().setAll(createJvmPane(), createTypePane());
@@ -88,7 +120,7 @@ public class UiProgramImpl implements UiProgram {
 		});
 		return accordion;
 	}
-	
+
 	private void buildePane() {
 		PANE.getItems().addAll(createLeftPane(), CODE.getPane());
 		buildStage();
@@ -117,12 +149,12 @@ public class UiProgramImpl implements UiProgram {
 	private Rectangle2D createVisualBounds() {
 		return Screen.getPrimary().getVisualBounds();
 	}
-	
+
 	private Rectangle2D createDefaultBounds(Rectangle2D aVisualBounds) {
 		double defaultWidth = aVisualBounds.getWidth() / CONST.getScaleWidth();
 		double defaultHeight = aVisualBounds.getHeight() / CONST.getScaleHeight();
 		return new Rectangle2D(0, 0, defaultWidth, defaultHeight);
-	}	
+	}
 
 	@Override
 	public final SplitPane getPane() {
@@ -136,7 +168,7 @@ public class UiProgramImpl implements UiProgram {
 			Platform.runLater(() -> CONTROLLER.getCore().setDefaultTypes());
 		}
 	}
-	
+
 	@Override
 	public final void showCode(DomainType aType) {
 		CODE.setType(aType);

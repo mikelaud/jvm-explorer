@@ -14,9 +14,11 @@ import java.util.zip.ZipInputStream;
 import com.blogspot.mikelaud.je.agent.api.TypesMXBean;
 import com.blogspot.mikelaud.je.agent.loader.AgentLoaderFactory;
 import com.blogspot.mikelaud.je.agent.loader.common.LocalAgentLoader;
+import com.blogspot.mikelaud.je.agent.loader.common.RemoteAgentLoader;
 import com.blogspot.mikelaud.je.core.helper.Bytecode;
 import com.blogspot.mikelaud.je.domain.Domain;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
+import com.blogspot.mikelaud.je.ssh.domain.Status;
 import com.google.inject.Inject;
 import com.sun.tools.attach.VirtualMachine;
 
@@ -90,6 +92,7 @@ public class CoreImpl implements Core {
 		return types;
 	}
 
+	@SuppressWarnings("unused")
 	private void loadLocalAgent(String aId) {
 		LocalAgentLoader localAgentLoader = AGENT_LOADER_FACTORY.newLocalLoader();
 		localAgentLoader.loadAgent();
@@ -128,17 +131,26 @@ public class CoreImpl implements Core {
 	}
 
 	@Override
-	public final Domain getDomain() {
+	public Domain getDomain() {
 		return DOMAIN;
 	}
 
 	@Override
-	public final void setDefaultTypes() {
-		loadLocalAgent("");
-		loadLocalAgent("");
+	public void setDefaultTypes() {
+		//loadLocalAgent("");
+		//loadLocalAgent("");
 		//startRemoteManagementAgent();
 		//DOMAIN.getTypes().addAll(callLocalAgentEcho());
 		DOMAIN.setTypesSource(Const.JAR_NAME);
+	}
+
+	@Override
+	public String loadAgent(String aHost, String aName) {
+		try (RemoteAgentLoader remoteLoader = AGENT_LOADER_FACTORY.newRemoteLoader(aHost)) {
+			remoteLoader.open("root", "1q2w3e");
+			Status status = remoteLoader.loadAgentByName(aName);
+			return (status.getCode() == 0 ? status.getMessage() : "Fail.");
+		}
 	}
 
 }

@@ -63,24 +63,22 @@ public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgent
 	}
 
 	@Override
-	public Stream<JvmIdentity> getJvmList() { // TODO
+	public Stream<JvmIdentity> getJvmList() {
 		String toolsJar = getToolsJar();
 		SSH.exec("java -cp " + toolsJar + ":./" + getBios().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --list");
 		return Stream.empty();
 	}
 
 	@Override
-	public boolean loadAgentById(String aJvmId) { // TODO
+	public Status loadAgentById(String aJvmId) {
 		String toolsJar = getToolsJar();
-		SSH.exec("java -cp " + toolsJar + ":./" + getBios().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --id " + aJvmId + " " + getHead().getFileName() + " " + getBody().getFileName());
-		return true;
+		return SSH.exec("java -cp " + toolsJar + ":./" + getBios().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --id " + aJvmId + " " + getHead().getFileName() + " " + getBody().getFileName());
 	}
 
 	@Override
-	public boolean loadAgentByName(String aJvmName) { // TODO
+	public Status loadAgentByName(String aJvmName) {
 		String toolsJar = getToolsJar();
-		SSH.exec("java -cp " + toolsJar + ":./" + getBios().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --name " + aJvmName + " " + getHead().getFileName() + " " + getBody().getFileName());
-		return true;
+		return SSH.exec("java -cp " + toolsJar + ":./" + getBios().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --name " + aJvmName + " " + getHead().getFileName() + " " + getBody().getFileName());
 	}
 
 }

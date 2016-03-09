@@ -29,7 +29,7 @@ public class UiSearchImpl implements UiSearch {
 	//
 	private final BorderPane PANE;
 	private final TextField SEARCH_FIELD;
-	
+
 	@Inject
 	private UiSearchImpl
 	(	MvcController aController
@@ -61,7 +61,7 @@ public class UiSearchImpl implements UiSearch {
 		pane.setRight(new HBox(countFoundLabel, countLabel, countAllLabel));
 		return pane;
 	}
-	
+
 	private Node createTop() {
 		Label searchLabel = new Label(CONST.getSearchLabel());
 		SEARCH_FIELD.setEditable(true);
@@ -83,7 +83,7 @@ public class UiSearchImpl implements UiSearch {
 		top.setSpacing(CONST.getSpacing());
 		return top;
 	}
-	
+
 	private Node createCenter() {
 		ListView<DomainType> listView = new ListView<>();
 		listView.setEditable(false);
@@ -108,9 +108,9 @@ public class UiSearchImpl implements UiSearch {
 		PANE.setCenter(createCenter());
 		//
 		BorderPane.setMargin(PANE.getCenter(), new Insets(CONST.getSpacing(), 0, CONST.getSpacing(), 0));
-		PANE.setPadding(new Insets(CONST.getPadding(), CONST.getPadding(), CONST.getPadding(), CONST.getPadding()));
+		PANE.setPadding(new Insets(CONST.getPadding()));
 	}
-	
+
 	@Override
 	public final Pane getPane() {
 		return PANE;

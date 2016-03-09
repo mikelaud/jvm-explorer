@@ -6,6 +6,7 @@ import java.util.stream.Stream;
 import com.blogspot.mikelaud.je.agent.bios.AgentBiosFactory;
 import com.blogspot.mikelaud.je.agent.bios.common.AgentBios;
 import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
+import com.blogspot.mikelaud.je.ssh.domain.Status;
 import com.google.inject.Inject;
 
 public class LocalAgentLoaderImpl extends AgentLoaderImpl implements LocalAgentLoader {
@@ -35,23 +36,23 @@ public class LocalAgentLoaderImpl extends AgentLoaderImpl implements LocalAgentL
 	}
 
 	@Override
-	public boolean loadAgentById(String aJvmId) {
+	public Status loadAgentById(String aJvmId) {
 		Objects.requireNonNull(aJvmId);
-		return AGENT_BIOS.loadAgentById
+		return new Status(AGENT_BIOS.loadAgentById
 		(	aJvmId
 		,	getHead().getFilePath()
 		,	getBody().getFilePath()
-		);
+		), "done.");
 	}
 
 	@Override
-	public boolean loadAgentByName(String aJvmName) {
+	public Status loadAgentByName(String aJvmName) {
 		Objects.requireNonNull(aJvmName);
-		return AGENT_BIOS.loadAgentByName
+		return new Status(AGENT_BIOS.loadAgentByName
 		(	aJvmName
 		,	getHead().getFilePath()
 		,	getBody().getFilePath()
-		);
+		), "done.");
 	}
 
 }
