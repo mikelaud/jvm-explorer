@@ -20,8 +20,8 @@
 		<module>ui-search</module>
 		<module>ui-code</module>
 		<module>ui-program</module>
-		<module>mvc-impl</module>
 		<module>ui-jvm</module>
+		<module>mvc-impl</module>
 	</modules>
 
 </project>

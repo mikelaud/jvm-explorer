@@ -8,6 +8,7 @@ import com.blogspot.mikelaud.je.mvc.impl.MvcModule;
 import com.blogspot.mikelaud.je.ssh.SshModule;
 import com.blogspot.mikelaud.je.ui.background.UiBackgroundModule;
 import com.blogspot.mikelaud.je.ui.code.UiCodeModule;
+import com.blogspot.mikelaud.je.ui.jvm.UiJvmModule;
 import com.blogspot.mikelaud.je.ui.program.UiProgramModule;
 import com.blogspot.mikelaud.je.ui.resources.UiResourcesModule;
 import com.blogspot.mikelaud.je.ui.search.UiSearchModule;
@@ -28,6 +29,7 @@ public class MainModule extends AbstractModule {
 		install(new UiBackgroundModule());
 		install(new UiSearchModule());
 		install(new UiCodeModule());
+		install(new UiJvmModule());
 		install(new UiProgramModule());
 		//
 		install(new MvcModule());

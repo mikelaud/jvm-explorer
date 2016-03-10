@@ -4,6 +4,7 @@ import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.code.UiCode;
+import com.blogspot.mikelaud.je.ui.jvm.UiJvm;
 import com.blogspot.mikelaud.je.ui.resources.UiResources;
 import com.blogspot.mikelaud.je.ui.search.UiSearch;
 import com.google.inject.Inject;
@@ -33,6 +34,7 @@ public class UiProgramImpl implements UiProgram {
 	private final UiResources RESOURCES;
 	private final UiSearch SEARCH;
 	private final UiCode CODE;
+	private final UiJvm JVM;
 	//
 	private final SplitPane PANE;
 	private final Scene SCENE;
@@ -45,6 +47,7 @@ public class UiProgramImpl implements UiProgram {
 	,	UiResources aResources
 	,	UiSearch aSearch
 	,	UiCode aCode
+	,	UiJvm aJvm
 	) {
 		CONTROLLER = aController;
 		MODEL = CONTROLLER.getModel();
@@ -52,6 +55,7 @@ public class UiProgramImpl implements UiProgram {
 		RESOURCES = aResources;
 		SEARCH = aSearch;
 		CODE = aCode;
+		JVM = aJvm;
 		//
 		PANE = new SplitPane();
 		SCENE = new Scene(PANE);
@@ -66,7 +70,7 @@ public class UiProgramImpl implements UiProgram {
 		BorderPane border = new BorderPane();
 		//
 		TextArea textArea = new TextArea();
-		border.setCenter(textArea);
+		border.setCenter(JVM.getPane());
 		border.setPadding(new Insets(5));
 		BorderPane hostBorder = new BorderPane();
 		//
