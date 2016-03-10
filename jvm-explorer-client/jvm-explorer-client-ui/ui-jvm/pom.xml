@@ -4,24 +4,20 @@
 
 	<parent>
 		<groupId>com.blogspot.mikelaud.je</groupId>
-		<artifactId>jvm-explorer-client</artifactId>
+		<artifactId>jvm-explorer-client-ui</artifactId>
 		<version>1.0.0</version>
 	</parent>
-
-	<artifactId>jvm-explorer-client-ui</artifactId>
+	
+	<artifactId>ui-jvm</artifactId>
 	<name>${project.artifactId}</name>
 	<description>${project.artifactId}</description>
-	<packaging>pom</packaging>
 
-	<modules>
-		<module>mvc</module>
-		<module>ui-resources</module>
-		<module>ui-background</module>
-		<module>ui-search</module>
-		<module>ui-code</module>
-		<module>ui-program</module>
-		<module>mvc-impl</module>
-		<module>ui-jvm</module>
-	</modules>
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>ui-background</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
 
 </project>
