@@ -19,6 +19,7 @@ public class UiJvmImpl implements UiJvm {
 	private final UiBackground BACKGROUND;
 	//
 	private final BorderPane PANE;
+	@SuppressWarnings("unused")
 	private final ScrollPane JVM_PANE;
 
 	@Inject
