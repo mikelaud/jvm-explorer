@@ -14,6 +14,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 public class UiJvmImpl implements UiJvm {
@@ -61,17 +62,20 @@ public class UiJvmImpl implements UiJvm {
 		hostBorder.setTop(nameBorder);
 		//
 		TextField hostField = new TextField("192.168.10.101");
-		Button button = new Button("Load agent");
-		button.setOnAction(e -> {
+		Button connectButton = new Button("Connect");
+		connectButton.setOnAction(e -> {
 			textArea.setText("");
 			Platform.runLater(() -> {
 				String text = MODEL.getCore().loadAgent(hostField.getText(), nameField.getText());
 				textArea.setText(text);
 			});
 		});
-		hostBorder.setLeft(new Label("IP: "));
+		Button disconnectButton = new Button("Disconnect");
+		HBox leftBox = new HBox();
+		leftBox.getChildren().setAll(disconnectButton, new Label("IP: "));
+		hostBorder.setLeft(leftBox);
 		hostBorder.setCenter(hostField);
-		hostBorder.setRight(button);
+		hostBorder.setRight(connectButton);
 		//
 		//border.setTop(hostBorder);
 		//pane.setContent(border);
