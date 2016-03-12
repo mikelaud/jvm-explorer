@@ -12,17 +12,11 @@ import com.google.inject.Inject;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -64,50 +58,23 @@ public class UiProgramImpl implements UiProgram {
 		buildePane();
 	}
 
-	private TitledPane createJvmPane() {
-		TitledPane pane = new TitledPane();
-		pane.setText("JVM");
-		BorderPane border = new BorderPane();
-		//
-		TextArea textArea = new TextArea();
-		border.setCenter(JVM.getPane());
-		border.setPadding(new Insets(5));
-		BorderPane hostBorder = new BorderPane();
-		//
-		BorderPane nameBorder = new BorderPane();
-		nameBorder.setLeft(new Label("Name: "));
-		TextField nameField = new TextField("com.blogspot.mikelaud.je.agent.bios.Main");
-		nameBorder.setCenter(nameField);
-		hostBorder.setTop(nameBorder);
-		//
-		TextField hostField = new TextField("192.168.10.101");
-		Button button = new Button("Load agent");
-		button.setOnAction(e -> {
-			textArea.setText("");
-			Platform.runLater(() -> {
-				String text = MODEL.getCore().loadAgent(hostField.getText(), nameField.getText());
-				textArea.setText(text);
-			});
-		});
-		hostBorder.setLeft(new Label("IP: "));
-		hostBorder.setCenter(hostField);
-		hostBorder.setRight(button);
-		//
-		border.setTop(hostBorder);
-		pane.setContent(border);
-		return pane;
-	}
-
-	private TitledPane createTypePane() {
+	private TitledPane createSearchPane() {
 		TitledPane pane = new TitledPane();
 		pane.setText("Type");
 		pane.setContent(SEARCH.getPane());
 		return pane;
 	}
 
+	private TitledPane createJvmPane() {
+		TitledPane pane = new TitledPane();
+		pane.setText("JVM");
+		pane.setContent(JVM.getPane());
+		return pane;
+	}
+
 	private Accordion createLeftPane() {
 		Accordion accordion = new Accordion();
-		accordion.getPanes().setAll(createJvmPane(), createTypePane());
+		accordion.getPanes().setAll(createJvmPane(), createSearchPane());
 		TitledPane lastPane = accordion.getPanes().stream().reduce((a, b) -> b).orElse(null);
 		lastPane.setCollapsible(false);
 		accordion.setExpandedPane(lastPane);
