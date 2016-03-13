@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Properties;
+import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import com.blogspot.mikelaud.je.agent.api.TypesMXBean;
+import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
 import com.blogspot.mikelaud.je.agent.loader.AgentLoaderFactory;
 import com.blogspot.mikelaud.je.agent.loader.common.LocalAgentLoader;
 import com.blogspot.mikelaud.je.agent.loader.common.RemoteAgentLoader;
@@ -37,11 +40,15 @@ public class CoreImpl implements Core {
 
 	private final Domain DOMAIN;
 	private final AgentLoaderFactory AGENT_LOADER_FACTORY;
+	//
+	private RemoteAgentLoader mAgentLoader;
 
 	@Inject
 	private CoreImpl(Domain aDomain, AgentLoaderFactory aAgentLoaderFactory) {
 		DOMAIN = aDomain;
 		AGENT_LOADER_FACTORY = aAgentLoaderFactory;
+		//
+		mAgentLoader = AGENT_LOADER_FACTORY.newRemoteLoader("127.0.0.1");
 	}
 
 	private Path getJavaHome() {
@@ -151,6 +158,23 @@ public class CoreImpl implements Core {
 			Status status = remoteLoader.loadAgentByName(aName);
 			return (status.getCode() == 0 ? status.getMessage() : "Fail.");
 		}
+	}
+
+	@Override
+	public void doJvmConnect(String aHost) {
+		Objects.requireNonNull(aHost);
+		mAgentLoader = AGENT_LOADER_FACTORY.newRemoteLoader(aHost);
+		mAgentLoader.open("root", "1q2w3e");
+	}
+
+	@Override
+	public void doJvmDisconnect() {
+		mAgentLoader.close();
+	}
+
+	@Override
+	public Stream<JvmIdentity> doJvmList() {
+		return mAgentLoader.getJvmList();
 	}
 
 }

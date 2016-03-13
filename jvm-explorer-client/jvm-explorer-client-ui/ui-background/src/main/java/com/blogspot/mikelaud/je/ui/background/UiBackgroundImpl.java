@@ -81,6 +81,7 @@ public class UiBackgroundImpl implements UiBackground {
 		PANE.setMinSize(0, 0);
 		//
 		LOGGER.setId("background-logger");
+		LOGGER.setEditable(false);
 		LOGGER.setVisible(false);
 		PANE.getChildren().add(LOGGER);
 		//

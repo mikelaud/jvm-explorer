@@ -13,31 +13,23 @@ public class MvcControllerImpl implements MvcController {
 
 	private final MvcModel MODEL;
 	private final Provider<MvcView> VIEW_PROVIDER;
+	//
 	private MvcView mView;
 
 	@Inject
 	private MvcControllerImpl
 	(	MvcModel aModel
-	,	Provider<MvcView> aViewProvider) {
+	,	Provider<MvcView> aViewProvider
+	) {
 		MODEL = aModel;
 		VIEW_PROVIDER = aViewProvider;
+		//
 		mView = null;
 	}
 
-	@Override
-	public final Domain getDomain() {
-		return MODEL.getDomain();
-	}
-
-	@Override
-	public final Core getCore() {
-		return MODEL.getCore();
-	}
-
-	@Override
-	public final MvcModel getModel() {
-		return MODEL;
-	}
+	@Override public final Domain getDomain() { return MODEL.getDomain(); }
+	@Override public final Core getCore() { return MODEL.getCore(); }
+	@Override public final MvcModel getModel() { return MODEL; }
 
 	@Override
 	public final void showApplication() {
@@ -53,5 +45,16 @@ public class MvcControllerImpl implements MvcController {
 			mView.showCode(aType);
 		}
 	}
-	
+
+	@Override
+	public void doJvmConnect() {
+		MODEL.getCore().doJvmConnect(mView.getJvmHost());
+		mView.setJvmList(MODEL.getCore().doJvmList());
+	}
+
+	@Override
+	public void doJvmDisconnect() {
+		MODEL.getCore().doJvmDisconnect();
+	}
+
 }

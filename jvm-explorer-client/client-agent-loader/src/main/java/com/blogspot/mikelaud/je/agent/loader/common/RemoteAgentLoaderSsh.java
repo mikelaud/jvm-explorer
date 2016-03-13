@@ -1,9 +1,13 @@
 package com.blogspot.mikelaud.je.agent.loader.common;
 
+import java.io.BufferedReader;
+import java.io.StringReader;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import com.blogspot.mikelaud.je.agent.bios.common.ExitStatus;
 import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
 import com.blogspot.mikelaud.je.ssh.SshFactory;
 import com.blogspot.mikelaud.je.ssh.common.SshConst;
@@ -65,8 +69,36 @@ public class RemoteAgentLoaderSsh extends AgentLoaderImpl implements RemoteAgent
 	@Override
 	public Stream<JvmIdentity> getJvmList() {
 		String toolsJar = getToolsJar();
-		SSH.exec("java -cp " + toolsJar + ":./" + getBios().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --list");
-		return Stream.empty();
+		Status status = SSH.exec("java -cp " + toolsJar + ":./" + getBios().getFileName() + " com.blogspot.mikelaud.je.agent.bios.Main" + " --list");
+		if (ExitStatus.SUCCESS.isNot(status.getCode())) {
+			return Stream.empty();
+		}
+		ArrayList<JvmIdentity> list = new ArrayList<>();
+		try (BufferedReader reader = new BufferedReader(new StringReader(status.getMessage()))) {
+			for (;;) {
+				String string = reader.readLine();
+				if (null == string) break;
+				if (string.length() <= 0) continue;
+				int index = string.indexOf(' ');
+				String pid = "";
+				String name = "";
+				if (index <= 0) {
+					pid = string;
+				}
+				else {
+					pid = string.substring(0, index);
+					if (index < string.length()) {
+						name = string.substring(index + 1);
+					}
+				}
+				list.add(new JvmIdentity(pid, name));
+			}
+
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list.stream();
 	}
 
 	@Override
