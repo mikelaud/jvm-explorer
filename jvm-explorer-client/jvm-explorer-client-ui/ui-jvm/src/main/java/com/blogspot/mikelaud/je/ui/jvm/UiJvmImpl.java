@@ -5,17 +5,13 @@ import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
 import com.google.inject.Inject;
 
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 
 public class UiJvmImpl implements UiJvm {
@@ -46,6 +42,7 @@ public class UiJvmImpl implements UiJvm {
 		buildForm();
 	}
 
+	/*
 	@SuppressWarnings("unused")
 	private Node createTopLegacy() {
 		TextArea textArea = new TextArea();
@@ -74,6 +71,7 @@ public class UiJvmImpl implements UiJvm {
 		hostBorder.setRight(connectButton);
 		return hostBorder;
 	}
+	*/
 
 	private Node createTop() {
 		Button disconnectButton = new Button("Disconnect");

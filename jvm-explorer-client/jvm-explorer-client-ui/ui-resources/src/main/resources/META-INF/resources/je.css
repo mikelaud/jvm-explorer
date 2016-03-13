@@ -1,3 +1,28 @@
 .hyperlink-strikethrough .text {
-    -fx-strikethrough: true;
+	-fx-strikethrough: true;
+}
+
+#background-logger.text-area
+{
+	-fx-background-color: transparent;
+	-fx-font-family: 'Consolas', monospace;
+	-fx-font-weight: bold;
+	-fx-text-fill: lime;
+}
+
+#background-logger.text-area .viewport,
+#background-logger.text-area .content,
+#background-logger.text-area .scroll-pane,
+#background-logger.text-area .scroll-bar,
+#background-logger.text-area .scroll-bar .track,
+#background-logger.text-area .corner
+{
+	-fx-background-color: transparent;
+}
+
+#background-logger.text-area .scroll-bar .thumb,
+#background-logger.text-area .scroll-bar .increment-arrow,
+#background-logger.text-area .scroll-bar .decrement-arrow
+{
+	-fx-opacity: 0.5;
 }

@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Bounds;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
@@ -19,6 +20,7 @@ public class UiBackgroundImpl implements UiBackground {
 	private final ImageView IMAGE_VIEW;
 	private final Pane IMAGE_PANE;
 	private final StackPane PANE;
+	private final TextArea LOGGER;
 
 	private ChangeListener<Bounds> createBoundsListener() {
 		return (observable, oldValue, newValue) -> {
@@ -78,6 +80,10 @@ public class UiBackgroundImpl implements UiBackground {
 		PANE.getChildren().setAll(IMAGE_PANE);
 		PANE.setMinSize(0, 0);
 		//
+		LOGGER.setId("background-logger");
+		LOGGER.setVisible(false);
+		PANE.getChildren().add(LOGGER);
+		//
 		IMAGE_VIEW.fitWidthProperty().bind(IMAGE_PANE.widthProperty());
 		IMAGE_VIEW.fitHeightProperty().bind(IMAGE_PANE.heightProperty());
 	}
@@ -89,11 +95,13 @@ public class UiBackgroundImpl implements UiBackground {
 		IMAGE_VIEW = new ImageView();
 		IMAGE_PANE = new Pane();
 		PANE = new StackPane();
+		LOGGER = new TextArea();
 		//
 		buildForm();
 	}
 
 	@Override public final Pane getPane() { return PANE; }
+	@Override public TextArea getLogger() { return LOGGER; }
 
 	@Override public final Image getImage() { return IMAGE_VIEW.getImage(); }
 	@Override public final void setImage(Image aImage) { IMAGE_VIEW.setImage(aImage); }
