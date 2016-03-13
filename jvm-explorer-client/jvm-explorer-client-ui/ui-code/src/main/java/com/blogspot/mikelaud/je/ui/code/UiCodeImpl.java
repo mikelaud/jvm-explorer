@@ -78,7 +78,7 @@ public class UiCodeImpl implements UiCode {
 	}
 
 	private Node createCenter() {
-		CODE_PANE.setPadding(new Insets(CONST.getSpacing(), CONST.getSpacing(), CONST.getSpacing(), CONST.getSpacing()));
+		//CODE_PANE.setPadding(new Insets(MODEL.getConst().getPadding()));
 		CODE_PANE.setContent(CODE);
 		CODE_PANE.setVisible(false);
 		//
@@ -90,7 +90,7 @@ public class UiCodeImpl implements UiCode {
 	private void buildForm() {
 		PANE.setCenter(createCenter());
 		//
-		PANE.setPadding(new Insets(CONST.getPadding(), CONST.getPadding(), CONST.getPadding(), CONST.getPadding()));
+		PANE.setPadding(new Insets(MODEL.getConst().getPadding()));
 	}
 
 	private Text newRem(String aText) {

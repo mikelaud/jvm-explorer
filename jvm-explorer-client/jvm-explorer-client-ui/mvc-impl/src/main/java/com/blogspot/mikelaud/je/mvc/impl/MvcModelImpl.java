@@ -11,6 +11,7 @@ import com.blogspot.mikelaud.je.domain.types.TypeDeprecated;
 import com.blogspot.mikelaud.je.domain.types.TypeInheritance;
 import com.blogspot.mikelaud.je.domain.types.TypeStatic;
 import com.blogspot.mikelaud.je.domain.types.TypeType;
+import com.blogspot.mikelaud.je.mvc.MvcConst;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.resources.UiResources;
 import com.google.inject.Inject;
@@ -21,23 +22,30 @@ import javafx.stage.Stage;
 
 public class MvcModelImpl implements MvcModel {
 
+	private final MvcConst CONST;
+	//
 	private final Core CORE;
 	private final UiResources RESOURCES;
 	//
 	private Parameters mParameters;
 	private Stage mStage;
-	
+
 	@Inject
 	private MvcModelImpl
-	(	Core aCore
+	(	MvcConst aConst
+	,	Core aCore
 	,	UiResources aResources
 	) {
+		CONST = aConst;
+		//
 		CORE = aCore;
 		RESOURCES = aResources;
 		//
 		mParameters = null;
 		mStage = null;
 	}
+
+	@Override public final MvcConst getConst() { return CONST; }
 
 	@Override public final Domain getDomain() { return CORE.getDomain(); }
 	@Override public final Core getCore() { return CORE; }
@@ -64,8 +72,8 @@ public class MvcModelImpl implements MvcModel {
 	@Override
 	public final Image getImage(TypeDeprecated aDeprecated, TypeAccess aAccess, TypeType aType) {
 		final String fileName = aType.getPath().concat(".png");
-		final Path fileDir = Paths.get("type", "access", aDeprecated.getPath(), aAccess.getPath()); 
-		final Path filePath = fileDir.resolve(fileName); 
+		final Path fileDir = Paths.get("type", "access", aDeprecated.getPath(), aAccess.getPath());
+		final Path filePath = fileDir.resolve(fileName);
 		return getImage(filePath);
 	}
 
@@ -73,13 +81,13 @@ public class MvcModelImpl implements MvcModel {
 	public final Image getImage(TypeStatic aStatic, TypeInheritance aInheritance) {
 		final String fileName = aInheritance.getPath().concat(".png");
 		final Path fileDir = Paths.get("type", "modifier", "combo", aStatic.getPath());
-		final Path filePath = fileDir.resolve(fileName); 
+		final Path filePath = fileDir.resolve(fileName);
 		return getImage(filePath);
 	}
-	
+
 	@Override
 	public final Image getImage(TypeType aType) {
 		return getImage(TypeDeprecated.No, TypeAccess.Public, aType);
 	}
-	
+
 }

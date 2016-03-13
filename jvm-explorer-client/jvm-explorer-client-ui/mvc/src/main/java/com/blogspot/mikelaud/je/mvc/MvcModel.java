@@ -17,6 +17,8 @@ import javafx.stage.Stage;
 
 public interface MvcModel {
 
+	MvcConst getConst();
+	//
 	Domain getDomain();
 	Core getCore();
 	//
@@ -31,5 +33,5 @@ public interface MvcModel {
 	Image getImage(TypeDeprecated aDeprecated, TypeAccess aAccess, TypeType aType);
 	Image getImage(TypeStatic aStatic, TypeInheritance aInheritance);
 	Image getImage(TypeType aType);
-	
+
 }

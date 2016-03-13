@@ -12,9 +12,6 @@ public interface UiJvmConst {
 
 	String getName();
 	Path getBackgroundImage();
-	//
-	int getSpacing();
-	int getPadding();
 
 	//------------------------------------------------------------------------
 
@@ -23,12 +20,5 @@ public interface UiJvmConst {
 	//
 	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
 	@interface BackgroundImage {}
-	//
-	//
-	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
-	@interface Spacing {}
-	//
-	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
-	@interface Padding {}
 
 }

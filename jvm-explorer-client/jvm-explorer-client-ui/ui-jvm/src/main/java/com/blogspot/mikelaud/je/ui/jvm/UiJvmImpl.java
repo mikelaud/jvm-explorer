@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -45,14 +46,9 @@ public class UiJvmImpl implements UiJvm {
 		buildForm();
 	}
 
-	private Node createTop() {
-		//TitledPane pane = new TitledPane();
-		//pane.setText("JVM");
-		//BorderPane border = new BorderPane();
-		//
+	@SuppressWarnings("unused")
+	private Node createTopLegacy() {
 		TextArea textArea = new TextArea();
-		//border.setCenter(JVM.getPane());
-		//border.setPadding(new Insets(5));
 		BorderPane hostBorder = new BorderPane();
 		//
 		BorderPane nameBorder = new BorderPane();
@@ -76,19 +72,29 @@ public class UiJvmImpl implements UiJvm {
 		hostBorder.setLeft(leftBox);
 		hostBorder.setCenter(hostField);
 		hostBorder.setRight(connectButton);
-		//
-		//border.setTop(hostBorder);
-		//pane.setContent(border);
 		return hostBorder;
 	}
 
-	private Node createCenter() {
-		PANE.setPadding(new Insets(CONST.getSpacing(), CONST.getSpacing(), CONST.getSpacing(), CONST.getSpacing()));
-		//PANE.setContent();
-		PANE.setVisible(true);
+	private Node createTop() {
+		Button disconnectButton = new Button("Disconnect");
+		disconnectButton.setDisable(true);
 		//
+		TextField hostField = new TextField();
+		hostField.setPromptText("Host name or IP");
+		hostField.setAlignment(Pos.CENTER);
+		//
+		Button connectButton = new Button("Connect");
+		connectButton.setDisable(false);
+		//
+		BorderPane pane = new BorderPane();
+		pane.setLeft(disconnectButton);
+		pane.setCenter(hostField);
+		pane.setRight(connectButton);
+		return pane;
+	}
+
+	private Node createCenter() {
 		BACKGROUND.setImage(MODEL.getImage(CONST.getBackgroundImage()));
-		//BACKGROUND.getPane().getChildren().add(JVM_PANE);
 		return BACKGROUND.getPane();
 	}
 
@@ -96,7 +102,8 @@ public class UiJvmImpl implements UiJvm {
 		PANE.setTop(createTop());
 		PANE.setCenter(createCenter());
 		//
-		PANE.setPadding(new Insets(CONST.getPadding(), CONST.getPadding(), CONST.getPadding(), CONST.getPadding()));
+		PANE.setPadding(new Insets(MODEL.getConst().getPadding()));
+		BorderPane.setMargin(PANE.getTop(), new Insets(0, 0, MODEL.getConst().getPadding(), 0));
 	}
 
 	@Override public String getName() { return CONST.getName(); }

@@ -13,9 +13,6 @@ public class UiSearchConstImpl implements UiSearchConst {
 	private final String SEARCH_LABEL;
 	private final String MATCHING_LABEL;
 	private final String COUNT_LABEL;
-	//
-	private final int SPACING;
-	private final int PADDING;
 
 	@Inject
 	private UiSearchConstImpl
@@ -26,9 +23,6 @@ public class UiSearchConstImpl implements UiSearchConst {
 	,	@UiSearchConst.SearchLabel String aSearchLabel
 	,	@UiSearchConst.MatchingLabel String aMatchingLabel
 	,	@UiSearchConst.CountLabel String aCountLabel
-	//
-	,	@UiSearchConst.Spacing int aSpacing
-	,	@UiSearchConst.Padding int aPadding
 	) {
 		NAME = aName;
 		BACKGROUND_IMAGE = aBackgroundImage;
@@ -37,9 +31,6 @@ public class UiSearchConstImpl implements UiSearchConst {
 		SEARCH_LABEL = aSearchLabel;
 		MATCHING_LABEL = aMatchingLabel;
 		COUNT_LABEL = aCountLabel;
-		//
-		SPACING = aSpacing;
-		PADDING = aPadding;
 	}
 
 	@Override public final String getName() { return NAME; }
@@ -49,8 +40,5 @@ public class UiSearchConstImpl implements UiSearchConst {
 	@Override public final String getSearchLabel() { return SEARCH_LABEL; }
 	@Override public final String getMatchingLabel() { return MATCHING_LABEL; }
 	@Override public final String getCountLabel() { return COUNT_LABEL; }
-	//
-	@Override public final int getSpacing() { return SPACING; }
-	@Override public final int getPadding() { return PADDING; }
 
 }

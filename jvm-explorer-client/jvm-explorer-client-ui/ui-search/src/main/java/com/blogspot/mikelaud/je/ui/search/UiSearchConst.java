@@ -17,9 +17,6 @@ public interface UiSearchConst {
 	String getSearchLabel();
 	String getMatchingLabel();
 	String getCountLabel();
-	//
-	int getSpacing();
-	int getPadding();
 
 	//------------------------------------------------------------------------
 
@@ -41,12 +38,5 @@ public interface UiSearchConst {
 	//
 	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
 	@interface CountLabel {}
-	//
-	//
-	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
-	@interface Spacing {}
-	//
-	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
-	@interface Padding {}
 
 }

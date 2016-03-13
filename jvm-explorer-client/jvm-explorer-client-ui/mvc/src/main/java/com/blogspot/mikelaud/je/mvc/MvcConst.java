@@ -1,20 +1,19 @@
-package com.blogspot.mikelaud.je.ui.code;
+package com.blogspot.mikelaud.je.mvc;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.nio.file.Path;
 
 import com.google.inject.BindingAnnotation;
 
-public interface UiCodeConst {
+public interface MvcConst {
 
-	Path getBackgroundImage();
+	int getPadding();
 
 	//------------------------------------------------------------------------
 
 	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
-	@interface BackgroundImage {}
+	@interface Padding {}
 
 }

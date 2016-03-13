@@ -80,7 +80,7 @@ public class UiSearchImpl implements UiSearch {
 		});
 		//
 		VBox top = new VBox(searchLabel, SEARCH_FIELD, createMatching());
-		top.setSpacing(CONST.getSpacing());
+		//top.setSpacing(CONST.getSpacing());
 		return top;
 	}
 
@@ -107,8 +107,7 @@ public class UiSearchImpl implements UiSearch {
 		PANE.setTop(createTop());
 		PANE.setCenter(createCenter());
 		//
-		BorderPane.setMargin(PANE.getCenter(), new Insets(CONST.getSpacing(), 0, CONST.getSpacing(), 0));
-		PANE.setPadding(new Insets(CONST.getPadding()));
+		PANE.setPadding(new Insets(MODEL.getConst().getPadding()));
 	}
 
 	@Override public String getName() { return CONST.getName(); }

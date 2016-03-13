@@ -19,7 +19,7 @@ public class UiBackgroundImpl implements UiBackground {
 	private final ImageView IMAGE_VIEW;
 	private final Pane IMAGE_PANE;
 	private final StackPane PANE;
-	
+
 	private ChangeListener<Bounds> createBoundsListener() {
 		return (observable, oldValue, newValue) -> {
 			Image image = IMAGE_VIEW.getImage();
@@ -93,19 +93,9 @@ public class UiBackgroundImpl implements UiBackground {
 		buildForm();
 	}
 
-	@Override
-	public final Pane getPane() {
-		return PANE;
-	}
+	@Override public final Pane getPane() { return PANE; }
 
-	@Override
-	public final Image getImage() {
-		return IMAGE_VIEW.getImage();
-	}
-	
-	@Override
-	public final void setImage(Image aImage) {
-		IMAGE_VIEW.setImage(aImage);
-	}
+	@Override public final Image getImage() { return IMAGE_VIEW.getImage(); }
+	@Override public final void setImage(Image aImage) { IMAGE_VIEW.setImage(aImage); }
 
 }
