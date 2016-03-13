@@ -99,9 +99,7 @@ public class UiJvmImpl implements UiJvm {
 		PANE.setPadding(new Insets(CONST.getPadding(), CONST.getPadding(), CONST.getPadding(), CONST.getPadding()));
 	}
 
-	@Override
-	public Pane getPane() {
-		return PANE;
-	}
+	@Override public String getName() { return CONST.getName(); }
+	@Override public Pane getPane() { return PANE; }
 
 }

@@ -10,6 +10,7 @@ public class UiJvmModule extends AbstractModule {
 
 	private void configureConst() {
 		//
+		bindConstant().annotatedWith(UiJvmConst.Name.class).to("JVM");
 		bind(Path.class).annotatedWith(UiJvmConst.BackgroundImage.class).toInstance(Paths.get("background", "jvm.jpg"));
 		//
 		bindConstant().annotatedWith(UiJvmConst.Spacing.class).to(0);

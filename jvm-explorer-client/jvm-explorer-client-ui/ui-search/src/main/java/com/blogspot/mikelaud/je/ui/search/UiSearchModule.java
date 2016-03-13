@@ -10,6 +10,7 @@ public class UiSearchModule extends AbstractModule {
 
 	private void configureConst() {
 		//
+		bindConstant().annotatedWith(UiSearchConst.Name.class).to("Type");
 		bind(Path.class).annotatedWith(UiSearchConst.BackgroundImage.class).toInstance(Paths.get("background", "search.jpg"));
 		bind(Path.class).annotatedWith(UiSearchConst.PackageIcon.class).toInstance(Paths.get("library.png"));
 		//
@@ -23,7 +24,7 @@ public class UiSearchModule extends AbstractModule {
 		//--------------------------------------------------------------------
 		bind(UiSearchConst.class).to(UiSearchConstImpl.class).in(Singleton.class);
 	}
-	
+
 	@Override
 	protected final void configure() {
 		configureConst();

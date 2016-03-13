@@ -6,6 +6,7 @@ import com.google.inject.Inject;
 
 public class UiSearchConstImpl implements UiSearchConst {
 
+	private final String NAME;
 	private final Path BACKGROUND_IMAGE;
 	private final Path PACKAGE_ICON;
 	//
@@ -15,10 +16,11 @@ public class UiSearchConstImpl implements UiSearchConst {
 	//
 	private final int SPACING;
 	private final int PADDING;
-	
+
 	@Inject
 	private UiSearchConstImpl
-	(	@UiSearchConst.BackgroundImage Path aBackgroundImage
+	(	@UiSearchConst.Name String aName
+	,	@UiSearchConst.BackgroundImage Path aBackgroundImage
 	,	@UiSearchConst.PackageIcon Path aPackageIcon
 	//
 	,	@UiSearchConst.SearchLabel String aSearchLabel
@@ -28,6 +30,7 @@ public class UiSearchConstImpl implements UiSearchConst {
 	,	@UiSearchConst.Spacing int aSpacing
 	,	@UiSearchConst.Padding int aPadding
 	) {
+		NAME = aName;
 		BACKGROUND_IMAGE = aBackgroundImage;
 		PACKAGE_ICON = aPackageIcon;
 		//
@@ -38,7 +41,8 @@ public class UiSearchConstImpl implements UiSearchConst {
 		SPACING = aSpacing;
 		PADDING = aPadding;
 	}
-	
+
+	@Override public final String getName() { return NAME; }
 	@Override public final Path getBackgroundImage() { return BACKGROUND_IMAGE; }
 	@Override public final Path getPackageIcon() { return PACKAGE_ICON; }
 	//

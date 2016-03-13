@@ -10,6 +10,7 @@ import com.google.inject.BindingAnnotation;
 
 public interface UiJvmConst {
 
+	String getName();
 	Path getBackgroundImage();
 	//
 	int getSpacing();
@@ -17,6 +18,9 @@ public interface UiJvmConst {
 
 	//------------------------------------------------------------------------
 
+	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
+	@interface Name {}
+	//
 	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
 	@interface BackgroundImage {}
 	//

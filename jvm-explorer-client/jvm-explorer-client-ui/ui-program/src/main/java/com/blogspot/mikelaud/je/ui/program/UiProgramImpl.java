@@ -58,23 +58,12 @@ public class UiProgramImpl implements UiProgram {
 		buildePane();
 	}
 
-	private TitledPane createSearchPane() {
-		TitledPane pane = new TitledPane();
-		pane.setText("Type");
-		pane.setContent(SEARCH.getPane());
-		return pane;
-	}
-
-	private TitledPane createJvmPane() {
-		TitledPane pane = new TitledPane();
-		pane.setText("JVM");
-		pane.setContent(JVM.getPane());
-		return pane;
-	}
-
 	private Accordion createLeftPane() {
 		Accordion accordion = new Accordion();
-		accordion.getPanes().setAll(createJvmPane(), createSearchPane());
+		accordion.getPanes().setAll
+		(	new TitledPane(JVM.getName(), JVM.getPane())
+		,	new TitledPane(SEARCH.getName(), SEARCH.getPane())
+		);
 		TitledPane lastPane = accordion.getPanes().stream().reduce((a, b) -> b).orElse(null);
 		lastPane.setCollapsible(false);
 		accordion.setExpandedPane(lastPane);

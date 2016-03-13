@@ -111,9 +111,7 @@ public class UiSearchImpl implements UiSearch {
 		PANE.setPadding(new Insets(CONST.getPadding()));
 	}
 
-	@Override
-	public final Pane getPane() {
-		return PANE;
-	}
+	@Override public String getName() { return CONST.getName(); }
+	@Override public final Pane getPane() { return PANE; }
 
 }

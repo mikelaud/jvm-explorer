@@ -10,6 +10,7 @@ import com.google.inject.BindingAnnotation;
 
 public interface UiSearchConst {
 
+	String getName();
 	Path getBackgroundImage();
 	Path getPackageIcon();
 	//
@@ -19,9 +20,12 @@ public interface UiSearchConst {
 	//
 	int getSpacing();
 	int getPadding();
-	
+
 	//------------------------------------------------------------------------
-	
+
+	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
+	@interface Name {}
+	//
 	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
 	@interface BackgroundImage {}
 	//
@@ -44,5 +48,5 @@ public interface UiSearchConst {
 	//
 	@BindingAnnotation @Target({ElementType.FIELD, ElementType.PARAMETER}) @Retention(RetentionPolicy.RUNTIME)
 	@interface Padding {}
-	
+
 }

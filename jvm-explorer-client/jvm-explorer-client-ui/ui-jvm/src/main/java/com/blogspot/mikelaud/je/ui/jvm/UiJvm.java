@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 
 public interface UiJvm {
 
+	String getName();
 	Pane getPane();
 
 }

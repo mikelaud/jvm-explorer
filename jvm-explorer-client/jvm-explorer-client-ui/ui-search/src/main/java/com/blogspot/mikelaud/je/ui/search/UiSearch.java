@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 
 public interface UiSearch {
 
+	String getName();
 	Pane getPane();
-	
+
 }
