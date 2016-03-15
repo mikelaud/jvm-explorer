@@ -28,12 +28,19 @@
 }
 
 #jvm-list-view.list-view,
-#jvm-list-view.list-view .cell
+#jvm-list-view.list-view .list-cell
 {
 	-fx-background-color: transparent;
 	-fx-font-family: 'Consolas', monospace;
 	-fx-font-weight: bold;
 	-fx-text-fill: lime;
+}
+
+#jvm-list-view.list-view:focused .list-cell:filled:selected, .list-view:focused .list-cell:filled:selected:hover {
+    -fx-background: -fx-accent;
+    -fx-background-color: -fx-selection-bar;
+    -fx-text-fill: -fx-selection-bar-text;
+    -fx-opacity: 0.9;
 }
 
 #jvm-list-view.list-view .viewport,
