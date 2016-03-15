@@ -10,10 +10,13 @@ import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
 import com.google.inject.Inject;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -27,6 +30,8 @@ public class UiJvmImpl implements UiJvm {
 	private final BorderPane PANE;
 	//
 	private final TextField HOST_FIELD;
+	private final Button DISCONNECT_BUTTON;
+	private final ListView<String> JVM_LIST_VIEW;
 
 	@Inject
 	private UiJvmImpl
@@ -41,31 +46,55 @@ public class UiJvmImpl implements UiJvm {
 		PANE = new BorderPane();
 		//
 		HOST_FIELD = new TextField();
+		DISCONNECT_BUTTON = new Button();
+		JVM_LIST_VIEW = new ListView<>();
 		//
 		buildForm();
 	}
 
+	private void switchToDisconnect() {
+		DISCONNECT_BUTTON.setDisable(true);
+		HOST_FIELD.setDisable(false);
+		JVM_LIST_VIEW.setVisible(false);
+	}
+
+	private void switchToList() {
+		DISCONNECT_BUTTON.setDisable(false);
+		HOST_FIELD.setDisable(true);
+		JVM_LIST_VIEW.setVisible(true);
+	}
+
 	private Node createTop() {
-		Button disconnectButton = new Button("Disconnect");
-		disconnectButton.setDisable(true);
-		disconnectButton.setOnAction(a -> CONTROLLER.doJvmDisconnect());
+		DISCONNECT_BUTTON.setText("Disconnect");
+		DISCONNECT_BUTTON.setOnAction(a -> switchToDisconnect());
 		//
 		HOST_FIELD.setPromptText("Host name or IP");
 		HOST_FIELD.setAlignment(Pos.CENTER);
+		HOST_FIELD.setFocusTraversable(false);
 		//
-		Button connectButton = new Button("Connect");
-		connectButton.setDisable(false);
-		connectButton.setOnAction(a -> CONTROLLER.doJvmConnect());
+		Button listButton = new Button("List");
+		listButton.prefWidthProperty().bind(DISCONNECT_BUTTON.widthProperty());
+		listButton.setOnAction(a -> switchToList());
 		//
 		BorderPane pane = new BorderPane();
-		pane.setLeft(disconnectButton);
+		pane.setLeft(DISCONNECT_BUTTON);
 		pane.setCenter(HOST_FIELD);
-		pane.setRight(connectButton);
+		pane.setRight(listButton);
 		return pane;
 	}
 
 	private Node createCenter() {
 		BACKGROUND.setImage(MODEL.getImage(CONST.getBackgroundImage()));
+		JVM_LIST_VIEW.setId("jvm-list-view");
+		ObservableList<String> items = FXCollections.observableArrayList();
+		items.addAll
+		(	"111", "222", "333", "444", "555", "666", "777", "888", "999"
+		,	"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
+		,	"111", "222", "333", "444", "555", "666", "777", "888", "999"
+		,	"111", "222", "333", "444", "555", "666", "777", "888", "999"
+		);
+		JVM_LIST_VIEW.setItems(items);
+		BACKGROUND.getPane().getChildren().add(JVM_LIST_VIEW);
 		return BACKGROUND.getPane();
 	}
 
@@ -75,6 +104,8 @@ public class UiJvmImpl implements UiJvm {
 		//
 		PANE.setPadding(new Insets(MODEL.getConst().getPadding()));
 		BorderPane.setMargin(PANE.getTop(), new Insets(0, 0, MODEL.getConst().getPadding(), 0));
+		//
+		switchToDisconnect();
 	}
 
 	@Override public String getName() { return CONST.getName(); }

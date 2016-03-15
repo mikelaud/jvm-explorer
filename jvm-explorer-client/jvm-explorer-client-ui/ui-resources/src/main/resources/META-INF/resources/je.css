@@ -26,3 +26,29 @@
 {
 	-fx-opacity: 0.5;
 }
+
+#jvm-list-view.list-view,
+#jvm-list-view.list-view .cell
+{
+	-fx-background-color: transparent;
+	-fx-font-family: 'Consolas', monospace;
+	-fx-font-weight: bold;
+	-fx-text-fill: lime;
+}
+
+#jvm-list-view.list-view .viewport,
+#jvm-list-view.list-view .content,
+#jvm-list-view.list-view .scroll-pane,
+#jvm-list-view.list-view .scroll-bar,
+#jvm-list-view.list-view .scroll-bar .track,
+#jvm-list-view.list-view .corner
+{
+	-fx-background-color: transparent;
+}
+
+#jvm-list-view.list-view .scroll-bar .thumb,
+#jvm-list-view.list-view .scroll-bar .increment-arrow,
+#jvm-list-view.list-view .scroll-bar .decrement-arrow
+{
+	-fx-opacity: 0.5;
+}
