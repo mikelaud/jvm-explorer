@@ -18,6 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 
@@ -56,12 +57,14 @@ public class UiJvmImpl implements UiJvm {
 		DISCONNECT_BUTTON.setDisable(true);
 		HOST_FIELD.setDisable(false);
 		JVM_LIST_VIEW.setVisible(false);
+		BACKGROUND.getImageView().setEffect(null);
 	}
 
 	private void switchToList() {
 		DISCONNECT_BUTTON.setDisable(false);
 		HOST_FIELD.setDisable(true);
 		JVM_LIST_VIEW.setVisible(true);
+		BACKGROUND.getImageView().setEffect(new ColorAdjust(0, 0, -0.7, 0));
 	}
 
 	private Node createTop() {

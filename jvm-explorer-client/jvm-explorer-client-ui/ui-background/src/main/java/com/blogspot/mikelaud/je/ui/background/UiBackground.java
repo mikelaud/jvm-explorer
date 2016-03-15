@@ -2,6 +2,7 @@ package com.blogspot.mikelaud.je.ui.background;
 
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 
 public interface UiBackground {
@@ -11,5 +12,7 @@ public interface UiBackground {
 	//
 	Image getImage();
 	void setImage(Image aImage);
+	//
+	ImageView getImageView();
 
 }

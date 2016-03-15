@@ -106,5 +106,7 @@ public class UiBackgroundImpl implements UiBackground {
 
 	@Override public final Image getImage() { return IMAGE_VIEW.getImage(); }
 	@Override public final void setImage(Image aImage) { IMAGE_VIEW.setImage(aImage); }
+	
+	@Override public ImageView getImageView() { return IMAGE_VIEW; }
 
 }
