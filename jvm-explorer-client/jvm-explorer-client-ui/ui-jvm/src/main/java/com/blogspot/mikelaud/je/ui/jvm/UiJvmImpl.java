@@ -21,6 +21,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
 
 public class UiJvmImpl implements UiJvm {
 
@@ -29,10 +30,13 @@ public class UiJvmImpl implements UiJvm {
 	private final UiJvmConst CONST;
 	private final UiBackground BACKGROUND;
 	private final BorderPane PANE;
+	private final ListView<String> JVM_LIST_VIEW;
 	//
 	private final TextField HOST_FIELD;
 	private final Button DISCONNECT_BUTTON;
-	private final ListView<String> JVM_LIST_VIEW;
+	private final Button LIST_BUTTON;
+	private final Button CONNECT_BUTTON;
+	private final Button CANCEL_BUTTON;
 
 	@Inject
 	private UiJvmImpl
@@ -45,23 +49,32 @@ public class UiJvmImpl implements UiJvm {
 		CONST = aConst;
 		BACKGROUND = aBackground;
 		PANE = new BorderPane();
+		JVM_LIST_VIEW = new ListView<>();
 		//
 		HOST_FIELD = new TextField();
 		DISCONNECT_BUTTON = new Button();
-		JVM_LIST_VIEW = new ListView<>();
+		LIST_BUTTON = new Button();
+		CONNECT_BUTTON = new Button();
+		CANCEL_BUTTON = new Button();
 		//
 		buildForm();
 	}
 
 	private void switchToDisconnect() {
+		LIST_BUTTON.setDisable(false);
 		DISCONNECT_BUTTON.setDisable(true);
+		CONNECT_BUTTON.setVisible(false);
+		CANCEL_BUTTON.setVisible(false);
 		HOST_FIELD.setDisable(false);
 		JVM_LIST_VIEW.setVisible(false);
 		BACKGROUND.getImageView().setEffect(null);
 	}
 
 	private void switchToList() {
-		DISCONNECT_BUTTON.setDisable(false);
+		LIST_BUTTON.setDisable(true);
+		DISCONNECT_BUTTON.setDisable(true);
+		CONNECT_BUTTON.setVisible(true);
+		CANCEL_BUTTON.setVisible(true);
 		HOST_FIELD.setDisable(true);
 		JVM_LIST_VIEW.setVisible(true);
 		BACKGROUND.getImageView().setEffect(new ColorAdjust(0, 0, -0.7, 0));
@@ -75,14 +88,14 @@ public class UiJvmImpl implements UiJvm {
 		HOST_FIELD.setAlignment(Pos.CENTER);
 		HOST_FIELD.setFocusTraversable(false);
 		//
-		Button listButton = new Button("List");
-		listButton.prefWidthProperty().bind(DISCONNECT_BUTTON.widthProperty());
-		listButton.setOnAction(a -> switchToList());
+		LIST_BUTTON.setText("List");
+		LIST_BUTTON.prefWidthProperty().bind(DISCONNECT_BUTTON.widthProperty());
+		LIST_BUTTON.setOnAction(a -> switchToList());
 		//
 		BorderPane pane = new BorderPane();
 		pane.setLeft(DISCONNECT_BUTTON);
 		pane.setCenter(HOST_FIELD);
-		pane.setRight(listButton);
+		pane.setRight(LIST_BUTTON);
 		return pane;
 	}
 
@@ -93,7 +106,8 @@ public class UiJvmImpl implements UiJvm {
 	}
 
 	private Node createJvmList() {
-		JVM_LIST_VIEW.setId("jvm-list-view");
+		BorderPane pane = new BorderPane(); 
+		JVM_LIST_VIEW.setId("jvm-list");
 		ObservableList<String> items = FXCollections.observableArrayList();
 		items.addAll
 		(	"111", "222", "333", "444", "555", "666", "777", "888", "999"
@@ -102,7 +116,24 @@ public class UiJvmImpl implements UiJvm {
 		,	"111", "222", "333", "444", "555", "666", "777", "888", "999"
 		);
 		JVM_LIST_VIEW.setItems(items);
-		return JVM_LIST_VIEW;
+		pane.setCenter(JVM_LIST_VIEW);
+		//
+		CANCEL_BUTTON.setText("Cancel"); 
+		CANCEL_BUTTON.setId("jvm-list-cancel");
+		CANCEL_BUTTON.prefWidthProperty().bind(DISCONNECT_BUTTON.widthProperty());
+		CANCEL_BUTTON.setOnAction(a -> switchToDisconnect());
+		//
+		CONNECT_BUTTON.setText("Connect");
+		CONNECT_BUTTON.setId("jvm-list-connect");
+		CONNECT_BUTTON.prefWidthProperty().bind(DISCONNECT_BUTTON.widthProperty());
+		//
+		TilePane buttons = new TilePane();
+		buttons.getChildren().setAll(CANCEL_BUTTON, CONNECT_BUTTON);
+		buttons.hgapProperty().bind(DISCONNECT_BUTTON.widthProperty());
+		buttons.setAlignment(Pos.CENTER);
+		//
+		pane.setTop(buttons);
+		return pane;
 	}
 
 	private void buildForm() {

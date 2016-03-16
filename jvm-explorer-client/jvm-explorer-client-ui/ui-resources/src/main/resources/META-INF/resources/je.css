@@ -27,8 +27,8 @@
 	-fx-opacity: 0.5;
 }
 
-#jvm-list-view.list-view,
-#jvm-list-view.list-view .list-cell
+#jvm-list.list-view,
+#jvm-list.list-view .list-cell
 {
 	-fx-background-color: transparent;
 	-fx-font-family: 'Consolas', monospace;
@@ -36,26 +36,38 @@
 	-fx-text-fill: lime;
 }
 
-#jvm-list-view.list-view:focused .list-cell:filled:selected, .list-view:focused .list-cell:filled:selected:hover {
+#jvm-list.list-view:focused .list-cell:filled:selected, .list-view:focused .list-cell:filled:selected:hover {
     -fx-background: -fx-accent;
     -fx-background-color: -fx-selection-bar;
     -fx-text-fill: -fx-selection-bar-text;
     -fx-opacity: 0.9;
 }
 
-#jvm-list-view.list-view .viewport,
-#jvm-list-view.list-view .content,
-#jvm-list-view.list-view .scroll-pane,
-#jvm-list-view.list-view .scroll-bar,
-#jvm-list-view.list-view .scroll-bar .track,
-#jvm-list-view.list-view .corner
+#jvm-list.list-view .viewport,
+#jvm-list.list-view .content,
+#jvm-list.list-view .scroll-pane,
+#jvm-list.list-view .scroll-bar,
+#jvm-list.list-view .scroll-bar .track,
+#jvm-list.list-view .corner
 {
 	-fx-background-color: transparent;
 }
 
-#jvm-list-view.list-view .scroll-bar .thumb,
-#jvm-list-view.list-view .scroll-bar .increment-arrow,
-#jvm-list-view.list-view .scroll-bar .decrement-arrow
+#jvm-list.list-view .scroll-bar .thumb,
+#jvm-list.list-view .scroll-bar .increment-arrow,
+#jvm-list.list-view .scroll-bar .decrement-arrow
 {
 	-fx-opacity: 0.5;
+}
+
+#jvm-list-cancel.button
+{
+	-fx-opacity: 0.9;
+	-fx-background-color: pink;
+}
+
+#jvm-list-connect.button
+{
+	-fx-opacity: 0.9;
+	-fx-background-color: lightgreen;
 }
