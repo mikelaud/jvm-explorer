@@ -88,6 +88,11 @@ public class UiJvmImpl implements UiJvm {
 
 	private Node createCenter() {
 		BACKGROUND.setImage(MODEL.getImage(CONST.getBackgroundImage()));
+		BACKGROUND.getPane().getChildren().add(createJvmList());
+		return BACKGROUND.getPane();
+	}
+
+	private Node createJvmList() {
 		JVM_LIST_VIEW.setId("jvm-list-view");
 		ObservableList<String> items = FXCollections.observableArrayList();
 		items.addAll
@@ -97,8 +102,7 @@ public class UiJvmImpl implements UiJvm {
 		,	"111", "222", "333", "444", "555", "666", "777", "888", "999"
 		);
 		JVM_LIST_VIEW.setItems(items);
-		BACKGROUND.getPane().getChildren().add(JVM_LIST_VIEW);
-		return BACKGROUND.getPane();
+		return JVM_LIST_VIEW;
 	}
 
 	private void buildForm() {
