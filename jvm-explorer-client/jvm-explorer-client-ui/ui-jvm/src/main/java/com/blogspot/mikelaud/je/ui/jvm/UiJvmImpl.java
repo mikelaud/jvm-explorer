@@ -10,8 +10,6 @@ import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
 import com.google.inject.Inject;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -31,12 +29,13 @@ public class UiJvmImpl implements UiJvm {
 	private final UiJvmConst CONST;
 	private final UiBackground BACKGROUND;
 	private final BorderPane PANE;
-	private final ListView<String> JVM_LIST_VIEW;
+	private final ListView<JvmIdentity> JVM_LIST_VIEW;
 	//
+	private final Label HOST_LABEL;
 	private final TextField HOST_FIELD;
 	private final Button DISCONNECT_BUTTON;
-	private final Button LIST_BUTTON;
 	private final Button CONNECT_BUTTON;
+	private final Button ATTACH_BUTTON;
 	private final Button CANCEL_BUTTON;
 
 	@Inject
@@ -52,41 +51,48 @@ public class UiJvmImpl implements UiJvm {
 		PANE = new BorderPane();
 		JVM_LIST_VIEW = new ListView<>();
 		//
+		HOST_LABEL = new Label();
 		HOST_FIELD = new TextField();
 		DISCONNECT_BUTTON = new Button();
-		LIST_BUTTON = new Button();
 		CONNECT_BUTTON = new Button();
+		ATTACH_BUTTON = new Button();
 		CANCEL_BUTTON = new Button();
 		//
 		buildForm();
 	}
 
-	private void switchToDisconnect() {
-		LIST_BUTTON.setDisable(false);
+	private void switchToCancel() {
+		CONNECT_BUTTON.setDisable(false);
 		DISCONNECT_BUTTON.setDisable(true);
-		CONNECT_BUTTON.setVisible(false);
+		ATTACH_BUTTON.setVisible(false);
 		CANCEL_BUTTON.setVisible(false);
 		HOST_FIELD.setDisable(false);
 		JVM_LIST_VIEW.setVisible(false);
 		BACKGROUND.getImageView().setEffect(null);
+		//
+		ATTACH_BUTTON.setDisable(true);
 	}
 
-	private void switchToList() {
+	private void switchToConnect() {
 		if (HOST_FIELD.getText().isEmpty()) {
 			HOST_FIELD.setText(HOST_FIELD.getPromptText());
 		}
-		LIST_BUTTON.setDisable(true);
+		CONNECT_BUTTON.setDisable(true);
 		DISCONNECT_BUTTON.setDisable(true);
-		CONNECT_BUTTON.setVisible(true);
+		ATTACH_BUTTON.setVisible(true);
 		CANCEL_BUTTON.setVisible(true);
 		HOST_FIELD.setDisable(true);
 		JVM_LIST_VIEW.setVisible(true);
 		BACKGROUND.getImageView().setEffect(new ColorAdjust(0, 0, -0.7, 0));
+		//
+		ATTACH_BUTTON.setDisable(true);
+		CONTROLLER.doJvmConnect();
+		ATTACH_BUTTON.setDisable(false);
 	}
 
 	private Node createHostPanel() {
-		Label hostLabel = new Label("Host name or IP: ");
-		hostLabel.setMaxHeight(Double.MAX_VALUE);
+		HOST_LABEL.setText("Host name or IP: ");
+		HOST_LABEL.setMaxHeight(Double.MAX_VALUE);
 		//
 		HOST_FIELD.setPromptText("localhost");
 		HOST_FIELD.setText(HOST_FIELD.getPromptText());
@@ -94,14 +100,15 @@ public class UiJvmImpl implements UiJvm {
 		HOST_FIELD.setAlignment(Pos.CENTER);
 		HOST_FIELD.setMaxHeight(Double.MAX_VALUE);
 		//
-		LIST_BUTTON.setText("List");
-		LIST_BUTTON.setMaxHeight(Double.MAX_VALUE);
-		LIST_BUTTON.setOnAction(a -> switchToList());
+		CONNECT_BUTTON.setText("Connect");
+		CONNECT_BUTTON.setMaxHeight(Double.MAX_VALUE);
+		CONNECT_BUTTON.prefWidthProperty().bind(HOST_LABEL.widthProperty());
+		CONNECT_BUTTON.setOnAction(a -> switchToConnect());
 		//
 		BorderPane pane = new BorderPane();
-		pane.setLeft(hostLabel);
+		pane.setLeft(HOST_LABEL);
 		pane.setCenter(HOST_FIELD);
-		pane.setRight(LIST_BUTTON);
+		pane.setRight(CONNECT_BUTTON);
 		return pane;
 	}
 
@@ -112,28 +119,23 @@ public class UiJvmImpl implements UiJvm {
 	}
 
 	private Node createJvmList() {
-		BorderPane pane = new BorderPane(); 
+		BorderPane pane = new BorderPane();
 		JVM_LIST_VIEW.setId("jvm-list");
-		ObservableList<String> items = FXCollections.observableArrayList();
-		items.addAll
-		(	"111", "222", "333", "444", "555", "666", "777", "888", "999"
-		,	"qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"
-		,	"111", "222", "333", "444", "555", "666", "777", "888", "999"
-		,	"111", "222", "333", "444", "555", "666", "777", "888", "999"
-		);
-		JVM_LIST_VIEW.setItems(items);
+		JVM_LIST_VIEW.setItems(CONTROLLER.getModel().getJvmList());
 		pane.setCenter(JVM_LIST_VIEW);
 		//
-		CANCEL_BUTTON.setText("Cancel"); 
-		CANCEL_BUTTON.setId("jvm-list-cancel");
-		CANCEL_BUTTON.setOnAction(a -> switchToDisconnect());
+		CANCEL_BUTTON.setText("Cancel");
+		CANCEL_BUTTON.prefWidthProperty().bind(HOST_LABEL.widthProperty());
+		CANCEL_BUTTON.setOnAction(a -> switchToCancel());
 		//
-		CONNECT_BUTTON.setText("Connect");
-		CONNECT_BUTTON.setId("jvm-list-connect");
+		ATTACH_BUTTON.setText("Attach");
+		ATTACH_BUTTON.prefWidthProperty().bind(HOST_LABEL.widthProperty());
 		//
 		TilePane buttons = new TilePane();
-		buttons.getChildren().setAll(CANCEL_BUTTON, CONNECT_BUTTON);
+		buttons.getChildren().setAll(CANCEL_BUTTON, ATTACH_BUTTON);
 		buttons.setAlignment(Pos.CENTER);
+		buttons.hgapProperty().bind(HOST_LABEL.widthProperty().divide(2));
+		buttons.setPadding(new Insets(MODEL.getConst().getPadding()));
 		//
 		pane.setTop(buttons);
 		return pane;
@@ -146,7 +148,7 @@ public class UiJvmImpl implements UiJvm {
 		PANE.setPadding(new Insets(MODEL.getConst().getPadding()));
 		BorderPane.setMargin(PANE.getTop(), new Insets(0, 0, MODEL.getConst().getPadding(), 0));
 		//
-		switchToDisconnect();
+		switchToCancel();
 	}
 
 	@Override public String getName() { return CONST.getName(); }

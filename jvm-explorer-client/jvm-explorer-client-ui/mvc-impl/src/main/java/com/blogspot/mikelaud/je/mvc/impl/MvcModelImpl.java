@@ -2,7 +2,9 @@ package com.blogspot.mikelaud.je.mvc.impl;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
 
+import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
 import com.blogspot.mikelaud.je.core.Core;
 import com.blogspot.mikelaud.je.domain.Domain;
 import com.blogspot.mikelaud.je.domain.types.MethodAccess;
@@ -17,6 +19,9 @@ import com.blogspot.mikelaud.je.ui.resources.UiResources;
 import com.google.inject.Inject;
 
 import javafx.application.Application.Parameters;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -26,6 +31,9 @@ public class MvcModelImpl implements MvcModel {
 	//
 	private final Core CORE;
 	private final UiResources RESOURCES;
+	//
+	private final ObservableList<JvmIdentity> JVM_LIST;
+	private final SortedList<JvmIdentity> SORTED_JVM_LIST;
 	//
 	private Parameters mParameters;
 	private Stage mStage;
@@ -40,6 +48,9 @@ public class MvcModelImpl implements MvcModel {
 		//
 		CORE = aCore;
 		RESOURCES = aResources;
+		//
+		JVM_LIST = FXCollections.observableArrayList();
+		SORTED_JVM_LIST = new SortedList<>(JVM_LIST, (a, b) -> a.getId().compareTo(b.getId()));
 		//
 		mParameters = null;
 		mStage = null;
@@ -88,6 +99,16 @@ public class MvcModelImpl implements MvcModel {
 	@Override
 	public final Image getImage(TypeType aType) {
 		return getImage(TypeDeprecated.No, TypeAccess.Public, aType);
+	}
+
+	@Override
+	public SortedList<JvmIdentity> getJvmList() {
+		return SORTED_JVM_LIST;
+	}
+
+	@Override
+	public void setJvmList(Collection<JvmIdentity> aJvmList) {
+		JVM_LIST.setAll(aJvmList);
 	}
 
 }

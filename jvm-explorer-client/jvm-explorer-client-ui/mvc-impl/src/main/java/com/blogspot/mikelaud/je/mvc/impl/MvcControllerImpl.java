@@ -1,5 +1,7 @@
 package com.blogspot.mikelaud.je.mvc.impl;
 
+import java.util.stream.Collectors;
+
 import com.blogspot.mikelaud.je.core.Core;
 import com.blogspot.mikelaud.je.domain.Domain;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
@@ -48,8 +50,13 @@ public class MvcControllerImpl implements MvcController {
 
 	@Override
 	public void doJvmConnect() {
-		MODEL.getCore().doJvmConnect(mView.getJvmHost());
-		mView.setJvmList(MODEL.getCore().doJvmList());
+		try {
+			MODEL.getCore().doJvmConnect(mView.getJvmHost());
+			MODEL.setJvmList(MODEL.getCore().doJvmList().collect(Collectors.toList()));
+		}
+		finally {
+			MODEL.getCore().doJvmDisconnect();
+		}
 	}
 
 	@Override

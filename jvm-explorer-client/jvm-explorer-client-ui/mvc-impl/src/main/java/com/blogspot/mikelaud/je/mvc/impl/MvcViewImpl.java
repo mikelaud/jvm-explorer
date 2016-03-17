@@ -1,8 +1,5 @@
 package com.blogspot.mikelaud.je.mvc.impl;
 
-import java.util.stream.Stream;
-
-import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcView;
@@ -41,11 +38,6 @@ public class MvcViewImpl implements MvcView {
 	@Override
 	public String getJvmHost() {
 		return JVM.getHost();
-	}
-
-	@Override
-	public void setJvmList(Stream<JvmIdentity> aJvmList) {
-		JVM.setJvmList(aJvmList);
 	}
 
 }

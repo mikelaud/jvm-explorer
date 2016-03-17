@@ -36,7 +36,7 @@
 	-fx-text-fill: lime;
 }
 
-#jvm-list.list-view:focused .list-cell:filled:selected, .list-view:focused .list-cell:filled:selected:hover {
+#jvm-list.list-view:focused .list-cell:filled:selected, .list-view:filled:selected:focused {
     -fx-background: -fx-accent;
     -fx-background-color: -fx-selection-bar;
     -fx-text-fill: -fx-selection-bar-text;
@@ -58,16 +58,4 @@
 #jvm-list.list-view .scroll-bar .decrement-arrow
 {
 	-fx-opacity: 0.5;
-}
-
-#jvm-list-cancel.button
-{
-	-fx-opacity: 0.9;
-	-fx-background-color: pink;
-}
-
-#jvm-list-connect.button
-{
-	-fx-opacity: 0.9;
-	-fx-background-color: lightgreen;
 }
