@@ -16,6 +16,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
@@ -71,6 +72,9 @@ public class UiJvmImpl implements UiJvm {
 	}
 
 	private void switchToList() {
+		if (HOST_FIELD.getText().isEmpty()) {
+			HOST_FIELD.setText(HOST_FIELD.getPromptText());
+		}
 		LIST_BUTTON.setDisable(true);
 		DISCONNECT_BUTTON.setDisable(true);
 		CONNECT_BUTTON.setVisible(true);
@@ -80,20 +84,22 @@ public class UiJvmImpl implements UiJvm {
 		BACKGROUND.getImageView().setEffect(new ColorAdjust(0, 0, -0.7, 0));
 	}
 
-	private Node createTop() {
-		DISCONNECT_BUTTON.setText("Disconnect");
-		DISCONNECT_BUTTON.setOnAction(a -> switchToDisconnect());
+	private Node createHostPanel() {
+		Label hostLabel = new Label("Host name or IP: ");
+		hostLabel.setMaxHeight(Double.MAX_VALUE);
 		//
-		HOST_FIELD.setPromptText("Host name or IP");
-		HOST_FIELD.setAlignment(Pos.CENTER);
+		HOST_FIELD.setPromptText("localhost");
+		HOST_FIELD.setText(HOST_FIELD.getPromptText());
 		HOST_FIELD.setFocusTraversable(false);
+		HOST_FIELD.setAlignment(Pos.CENTER);
+		HOST_FIELD.setMaxHeight(Double.MAX_VALUE);
 		//
 		LIST_BUTTON.setText("List");
-		LIST_BUTTON.prefWidthProperty().bind(DISCONNECT_BUTTON.widthProperty());
+		LIST_BUTTON.setMaxHeight(Double.MAX_VALUE);
 		LIST_BUTTON.setOnAction(a -> switchToList());
 		//
 		BorderPane pane = new BorderPane();
-		pane.setLeft(DISCONNECT_BUTTON);
+		pane.setLeft(hostLabel);
 		pane.setCenter(HOST_FIELD);
 		pane.setRight(LIST_BUTTON);
 		return pane;
@@ -120,16 +126,13 @@ public class UiJvmImpl implements UiJvm {
 		//
 		CANCEL_BUTTON.setText("Cancel"); 
 		CANCEL_BUTTON.setId("jvm-list-cancel");
-		CANCEL_BUTTON.prefWidthProperty().bind(DISCONNECT_BUTTON.widthProperty());
 		CANCEL_BUTTON.setOnAction(a -> switchToDisconnect());
 		//
 		CONNECT_BUTTON.setText("Connect");
 		CONNECT_BUTTON.setId("jvm-list-connect");
-		CONNECT_BUTTON.prefWidthProperty().bind(DISCONNECT_BUTTON.widthProperty());
 		//
 		TilePane buttons = new TilePane();
 		buttons.getChildren().setAll(CANCEL_BUTTON, CONNECT_BUTTON);
-		buttons.hgapProperty().bind(DISCONNECT_BUTTON.widthProperty());
 		buttons.setAlignment(Pos.CENTER);
 		//
 		pane.setTop(buttons);
@@ -137,7 +140,7 @@ public class UiJvmImpl implements UiJvm {
 	}
 
 	private void buildForm() {
-		PANE.setTop(createTop());
+		PANE.setTop(createHostPanel());
 		PANE.setCenter(createCenter());
 		//
 		PANE.setPadding(new Insets(MODEL.getConst().getPadding()));
