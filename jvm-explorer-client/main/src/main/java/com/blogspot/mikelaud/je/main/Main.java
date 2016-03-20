@@ -1,25 +1,35 @@
 package com.blogspot.mikelaud.je.main;
 
-import com.blogspot.mikelaud.je.mvc.MvcController;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
+import java.awt.GraphicsEnvironment;
 
 import javafx.application.Application;
-import javafx.stage.Stage;
 
-public class Main extends Application {
+public class Main {
 
-	@Override
-	public void start(Stage aStage) throws Exception {
-		Injector injector = Guice.createInjector(new MainModule());
-		MvcController controller = injector.getInstance(MvcController.class);
-		controller.getModel().setParameters(getParameters());
-		controller.getModel().setStage(aStage);
-		controller.showApplication();
+	private final String[] ARGS;
+
+	private void runCli() {
+		System.out.println("Console mode: done.");
+	}
+
+	private void runGui() {
+		Application.launch(MainApplication.class, ARGS);
+	}
+
+	private boolean isCliMode() {
+		return ARGS.length > 0 || GraphicsEnvironment.isHeadless();
+	}
+
+	private void run() {
+		if (isCliMode()) runCli(); else runGui();
+	}
+
+	public Main(String[] aArgs) {
+		ARGS = aArgs;
 	}
 
 	public static void main(String[] args) {
-		Application.launch(args);
+		new Main(args).run();
 	}
 
 }
