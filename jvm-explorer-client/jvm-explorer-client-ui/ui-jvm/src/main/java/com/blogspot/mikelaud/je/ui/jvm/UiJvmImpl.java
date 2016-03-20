@@ -10,6 +10,7 @@ import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
 import com.google.inject.Inject;
 
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,24 +20,27 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.layout.Priority;
+import javafx.scene.text.Text;
 
 public class UiJvmImpl implements UiJvm {
 
 	private final MvcController CONTROLLER;
 	private final MvcModel MODEL;
+	//
 	private final UiJvmConst CONST;
 	private final UiBackground BACKGROUND;
 	private final BorderPane PANE;
-	private final ListView<JvmIdentity> JVM_LIST_VIEW;
 	//
-	private final Label HOST_LABEL;
+	private final TextField NAME_FIELD;
+	private final TextField PID_FILED;
 	private final TextField HOST_FIELD;
-	private final Button DISCONNECT_BUTTON;
 	private final Button CONNECT_BUTTON;
-	private final Button ATTACH_BUTTON;
-	private final Button CANCEL_BUTTON;
+	private final Button LIST_BUTTON;
+	private final ListView<JvmIdentity> JVM_LIST_VIEW;
 
 	@Inject
 	private UiJvmImpl
@@ -46,69 +50,137 @@ public class UiJvmImpl implements UiJvm {
 	) {
 		CONTROLLER = aController;
 		MODEL = CONTROLLER.getModel();
+		//
 		CONST = aConst;
 		BACKGROUND = aBackground;
 		PANE = new BorderPane();
+		//
+		NAME_FIELD = new TextField();
+		PID_FILED = new TextField();
+		HOST_FIELD = new TextField();
+		CONNECT_BUTTON = new Button();
+		LIST_BUTTON = new Button();
 		JVM_LIST_VIEW = new ListView<>();
 		//
-		HOST_LABEL = new Label();
-		HOST_FIELD = new TextField();
-		DISCONNECT_BUTTON = new Button();
-		CONNECT_BUTTON = new Button();
-		ATTACH_BUTTON = new Button();
-		CANCEL_BUTTON = new Button();
-		//
 		buildForm();
+		onCancel();
 	}
 
-	private void switchToCancel() {
-		CONNECT_BUTTON.setDisable(false);
-		DISCONNECT_BUTTON.setDisable(true);
-		ATTACH_BUTTON.setVisible(false);
-		CANCEL_BUTTON.setVisible(false);
+	private void onCancel() {
+		CONNECT_BUTTON.setDisable(true);
+		LIST_BUTTON.setDisable(false);
 		HOST_FIELD.setDisable(false);
 		JVM_LIST_VIEW.setVisible(false);
 		BACKGROUND.getImageView().setEffect(null);
-		//
-		ATTACH_BUTTON.setDisable(true);
 	}
 
-	private void switchToConnect() {
+	private void onList() {
 		if (HOST_FIELD.getText().isEmpty()) {
 			HOST_FIELD.setText(HOST_FIELD.getPromptText());
 		}
-		CONNECT_BUTTON.setDisable(true);
-		DISCONNECT_BUTTON.setDisable(true);
-		ATTACH_BUTTON.setVisible(true);
-		CANCEL_BUTTON.setVisible(true);
+		LIST_BUTTON.setDisable(true);
 		HOST_FIELD.setDisable(true);
-		JVM_LIST_VIEW.setVisible(true);
-		BACKGROUND.getImageView().setEffect(new ColorAdjust(0, 0, -0.7, 0));
+		JVM_LIST_VIEW.setVisible(false);
+		BACKGROUND.getImageView().setEffect(null);
 		//
-		ATTACH_BUTTON.setDisable(true);
 		CONTROLLER.doJvmConnect();
-		ATTACH_BUTTON.setDisable(false);
+		//
+		if (! JVM_LIST_VIEW.getItems().isEmpty()) {
+			JVM_LIST_VIEW.setVisible(true);
+			BACKGROUND.getImageView().setEffect(new ColorAdjust(0, 0, -0.7, 0));
+		}
+		LIST_BUTTON.setDisable(false);
+		HOST_FIELD.setDisable(false);
 	}
 
-	private Node createHostPanel() {
-		HOST_LABEL.setText("Host name or IP: ");
-		HOST_LABEL.setMaxHeight(Double.MAX_VALUE);
+	private void onJvmSelect(JvmIdentity aOldValue, JvmIdentity aNewValue) {
+		if (null == aNewValue) return;
+		NAME_FIELD.setText(aNewValue.getName());
+		PID_FILED.setText(aNewValue.getId());
+		CONNECT_BUTTON.setDisable(false);
+	}
+
+	private void onHostEdit(String aOldValue, String aNewValue) {
+		CONNECT_BUTTON.setDisable(true);
+		NAME_FIELD.clear();
+		PID_FILED.clear();
+		JVM_LIST_VIEW.setVisible(false);
+		BACKGROUND.getImageView().setEffect(null);
+	}
+
+	private Node createTop() {
+		Label nameLabel = new Label("Name:");
+		nameLabel.setMaxHeight(Double.MAX_VALUE);
 		//
-		HOST_FIELD.setPromptText("localhost");
-		HOST_FIELD.setText(HOST_FIELD.getPromptText());
-		HOST_FIELD.setFocusTraversable(false);
-		HOST_FIELD.setAlignment(Pos.CENTER);
-		HOST_FIELD.setMaxHeight(Double.MAX_VALUE);
+		NAME_FIELD.setId("read-only-field");
+		NAME_FIELD.setEditable(false);
+		NAME_FIELD.setFocusTraversable(false);
+		NAME_FIELD.setMaxHeight(Double.MAX_VALUE);
 		//
 		CONNECT_BUTTON.setText("Connect");
+		CONNECT_BUTTON.setMaxWidth(Double.MAX_VALUE);
 		CONNECT_BUTTON.setMaxHeight(Double.MAX_VALUE);
-		CONNECT_BUTTON.prefWidthProperty().bind(HOST_LABEL.widthProperty());
-		CONNECT_BUTTON.setOnAction(a -> switchToConnect());
 		//
-		BorderPane pane = new BorderPane();
-		pane.setLeft(HOST_LABEL);
-		pane.setCenter(HOST_FIELD);
-		pane.setRight(CONNECT_BUTTON);
+		Label pidLabel = new Label("PID:");
+		pidLabel.setMaxHeight(Double.MAX_VALUE);
+		//
+		PID_FILED.setId("read-only-field");
+		PID_FILED.setEditable(false);
+		PID_FILED.setFocusTraversable(false);
+		PID_FILED.setMaxHeight(Double.MAX_VALUE);
+		//
+		Label hostLabel = new Label("Host:");
+		hostLabel.setMaxHeight(Double.MAX_VALUE);
+		//
+		HOST_FIELD.setAlignment(Pos.CENTER);
+		HOST_FIELD.setMaxHeight(Double.MAX_VALUE);
+		HOST_FIELD.setPromptText("localhost");
+		HOST_FIELD.textProperty().addListener((observable, oldValue, newValue) -> onHostEdit(oldValue, newValue));
+		//
+		LIST_BUTTON.setText("List");
+		LIST_BUTTON.setMaxWidth(Double.MAX_VALUE);
+		LIST_BUTTON.setMaxHeight(Double.MAX_VALUE);
+		LIST_BUTTON.setOnAction(a -> onList());
+		//
+		GridPane pane = new GridPane();
+		pane.setVgap(MODEL.getConst().getPadding() / 2);
+		pane.setHgap(pane.getVgap());
+		//
+		pane.getColumnConstraints().add(new ColumnConstraints()); // 0
+		pane.getColumnConstraints().add(new ColumnConstraints()); // 1
+		pane.getColumnConstraints().add(new ColumnConstraints()); // 2
+		pane.getColumnConstraints().add(new ColumnConstraints()); // 3
+		pane.getColumnConstraints().add(new ColumnConstraints()); // 4
+		//
+		pane.add(nameLabel, 0, 0);
+		pane.add(NAME_FIELD, 1, 0, 3, 1);
+		pane.add(CONNECT_BUTTON, 4, 0);
+		//
+		pane.add(pidLabel, 0, 1);
+		pane.add(PID_FILED, 1, 1);
+		pane.add(hostLabel, 2, 1);
+		pane.add(HOST_FIELD, 3, 1);
+		pane.add(LIST_BUTTON, 4, 1);
+		//
+		GridPane.setHalignment(nameLabel, HPos.RIGHT);
+		GridPane.setHalignment(pidLabel, HPos.RIGHT);
+		GridPane.setHalignment(hostLabel, HPos.RIGHT);
+		GridPane.setHgrow(NAME_FIELD, Priority.ALWAYS);
+		GridPane.setHgrow(HOST_FIELD, Priority.ALWAYS);
+		GridPane.setFillWidth(CONNECT_BUTTON, true);
+		GridPane.setFillWidth(LIST_BUTTON, true);
+		//
+		double nameWidth = 1.1 * (new Text(nameLabel.getText()).getLayoutBounds().getWidth());
+		double hostWidth = 1.1 * (new Text(hostLabel.getText()).getLayoutBounds().getWidth());
+		double connectWidth = 1.9 * (new Text(CONNECT_BUTTON.getText()).getLayoutBounds().getWidth());
+		//
+		pane.getColumnConstraints().get(0).setMinWidth(nameWidth);
+		pane.getColumnConstraints().get(1).setMinWidth(connectWidth);
+		pane.getColumnConstraints().get(1).setPrefWidth(connectWidth);
+		pane.getColumnConstraints().get(2).setMinWidth(hostWidth);
+		pane.getColumnConstraints().get(3).setMinWidth(connectWidth);
+		pane.getColumnConstraints().get(4).setMinWidth(connectWidth);
+		//
 		return pane;
 	}
 
@@ -119,36 +191,22 @@ public class UiJvmImpl implements UiJvm {
 	}
 
 	private Node createJvmList() {
-		BorderPane pane = new BorderPane();
 		JVM_LIST_VIEW.setId("jvm-list");
 		JVM_LIST_VIEW.setItems(CONTROLLER.getModel().getJvmList());
+		JVM_LIST_VIEW.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> onJvmSelect(oldValue, newValue));
+		//
+		BorderPane pane = new BorderPane();
 		pane.setCenter(JVM_LIST_VIEW);
-		//
-		CANCEL_BUTTON.setText("Cancel");
-		CANCEL_BUTTON.prefWidthProperty().bind(HOST_LABEL.widthProperty());
-		CANCEL_BUTTON.setOnAction(a -> switchToCancel());
-		//
-		ATTACH_BUTTON.setText("Attach");
-		ATTACH_BUTTON.prefWidthProperty().bind(HOST_LABEL.widthProperty());
-		//
-		TilePane buttons = new TilePane();
-		buttons.getChildren().setAll(CANCEL_BUTTON, ATTACH_BUTTON);
-		buttons.setAlignment(Pos.CENTER);
-		buttons.hgapProperty().bind(HOST_LABEL.widthProperty().divide(2));
-		buttons.setPadding(new Insets(MODEL.getConst().getPadding()));
-		//
-		pane.setTop(buttons);
 		return pane;
 	}
 
 	private void buildForm() {
-		PANE.setTop(createHostPanel());
+		PANE.setTop(createTop());
 		PANE.setCenter(createCenter());
 		//
-		PANE.setPadding(new Insets(MODEL.getConst().getPadding()));
-		BorderPane.setMargin(PANE.getTop(), new Insets(0, 0, MODEL.getConst().getPadding(), 0));
-		//
-		switchToCancel();
+		int padding = MODEL.getConst().getPadding();
+		PANE.setPadding(new Insets(padding));
+		BorderPane.setMargin(PANE.getTop(), new Insets(0, 0, padding, 0));
 	}
 
 	@Override public String getName() { return CONST.getName(); }

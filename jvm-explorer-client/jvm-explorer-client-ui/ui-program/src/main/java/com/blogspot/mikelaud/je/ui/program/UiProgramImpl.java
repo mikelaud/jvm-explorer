@@ -82,11 +82,12 @@ public class UiProgramImpl implements UiProgram {
 	}
 
 	private void buildePane() {
-		PANE.getItems().addAll(createLeftPane(), CODE.getPane());
-		buildStage();
+		Accordion accordion = createLeftPane();
+		PANE.getItems().setAll(accordion, CODE.getPane());
+		buildStage(accordion);
 	}
 
-	private void buildStage() {
+	private void buildStage(Accordion aAccordion) {
 		STAGE.setScene(SCENE);
 		RESOURCES.loadCss();
 		STAGE.setTitle(CONST.getProgramTitle());
