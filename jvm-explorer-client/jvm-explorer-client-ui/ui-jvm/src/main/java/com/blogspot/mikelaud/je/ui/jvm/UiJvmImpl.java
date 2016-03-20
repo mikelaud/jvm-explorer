@@ -211,7 +211,10 @@ public class UiJvmImpl implements UiJvm {
 
 	@Override public String getName() { return CONST.getName(); }
 	@Override public Pane getPane() { return PANE; }
+	//
 	@Override public String getHost() { return HOST_FIELD.getText(); }
+	@Override public String getJvmId() { return PID_FILED.getText(); }
+	@Override public String getJvmName() { return NAME_FIELD.getText(); }
 
 	@Override
 	public void setJvmList(Stream<JvmIdentity> aJvmList) {

@@ -12,6 +12,9 @@ public interface UiJvm {
 	Pane getPane();
 	//
 	String getHost();
+	String getJvmId();
+	String getJvmName();
+	//
 	void setJvmList(Stream<JvmIdentity> aJvmList);
 
 }
