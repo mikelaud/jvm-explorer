@@ -37,3 +37,6 @@ https://docs.oracle.com/javase/tutorial/security/apisign/index.html
 https://docs.oracle.com/javase/tutorial/deployment/jar/signindex.html
 http://stackoverflow.com/questions/304268/getting-a-files-md5-checksum-in-java
 
+Logging:
+--------
+https://habrahabr.ru/post/152159/
