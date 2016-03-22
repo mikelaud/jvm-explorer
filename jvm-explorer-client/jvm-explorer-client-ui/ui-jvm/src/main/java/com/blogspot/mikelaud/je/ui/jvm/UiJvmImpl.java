@@ -1,6 +1,7 @@
 package com.blogspot.mikelaud.je.ui.jvm;
 
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -140,7 +141,7 @@ public class UiJvmImpl implements UiJvm {
 		LIST_BUTTON.setText("List");
 		LIST_BUTTON.setMaxWidth(Double.MAX_VALUE);
 		LIST_BUTTON.setMaxHeight(Double.MAX_VALUE);
-		LIST_BUTTON.setOnAction(a -> onList());
+		LIST_BUTTON.setOnAction(a -> CompletableFuture.runAsync(() -> onList()));
 		//
 		GridPane pane = new GridPane();
 		pane.setVgap(MODEL.getConst().getPadding() / 2);

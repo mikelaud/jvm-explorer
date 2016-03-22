@@ -75,6 +75,7 @@ public class UiCodeImpl implements UiCode {
 		FONT_KEYWORD = createKeywordFont();
 		//
 		buildForm();
+		UiCodeAppender.setUiBackground(BACKGROUND);
 	}
 
 	private Node createCenter() {
@@ -401,6 +402,11 @@ public class UiCodeImpl implements UiCode {
 	@Override
 	public final Pane getPane() {
 		return PANE;
+	}
+
+	@Override
+	public UiBackground getBackground() {
+		return BACKGROUND;
 	}
 
 }

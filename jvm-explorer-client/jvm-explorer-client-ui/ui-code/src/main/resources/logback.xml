@@ -1,0 +1,8 @@
+<configuration>
+	<appender name="UiCodeAppender" class="com.blogspot.mikelaud.je.ui.code.UiCodeAppender"/>
+
+	<root level="TRACE">
+		<appender-ref ref="UiCodeAppender" />
+	</root>
+
+</configuration>
