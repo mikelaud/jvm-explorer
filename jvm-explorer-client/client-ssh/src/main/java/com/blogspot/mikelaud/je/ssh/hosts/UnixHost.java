@@ -3,10 +3,12 @@ package com.blogspot.mikelaud.je.ssh.hosts;
 import java.nio.file.Path;
 import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.blogspot.mikelaud.je.common.file_source.FileSource;
 import com.blogspot.mikelaud.je.common.file_source.FileSourceFactory;
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
-import com.blogspot.mikelaud.je.ssh.common.Logger;
 import com.blogspot.mikelaud.je.ssh.domain.Endpoint;
 import com.blogspot.mikelaud.je.ssh.domain.Status;
 import com.blogspot.mikelaud.je.ssh.operations.CopyFromLocalOperation;
@@ -22,6 +24,7 @@ import com.jcraft.jsch.Session;
 
 public class UnixHost implements Host {
 
+	private final Logger LOGGER = LoggerFactory.getLogger(UnixHost.class);
 	private final FileSourceFactory FILE_SOURCE_FACTORY;
 	private final Endpoint ENDPOINT;
 	//
@@ -36,7 +39,7 @@ public class UnixHost implements Host {
 			return aOperation.execute(mSession);
 		}
 		else {
-			Logger.error(String.format("No ssh session for: %s", aOperation));
+			LOGGER.error("No ssh session for: {}", aOperation);
 			return ExitStatus.ABORT.get();
 		}
 	}
@@ -64,7 +67,7 @@ public class UnixHost implements Host {
 
 	@Override
 	public void close() {
-		Logger.info("close");
+		LOGGER.info("close");
 		if (hasSession()) {
 			if (mSession.isConnected()) {
 				mSession.disconnect();
@@ -83,16 +86,16 @@ public class UnixHost implements Host {
 			session.setPassword(aPassword);
 			session.setConfig("StrictHostKeyChecking", "no");
 			try {
-				Logger.info(String.format("ssh %s@%s", aUserName, ENDPOINT));
+				LOGGER.info("ssh {}@{}", aUserName, ENDPOINT);
 				session.connect();
 			}
 			catch (JSchException e) {
-				Logger.error(e.getMessage());
+				LOGGER.error(e.getMessage());
 			}
 			mSession = session.isConnected() ? session : null;
 		}
 		catch (Exception e) {
-			Logger.error(e);
+			LOGGER.error("{}", e);
 		}
 		return isOnline();
 	}
@@ -133,8 +136,8 @@ public class UnixHost implements Host {
 			if (ExitStatus.SUCCESS.isNot(status)) break;
 			//
 			if (! copyFrom.getDigest().getBytes().equals(copyTo.getDigest().getBytes())) {
-				Logger.error("src digest is different: " + copyFrom.getDigest());
-				Logger.error("dst digest is different: " + copyTo.getDigest());
+				LOGGER.error("src digest is different: {}", copyFrom.getDigest());
+				LOGGER.error("dst digest is different: {}", copyTo.getDigest());
 				status = ExitStatus.WRONG_DIGEST.get();
 			}
 			break;

@@ -8,10 +8,12 @@ import java.security.DigestInputStream;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.blogspot.mikelaud.je.common.file_source.FileSource;
 import com.blogspot.mikelaud.je.common.file_source.content.FileContent;
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
-import com.blogspot.mikelaud.je.ssh.common.Logger;
 import com.blogspot.mikelaud.je.ssh.common.UnixPath;
 import com.blogspot.mikelaud.je.ssh.domain.Digest;
 import com.jcraft.jsch.ChannelExec;
@@ -19,6 +21,8 @@ import com.jcraft.jsch.Session;
 
 public class CopyFromLocalOperation extends AbstractOperation {
 
+	private final Logger LOGGER = LoggerFactory.getLogger(CopyFromLocalOperation.class);
+	//
 	private final FileSource INPUT_FILE_LOCAL;
 	private final Path INPUT_FILE_REMOTE;
 	//
@@ -32,7 +36,7 @@ public class CopyFromLocalOperation extends AbstractOperation {
 			return ExitStatus.SUCCESS.get();
 		}
 		else {
-			Logger.error(String.format("scp: %s: No such file or directory", INPUT_FILE_LOCAL));
+			LOGGER.error("scp: {}: No such file or directory", INPUT_FILE_LOCAL);
 			return ExitStatus.ERROR.get();
 		}
 	}

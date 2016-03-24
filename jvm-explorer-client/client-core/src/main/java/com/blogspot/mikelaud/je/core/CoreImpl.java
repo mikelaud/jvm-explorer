@@ -13,6 +13,9 @@ import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.blogspot.mikelaud.je.agent.api.TypesMXBean;
 import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
 import com.blogspot.mikelaud.je.agent.loader.AgentLoaderFactory;
@@ -38,6 +41,8 @@ public class CoreImpl implements Core {
 		String CLASS_EXT = ".class";
 	}
 
+	private final Logger LOGGER = LoggerFactory.getLogger(CoreImpl.class);
+	//
 	private final Domain DOMAIN;
 	private final AgentLoaderFactory AGENT_LOADER_FACTORY;
 	//
@@ -114,7 +119,7 @@ public class CoreImpl implements Core {
 			props.put("com.sun.management.jmxremote.port", "5000");
 			props.put("com.sun.management.jmxremote.authenticate", "false");
 			props.put("com.sun.management.jmxremote.ssl", "false");
-			System.out.println("Start startManagementAgent agent: " + props);
+			LOGGER.info("Start startManagementAgent agent: {}", props);
 			jvm.startManagementAgent(props);
 			jvm.detach();
 		}

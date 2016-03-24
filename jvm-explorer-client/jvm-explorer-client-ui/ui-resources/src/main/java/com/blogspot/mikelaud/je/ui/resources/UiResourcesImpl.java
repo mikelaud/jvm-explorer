@@ -5,6 +5,9 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.ssh.common.UnixPath;
 import com.google.inject.Inject;
@@ -15,6 +18,8 @@ import javafx.scene.image.WritableImage;
 
 public class UiResourcesImpl implements UiResources {
 
+	private final Logger LOGGER = LoggerFactory.getLogger(UiResourcesImpl.class);
+	//
 	private final MvcController CONTROLLER;
 	private final Path IMAGES_LOCATION;
 	private final Map<Path, Image> IMAGES;
@@ -29,7 +34,7 @@ public class UiResourcesImpl implements UiResources {
 	}
 
 	private Image loadImage(Path aPath) {
-		System.out.println("Load image: ".concat(aPath.toString()));
+		LOGGER.debug("Load image: {}", aPath.toString());
 		Image image = EMPTY_IMAGE;
 		try {
 			UnixPath jarPath = new UnixPath(IMAGES_LOCATION.resolve(aPath));
@@ -38,7 +43,7 @@ public class UiResourcesImpl implements UiResources {
 		}
 		catch (IllegalArgumentException e) {
 			IMAGES.put(aPath, EMPTY_IMAGE);
-			System.out.println("Lost image: ".concat(aPath.toString()));
+			LOGGER.error("Lost image: {}", aPath.toString());
 		}
 		return image;
 	}

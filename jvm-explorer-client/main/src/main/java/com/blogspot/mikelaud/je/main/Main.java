@@ -2,14 +2,18 @@ package com.blogspot.mikelaud.je.main;
 
 import java.awt.GraphicsEnvironment;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javafx.application.Application;
 
 public class Main {
 
+	private final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	private final String[] ARGS;
 
 	private void runCli() {
-		System.out.println("Console mode: done.");
+		LOGGER.info("Console mode: done.");
 	}
 
 	private void runGui() {

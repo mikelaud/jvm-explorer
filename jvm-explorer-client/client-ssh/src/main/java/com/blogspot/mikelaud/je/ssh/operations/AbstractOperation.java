@@ -8,8 +8,10 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.Objects;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.blogspot.mikelaud.je.ssh.common.ExitStatus;
-import com.blogspot.mikelaud.je.ssh.common.Logger;
 import com.blogspot.mikelaud.je.ssh.common.UnixConst;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
@@ -18,6 +20,7 @@ import com.jcraft.jsch.Session;
 
 public abstract class AbstractOperation implements Operation {
 
+	private final Logger LOGGER = LoggerFactory.getLogger(AbstractOperation.class);
 	private final String EXEC_CHANNEL_TYPE;
 	private final Duration POLL_INTERVAL;
 	private final byte[] ZERO_BUFFER;
@@ -60,7 +63,7 @@ public abstract class AbstractOperation implements Operation {
 				Thread.sleep(POLL_INTERVAL.toMillis());
 			}
 			catch (InterruptedException e) {
-				Logger.error(e);
+				LOGGER.error("{}", e);
 			}
 		}
 	}
@@ -97,7 +100,7 @@ public abstract class AbstractOperation implements Operation {
 		if (ExitStatus.ERROR.is(status) || ExitStatus.FATAL_ERROR.is(status)) {
 			String errorMessage = readString(aIn, UnixConst.NEW_LINE);
 			if (! errorMessage.isEmpty()) {
-				Logger.error(String.format(errorMessage));
+				LOGGER.error(errorMessage);
 			}
 		}
 		return status;
@@ -121,19 +124,19 @@ public abstract class AbstractOperation implements Operation {
 		//
 		int status = ExitStatus.ABORT.get();
 		try {
-			Logger.info(toString());
+			LOGGER.info(toString());
 			try {
 				status = executeOperation(aSession);
 			}
 			catch (JSchException e) {
-				Logger.error(e.getMessage());
+				LOGGER.error(e.getMessage());
 			}
 			if (hasError(status)) {
-				Logger.error(String.format("exit status: %d", status));
+				LOGGER.error("exit status: {}", status);
 			}
 		}
 		catch (Exception e) {
-			Logger.error(e);
+			LOGGER.error("{}", e);
 			status = ExitStatus.ABORT.get();
 		}
 		return status;
