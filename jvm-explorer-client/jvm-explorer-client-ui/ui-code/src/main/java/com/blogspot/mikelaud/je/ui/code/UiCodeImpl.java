@@ -24,6 +24,7 @@ import com.blogspot.mikelaud.je.domain.types.TypeType;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
+import com.blogspot.mikelaud.je.ui.background.UiBackgroundAppender;
 import com.google.inject.Inject;
 
 import javafx.event.ActionEvent;
@@ -75,7 +76,7 @@ public class UiCodeImpl implements UiCode {
 		FONT_KEYWORD = createKeywordFont();
 		//
 		buildForm();
-		UiCodeAppender.setUi(BACKGROUND);
+		UiBackgroundAppender.setUi(BACKGROUND);
 	}
 
 	private Node createCenter() {

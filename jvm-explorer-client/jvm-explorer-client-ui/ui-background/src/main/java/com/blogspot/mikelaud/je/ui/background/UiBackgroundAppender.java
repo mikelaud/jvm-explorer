@@ -1,14 +1,11 @@
-package com.blogspot.mikelaud.je.ui.code;
-
-import com.blogspot.mikelaud.je.ui.background.UiBackground;
+package com.blogspot.mikelaud.je.ui.background;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.core.AppenderBase;
 import javafx.application.Platform;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.text.Font;
 
-public class UiCodeAppender extends AppenderBase<ILoggingEvent> {
+public class UiBackgroundAppender extends AppenderBase<ILoggingEvent> {
 
 	private static UiBackground UI;
 
@@ -22,16 +19,15 @@ public class UiCodeAppender extends AppenderBase<ILoggingEvent> {
 	public static UiBackground getUi() {
 		return UI;
 	}
-	
+
 	public static void setUi(UiBackground aUi) {
 		UI = aUi;
 		UI.getLogger().setVisible(true);
-		UI.getLogger().setFont(Font.font ("Consolas", 10));
 		UI.getImageView().setEffect(new ColorAdjust(0, 0, -0.7, 0));
 	}
 
 	public static void clearUi() {
 		Platform.runLater(() -> UI.getLogger().clear());
 	}
-	
+
 }

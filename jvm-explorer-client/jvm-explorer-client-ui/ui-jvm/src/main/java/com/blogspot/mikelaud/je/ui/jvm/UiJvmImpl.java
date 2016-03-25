@@ -9,6 +9,7 @@ import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
 import com.blogspot.mikelaud.je.mvc.MvcController;
 import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
+import com.blogspot.mikelaud.je.ui.background.UiBackgroundAppender;
 import com.google.inject.Inject;
 
 import javafx.geometry.HPos;
@@ -76,6 +77,7 @@ public class UiJvmImpl implements UiJvm {
 	}
 
 	private void onList() {
+		UiBackgroundAppender.clearUi();
 		if (HOST_FIELD.getText().isEmpty()) {
 			HOST_FIELD.setText(HOST_FIELD.getPromptText());
 		}

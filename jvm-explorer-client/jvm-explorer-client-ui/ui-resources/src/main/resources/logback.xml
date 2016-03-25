@@ -6,11 +6,11 @@
 		</encoder>
 	</appender>
 
-	<appender name="UiCodeAppender" class="com.blogspot.mikelaud.je.ui.code.UiCodeAppender"/>
+	<appender name="UiBackgroundAppender" class="com.blogspot.mikelaud.je.ui.background.UiBackgroundAppender"/>
 
 	<root level="TRACE">
 		<appender-ref ref="STDOUT" />
-		<appender-ref ref="UiCodeAppender" />
+		<appender-ref ref="UiBackgroundAppender" />
 	</root>
 
 </configuration>
