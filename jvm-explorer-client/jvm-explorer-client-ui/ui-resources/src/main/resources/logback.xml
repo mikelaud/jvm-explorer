@@ -1,16 +1,16 @@
 <configuration>
 
-	<appender name="UiCodeAppender" class="com.blogspot.mikelaud.je.ui.code.UiCodeAppender">
-	</appender>
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<pattern>%msg%n</pattern>
 		</encoder>
 	</appender>
 
+	<appender name="UiCodeAppender" class="com.blogspot.mikelaud.je.ui.code.UiCodeAppender"/>
+
 	<root level="TRACE">
-		<appender-ref ref="UiCodeAppender" />
 		<appender-ref ref="STDOUT" />
+		<appender-ref ref="UiCodeAppender" />
 	</root>
 
 </configuration>
