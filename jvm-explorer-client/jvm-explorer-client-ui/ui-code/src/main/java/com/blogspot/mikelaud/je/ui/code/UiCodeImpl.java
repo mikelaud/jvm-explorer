@@ -75,7 +75,7 @@ public class UiCodeImpl implements UiCode {
 		FONT_KEYWORD = createKeywordFont();
 		//
 		buildForm();
-		UiCodeAppender.setUiBackground(BACKGROUND);
+		UiCodeAppender.setUi(BACKGROUND);
 	}
 
 	private Node createCenter() {

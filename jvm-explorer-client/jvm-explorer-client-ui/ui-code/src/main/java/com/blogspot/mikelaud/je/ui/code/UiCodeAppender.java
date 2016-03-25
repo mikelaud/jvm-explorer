@@ -1,7 +1,5 @@
 package com.blogspot.mikelaud.je.ui.code;
 
-import java.util.concurrent.CompletableFuture;
-
 import com.blogspot.mikelaud.je.ui.background.UiBackground;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
@@ -12,20 +10,28 @@ import javafx.scene.text.Font;
 
 public class UiCodeAppender extends AppenderBase<ILoggingEvent> {
 
-	private static UiBackground UI_BACKGROUND;
+	private static UiBackground UI;
 
 	@Override
 	protected void append(ILoggingEvent aEvent) {
-		if (null != UI_BACKGROUND) {
-			CompletableFuture.runAsync(() -> Platform.runLater(() -> UI_BACKGROUND.getLogger().appendText(aEvent.getFormattedMessage() + "\n")));
+		if (null != UI) {
+			Platform.runLater(() -> UI.getLogger().appendText(aEvent.getFormattedMessage() + "\n"));
 		}
 	}
 
-	public static void setUiBackground(UiBackground aUiBackground) {
-		UI_BACKGROUND = aUiBackground;
-		UI_BACKGROUND.getLogger().setVisible(true);
-		UI_BACKGROUND.getLogger().setFont(Font.font ("Consolas", 10));
-		UI_BACKGROUND.getImageView().setEffect(new ColorAdjust(0, 0, -0.7, 0));
+	public static UiBackground getUi() {
+		return UI;
+	}
+	
+	public static void setUi(UiBackground aUi) {
+		UI = aUi;
+		UI.getLogger().setVisible(true);
+		UI.getLogger().setFont(Font.font ("Consolas", 10));
+		UI.getImageView().setEffect(new ColorAdjust(0, 0, -0.7, 0));
 	}
 
+	public static void clearUi() {
+		Platform.runLater(() -> UI.getLogger().clear());
+	}
+	
 }
