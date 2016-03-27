@@ -12,6 +12,7 @@ import com.blogspot.mikelaud.je.ui.background.UiBackground;
 import com.blogspot.mikelaud.je.ui.background.UiBackgroundAppender;
 import com.google.inject.Inject;
 
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -66,18 +67,17 @@ public class UiJvmImpl implements UiJvm {
 		//
 		buildForm();
 		onCancel();
+		onHostEdit();
 	}
 
 	private void onCancel() {
-		CONNECT_BUTTON.setDisable(true);
 		LIST_BUTTON.setDisable(false);
 		HOST_FIELD.setDisable(false);
-		JVM_LIST_VIEW.setVisible(false);
-		BACKGROUND.getImageView().setEffect(null);
+		HOST_FIELD.setText("");
+		UiBackgroundAppender.setVisible(false);
 	}
 
-	private void onList() {
-		UiBackgroundAppender.clearUi();
+	private void onListBegin() {
 		if (HOST_FIELD.getText().isEmpty()) {
 			HOST_FIELD.setText(HOST_FIELD.getPromptText());
 		}
@@ -85,15 +85,24 @@ public class UiJvmImpl implements UiJvm {
 		HOST_FIELD.setDisable(true);
 		JVM_LIST_VIEW.setVisible(false);
 		BACKGROUND.getImageView().setEffect(null);
-		//
-		CONTROLLER.doJvmConnect();
-		//
+	}
+
+	private void onListEnd() {
 		if (! JVM_LIST_VIEW.getItems().isEmpty()) {
 			JVM_LIST_VIEW.setVisible(true);
 			BACKGROUND.getImageView().setEffect(new ColorAdjust(0, 0, -0.7, 0));
 		}
 		LIST_BUTTON.setDisable(false);
 		HOST_FIELD.setDisable(false);
+	}
+
+	private void onList() {
+		CompletableFuture.runAsync(() -> {})
+			.thenRun(() -> UiBackgroundAppender.setVisible(true))
+			.thenRun(() -> Platform.runLater(() -> onListBegin()))
+			.thenRun(() -> CONTROLLER.doJvmConnect())
+			.thenRun(() -> Platform.runLater(() ->onListEnd()))
+		;
 	}
 
 	private void onJvmSelect(JvmIdentity aOldValue, JvmIdentity aNewValue) {
@@ -103,7 +112,7 @@ public class UiJvmImpl implements UiJvm {
 		CONNECT_BUTTON.setDisable(false);
 	}
 
-	private void onHostEdit(String aOldValue, String aNewValue) {
+	private void onHostEdit() {
 		CONNECT_BUTTON.setDisable(true);
 		NAME_FIELD.clear();
 		PID_FILED.clear();
@@ -123,6 +132,7 @@ public class UiJvmImpl implements UiJvm {
 		CONNECT_BUTTON.setText("Connect");
 		CONNECT_BUTTON.setMaxWidth(Double.MAX_VALUE);
 		CONNECT_BUTTON.setMaxHeight(Double.MAX_VALUE);
+		CONNECT_BUTTON.setOnAction(a -> onCancel());
 		//
 		Label pidLabel = new Label("PID:");
 		pidLabel.setMaxHeight(Double.MAX_VALUE);
@@ -136,14 +146,15 @@ public class UiJvmImpl implements UiJvm {
 		hostLabel.setMaxHeight(Double.MAX_VALUE);
 		//
 		HOST_FIELD.setAlignment(Pos.CENTER);
+		HOST_FIELD.setFocusTraversable(false);
 		HOST_FIELD.setMaxHeight(Double.MAX_VALUE);
 		HOST_FIELD.setPromptText("localhost");
-		HOST_FIELD.textProperty().addListener((observable, oldValue, newValue) -> onHostEdit(oldValue, newValue));
+		HOST_FIELD.textProperty().addListener((observable, oldValue, newValue) -> onHostEdit());
 		//
 		LIST_BUTTON.setText("List");
 		LIST_BUTTON.setMaxWidth(Double.MAX_VALUE);
 		LIST_BUTTON.setMaxHeight(Double.MAX_VALUE);
-		LIST_BUTTON.setOnAction(a -> CompletableFuture.runAsync(() -> onList()));
+		LIST_BUTTON.setOnAction(a -> onList());
 		//
 		GridPane pane = new GridPane();
 		pane.setVgap(MODEL.getConst().getPadding() / 2);

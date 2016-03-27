@@ -1,7 +1,9 @@
 package com.blogspot.mikelaud.je.mvc.impl;
 
+import java.util.Collection;
 import java.util.stream.Collectors;
 
+import com.blogspot.mikelaud.je.agent.bios.domain.JvmIdentity;
 import com.blogspot.mikelaud.je.core.Core;
 import com.blogspot.mikelaud.je.domain.Domain;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
@@ -10,6 +12,8 @@ import com.blogspot.mikelaud.je.mvc.MvcModel;
 import com.blogspot.mikelaud.je.mvc.MvcView;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import javafx.application.Platform;
 
 public class MvcControllerImpl implements MvcController {
 
@@ -52,7 +56,8 @@ public class MvcControllerImpl implements MvcController {
 	public void doJvmConnect() {
 		try {
 			MODEL.getCore().doJvmConnect(mView.getJvmHost());
-			MODEL.setJvmList(MODEL.getCore().doJvmList().collect(Collectors.toList()));
+			Collection<JvmIdentity> jvms = MODEL.getCore().doJvmList().collect(Collectors.toList());
+			Platform.runLater(() -> MODEL.setJvmList(jvms));
 		}
 		finally {
 			MODEL.getCore().doJvmDisconnect();
