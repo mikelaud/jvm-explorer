@@ -53,7 +53,7 @@ public class MvcControllerImpl implements MvcController {
 	}
 
 	@Override
-	public void doJvmConnect() {
+	public void deployAgent() {
 		try {
 			MODEL.getCore().doJvmConnect(mView.getJvmHost());
 			Collection<JvmIdentity> jvms = MODEL.getCore().doJvmList().collect(Collectors.toList());
@@ -62,11 +62,6 @@ public class MvcControllerImpl implements MvcController {
 		finally {
 			MODEL.getCore().doJvmDisconnect();
 		}
-	}
-
-	@Override
-	public void doJvmDisconnect() {
-		MODEL.getCore().doJvmDisconnect();
 	}
 
 }

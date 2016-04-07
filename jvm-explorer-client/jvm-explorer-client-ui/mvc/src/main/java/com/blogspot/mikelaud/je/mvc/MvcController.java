@@ -13,6 +13,6 @@ public interface MvcController {
 	void showApplication();
 	void showCode(DomainType aType);
 	//
-	void doJvmConnect();
-	void doJvmDisconnect();
+	void deployAgent();
+
 }

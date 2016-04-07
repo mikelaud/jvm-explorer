@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Properties;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -26,7 +25,6 @@ import com.blogspot.mikelaud.je.domain.Domain;
 import com.blogspot.mikelaud.je.domain.pojo.DomainType;
 import com.blogspot.mikelaud.je.ssh.domain.Status;
 import com.google.inject.Inject;
-import com.sun.tools.attach.VirtualMachine;
 
 public class CoreImpl implements Core {
 
@@ -110,6 +108,7 @@ public class CoreImpl implements Core {
 		localAgentLoader.loadAgent();
 	}
 
+	/*
 	@SuppressWarnings("unused")
 	private void startRemoteManagementAgent() {
 		try {
@@ -127,6 +126,7 @@ public class CoreImpl implements Core {
 			t.printStackTrace();
 		}
 	}
+	*/
 
 	@SuppressWarnings("unused")
 	private List<DomainType> callLocalAgentEcho() {

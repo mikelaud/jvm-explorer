@@ -100,7 +100,7 @@ public class UiJvmImpl implements UiJvm {
 		CompletableFuture.runAsync(() -> {})
 			.thenRun(() -> UiBackgroundAppender.setVisible(true))
 			.thenRun(() -> Platform.runLater(() -> onListBegin()))
-			.thenRun(() -> CONTROLLER.doJvmConnect())
+			.thenRun(() -> CONTROLLER.deployAgent())
 			.thenRun(() -> Platform.runLater(() ->onListEnd()))
 		;
 	}
