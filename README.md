@@ -1,4 +1,4 @@
-# jvm-explorer
+# jvm-explorer [![Build Status](https://travis-ci.org/mikelaud/jvm-explorer.svg?branch=master)](https://travis-ci.org/mikelaud/jvm-explorer)
 Journey into JVM (javafx)
 
 ![je](https://cloud.githubusercontent.com/assets/5852219/13907552/fd2f4cf4-ef01-11e5-83da-8d8731890b2c.png)
